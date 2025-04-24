@@ -1,8 +1,8 @@
 class Game:
     """All the settings for the game in here kaka"""
     def __init__(self):
-        self.WIDTH = 950
-        self.HEIGHT = 350
+        self.WIDTH = 1050
+        self.HEIGHT = 500
         RES = (self.WIDTH, self.HEIGHT)
         self.GRID_SIZE = 3
         self.TILE_SIZE = 100
