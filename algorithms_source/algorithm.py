@@ -42,6 +42,34 @@ def manhattan_distance(state):
             curr_row, curr_col = i // 3, i % 3
             distance += abs(goal_row - curr_row) + abs(goal_col - curr_col)
     return distance
+def linear_conflict(state):
+    """Calculate the linear conflict heuristic for the state."""
+    distance = manhattan_distance(state)
+    conflict = 0
+    
+    # Check rows for conflicts
+    for row in range(3):
+        row_tiles = state[row*3:row*3+3]
+        for i in range(3):
+            for j in range(i+1, 3):
+                if row_tiles[i] != 0 and row_tiles[j] != 0:
+                    goal_i_row, goal_i_col = (row_tiles[i] - 1) // 3, (row_tiles[i] - 1) % 3
+                    goal_j_row, goal_j_col = (row_tiles[j] - 1) // 3, (row_tiles[j] - 1) % 3
+                    if goal_i_row == goal_j_row and goal_i_col > goal_j_col:
+                        conflict += 2
+    
+    # Check columns for conflicts
+    for col in range(3):
+        col_tiles = [state[i*3 + col] for i in range(3)]
+        for i in range(3):
+            for j in range(i+1, 3):
+                if col_tiles[i] != 0 and col_tiles[j] != 0:
+                    goal_i_row, goal_i_col = (col_tiles[i] - 1) // 3, (col_tiles[i] - 1) % 3
+                    goal_j_row, goal_j_col = (col_tiles[j] - 1) // 3, (col_tiles[j] - 1) % 3
+                    if goal_i_col == goal_j_col and goal_i_row > goal_j_row:
+                        conflict += 2
+
+    return distance + conflict
 
 def and_or_search(start_state, max_depth=30, time_limit=5.0):
     """Optimized AND-OR Search with heuristic-guided pruning and iterative deepening."""
@@ -77,7 +105,7 @@ def and_or_search(start_state, max_depth=30, time_limit=5.0):
             return None, float('inf')
 
         # Calculate f = g + h (cost + heuristic)
-        h_cost = manhattan_distance(state)
+        h_cost = linear_conflict(state)
         f_cost = g_cost + h_cost
 
         # Prune if f_cost exceeds bound or depth limit
@@ -94,7 +122,7 @@ def and_or_search(start_state, max_depth=30, time_limit=5.0):
         max_space = max(max_space, len(visited))
 
         # Sort neighbors by f = g + h to prioritize promising moves
-        neighbors = [(manhattan_distance(next_state), next_state) for next_state in get_neighbors(state)]
+        neighbors = [(linear_conflict(next_state), next_state) for next_state in get_neighbors(state)]
         neighbors.sort()  # Sort by heuristic value
         solutions = []
         min_f = float('inf')
@@ -124,7 +152,7 @@ def and_or_search(start_state, max_depth=30, time_limit=5.0):
         return None
 
     # Iterative deepening with f-cost bound
-    bound = manhattan_distance(start_state)
+    bound = linear_conflict(start_state)
     while True:
         if time.time() - start_time > time_limit:
             break
@@ -263,7 +291,7 @@ def ucs(start_state):
 
 def a_star(start_state):
     start_time = time.time()
-    queue = [(0 + manhattan_distance(start_state), 0, start_state, [start_state])]
+    queue = [(0 + linear_conflict(start_state), 0, start_state, [start_state])]
     visited = {start_state}
     max_space = 1
 
@@ -281,7 +309,7 @@ def a_star(start_state):
             if next_state not in visited:
                 visited.add(next_state)
                 new_cost = cost + 1
-                heapq.heappush(queue, (new_cost + manhattan_distance(next_state), new_cost, next_state, path + [next_state]))
+                heapq.heappush(queue, (new_cost + linear_conflict(next_state), new_cost, next_state, path + [next_state]))
                 max_space = max(max_space, len(queue) + len(visited))
     return None
 
@@ -291,7 +319,7 @@ def ida_star(start_state):
 
     def search(state, g, bound, path, visited):
         nonlocal max_space
-        f = g + manhattan_distance(state)
+        f = g + linear_conflict(state)
         if f > bound:
             return f, None
         if state == GOAL_STATE:
@@ -308,7 +336,7 @@ def ida_star(start_state):
                 min_bound = min(min_bound, new_f)
         return min_bound, None
 
-    bound = manhattan_distance(start_state)
+    bound = linear_conflict(start_state)
     visited = {start_state}
     while True:
         new_bound, result = search(start_state, 0, bound, [start_state], visited)
@@ -333,8 +361,8 @@ def hill_climbing(start_state):
 
     while current_state != GOAL_STATE:
         neighbors = get_neighbors(current_state)
-        next_state = min(neighbors, key=manhattan_distance, default=None)
-        if not next_state or manhattan_distance(next_state) >= manhattan_distance(current_state):
+        next_state = min(neighbors, key=linear_conflict, default=None)
+        if not next_state or linear_conflict(next_state) >= linear_conflict(current_state):
             return None
         current_state = next_state
         path.append(current_state)
@@ -362,7 +390,7 @@ def simulated_annealing(start_state):
         temperature *= cooling_rate
         neighbors = get_neighbors(current_state)
         next_state = random.choice(neighbors)
-        delta = manhattan_distance(next_state) - manhattan_distance(current_state)
+        delta = linear_conflict(next_state) - linear_conflict(current_state)
         if delta <= 0 or random.random() < math.exp(-delta / temperature):
             current_state = next_state
             path.append(current_state)
@@ -381,7 +409,7 @@ def simulated_annealing(start_state):
 
 def beam_search(start_state, beam_width=3):
     start_time = time.time()
-    beam = [(manhattan_distance(start_state), start_state, [start_state])]
+    beam = [(linear_conflict(start_state), start_state, [start_state])]
     visited = {start_state}
     max_space = 1
 
@@ -399,9 +427,52 @@ def beam_search(start_state, beam_width=3):
             for next_state in get_neighbors(state):
                 if next_state not in visited:
                     visited.add(next_state)
-                    new_beam.append((manhattan_distance(next_state), next_state, path + [next_state]))
+                    new_beam.append((linear_conflict(next_state), next_state, path + [next_state]))
         beam = sorted(new_beam)[:beam_width]
         max_space = max(max_space, len(beam) + len(visited))
         if not beam:
             break
+    return None
+
+def belief(start_state, belief_state=(1, 2, 3)):
+    """
+    Perform DFS search with belief state constraint: only consider states where
+    the first row is [1, 2, 3] (i.e., state[0:3] == (1, 2, 3)).
+    Returns a dictionary with path, steps, cost, time, and space complexity.
+    """
+    start_time = time.time()
+
+    def satisfies_belief(state):
+        return state[:3] == belief_state  # Kiểm tra 3 vị trí đầu là (1, 2, 3)
+    
+    # Kiểm tra tính khả nghiệm
+    if not is_solvable(start_state):
+        return None
+    
+    stack = [(start_state, [start_state], 0)]  # (state, path, depth)
+    visited = {start_state}
+    max_space = 1
+    
+    while stack:
+        
+        state, path, depth = stack.pop()  # Lấy trạng thái từ đỉnh stack (DFS)
+        
+        # Kiểm tra trạng thái mục tiêu
+        if state == GOAL_STATE:
+            return {
+                "path": path,
+                "steps": len(path) - 1,
+                "cost": len(path) - 1,
+                "time": time.time() - start_time,
+                "space": max_space
+            }
+        
+        # Tạo và kiểm tra các trạng thái lân cận
+        for neighbor in get_neighbors(state):
+            if neighbor not in visited and satisfies_belief(neighbor):  # Chỉ xét trạng thái thỏa mãn belief
+                visited.add(neighbor)
+                stack.append((neighbor, path + [neighbor], depth + 1))
+                max_space = max(max_space, len(stack) + len(visited))
+    
+    print("Belief: No solution found within constraints!")
     return None

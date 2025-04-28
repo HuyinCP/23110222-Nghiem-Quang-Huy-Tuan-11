@@ -1,24 +1,12 @@
 import pygame
 import time
-import tkinter as tk
-from tkinter import ttk
-from tkinter import messagebox
-from PIL import Image, ImageTk
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
-
 from settings import Game
-from algorithms_source.algorithm import *
-from statics import *
-from puzzleGrid import *
 
 pygame.init()
 
 game = Game()
-
 FONT = pygame.font.SysFont("JetBrains Mono", 40)
-
 GOAL_STATE = [1, 2, 3, 4, 5, 6, 7, 8, 0]
 
 class PuzzleGrid:
@@ -32,10 +20,7 @@ class PuzzleGrid:
         self.swapped_positions = []
 
     def find_swapped_tiles(self, state1, state2):
-        swapped = []
-        for i in range(len(state1)):
-            if state1[i] != state2[i]:
-                swapped.append(i)
+        swapped = [i for i in range(len(state1)) if state1[i] != state2[i]]
         return swapped
 
     def ease_in_out_cubic(self, t):
@@ -63,9 +48,7 @@ class PuzzleGrid:
         self.prev_state = prev_state
         self.animation_progress = animation_progress
         self.swapped_positions = self.find_swapped_tiles(prev_state, state) if prev_state else []
-        tile_positions = {}
-        tile_scales = {}
-        tile_alphas = {}
+        tile_positions, tile_scales, tile_alphas = {}, {}, {}
 
         for i in range(game.GRID_SIZE):
             for j in range(game.GRID_SIZE):
@@ -83,6 +66,7 @@ class PuzzleGrid:
             end_x1, end_y1 = game.GRID_X + col1 * game.TILE_SIZE, game.GRID_Y + row1 * game.TILE_SIZE
             start_x2, start_y2 = game.GRID_X + col1 * game.TILE_SIZE, game.GRID_Y + row1 * game.TILE_SIZE
             end_x2, end_y2 = game.GRID_X + col2 * game.TILE_SIZE, game.GRID_Y + row2 * game.TILE_SIZE
+
             eased_progress = self.ease_in_out_cubic(animation_progress)
             scale = 1.0 + 0.2 * (1 - abs(2 * eased_progress - 1))
             alpha = 255 * (1 - 0.3 * (1 - abs(2 * eased_progress - 1)))
