@@ -29,8 +29,17 @@ class PuzzleApp:
         self.root.configure(bg="#f0f4f8")
         self.root.resizable(False, False)
 
-        self.canvas = tk.Canvas(self.root, width=game.WIDTH + 200, height=game.HEIGHT + 400, highlightthickness=0, bg="#f0f4f8")
-        self.canvas.pack(fill="both", expand=True)
+        self.canvas = tk.Canvas(
+            self.root, 
+            width=game.WIDTH + 200, 
+            height=game.HEIGHT + 400, 
+            highlightthickness=0, 
+            bg="#f0f4f8"
+        )
+        self.canvas.pack(
+            fill="both", 
+            expand=True
+        )
         self.canvas.create_rectangle(0, 0, game.WIDTH + 200, game.HEIGHT + 400, fill="#e6ecf0", outline="")
         self.canvas.create_rectangle(0, 0, game.WIDTH + 200, 250, fill="#d3e0ea", outline="")
 
@@ -344,7 +353,7 @@ class PuzzleApp:
                 return None
 
             self.initial_state = nums
-            self.status_label.config(text=f"Running {algo_name}...")
+            self.status_label.config(text=f"Running {algo_name}... pls wait")
             self.root.update()
             result = algorithm(tuple(self.initial_state))
             self.status_label.config(text="Algorithm Details Table")
@@ -378,12 +387,12 @@ class PuzzleApp:
                 result["algorithm"],
                 result["steps"],
                 result["cost"],
-                f"{result['time']:.4f}",
+                f"{result["time"]:.4f}",
                 result["space"]
             ))
 
     def run_dfs(self):
-        result = self.run_algorithm(dfs, "DFS")
+        result = self.run_algorithm(dfs_recursive, "DFS recursive")
         if result:
             self.tree.delete(*self.tree.get_children())
             self.tree.insert("", "end", values=(

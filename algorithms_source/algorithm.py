@@ -176,7 +176,7 @@ def and_or_search(start_state, max_depth=30, time_limit=5.0):
 
 def bfs(start_state):
     start_time = time.time()
-    queue = deque([(start_state, [start_state])])
+    queue = deque([(start_state, [start_state])]) # (state, path)
     visited = {start_state}
     max_space = 1
 
@@ -197,18 +197,14 @@ def bfs(start_state):
                 max_space = max(max_space, len(queue) + len(visited))
     return None
 
-def dfs(start_state, time_limit=10000.0):
+def dfs(start_state):
     start_time = time.time()
-    stack = [(start_state, [start_state], 0)]  # (state, path, depth)
+    stack = [(start_state, [start_state])]  # (state, path)
     visited = {start_state}
     max_space = 1
 
     while stack:
-        if time.time() - start_time > time_limit:
-            print("DFS: Time limit exceeded!")
-            return None
-
-        state, path, depth = stack.pop()
+        state, path = stack.pop()
 
         if state == GOAL_STATE:
             return {
@@ -222,11 +218,46 @@ def dfs(start_state, time_limit=10000.0):
         for neighbor in get_neighbors(state):
             if neighbor not in visited:
                 visited.add(neighbor)
-                stack.append((neighbor, path + [neighbor], depth + 1))
+                stack.append((neighbor, path + [neighbor]))
                 max_space = max(max_space, len(stack) + len(visited))
 
     print("DFS: No solution found within constraints!")
     return None
+
+def dfs_recursive(start_state):
+    start_time = time.time()
+    visited = set()
+    max_space = [0]  # dùng list để có thể cập nhật trong hàm lồng
+    solution = []
+
+    def dfs(state, path):
+        if state == GOAL_STATE:
+            solution.append(path)
+            return True
+
+        visited.add(state)
+        max_space[0] = max(max_space[0], len(visited))
+
+        for neighbor in get_neighbors(state):
+            if neighbor not in visited:
+                if dfs(neighbor, path + [neighbor]):
+                    return True  # dừng ngay khi tìm thấy
+
+        return False  # không tìm thấy trong nhánh này
+
+    found = dfs(start_state, [start_state])
+    if found:
+        return {
+            "path": solution[0],
+            "steps": len(solution[0]) - 1,
+            "cost": len(solution[0]) - 1,
+            "time": time.time() - start_time,
+            "space": max_space[0]
+        }
+    else:
+        print("DFS Recursive: No solution found")
+        return None
+
 
 def ids(start_state):
     start_time = time.time()
@@ -264,30 +295,47 @@ def ids(start_state):
             return None
 
 
-# def belief(start_state):
-
 def ucs(start_state):
+    """
+        giả sử ta tìm đường đi ngắn nhất giữa 2 node bất kì trong đồ thị có trọng số
+        
+    """
+    import time, heapq
     start_time = time.time()
-    queue = [(0, start_state, [start_state])]
-    visited = {start_state}
+    
+    queue = []  
+    heapq.heappush(queue, (0, start_state, [start_state]))  # (cost, state, path)
+    visited = set()
+    dist = {start_state: 0}
     max_space = 1
 
     while queue:
-        cost, state, path = heapq.heappop(queue)
-        if state == GOAL_STATE:
+        current_cost, current_state, current_path = heapq.heappop(queue)
+        if current_state in visited:
+            continue
+        visited.add(current_state)
+        if current_cost > dist.get(current_state, float('inf')):
+            continue
+        if current_state == GOAL_STATE:
             return {
-                "path": path,
-                "steps": len(path) - 1,
-                "cost": cost,
+                "path": current_path,
+                "steps": len(current_path) - 1,
+                "cost": current_cost,
                 "time": time.time() - start_time,
                 "space": max_space
-            }
-        for next_state in get_neighbors(state):
-            if next_state not in visited:
-                visited.add(next_state)
-                heapq.heappush(queue, (cost + 1, next_state, path + [next_state]))
-                max_space = max(max_space, len(queue) + len(visited))
+            } 
+        
+        for next_state in get_neighbors(current_state):
+            new_cost = current_cost + 1
+            if new_cost <= dist.get(next_state, float('inf')):  
+                dist[next_state] = new_cost
+                heapq.heappush(queue, (new_cost, next_state, current_path + [next_state]))
+        
+        max_space = max(max_space, len(queue) + len(visited))
+
+
     return None
+
 
 def a_star(start_state):
     start_time = time.time()

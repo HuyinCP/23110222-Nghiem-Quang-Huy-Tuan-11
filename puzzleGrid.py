@@ -13,10 +13,15 @@ class PuzzleGrid:
     def __init__(self, width, height):
         self.width = width
         self.height = height
+
+        # Tạo một surface, đóng vai trò là màn hình con để vẽ lưới puzzle
+        # Mọi hình ảnh puzzle sẽ được vẽ lên surface này trước, sau đó mới hiển thị lên giao diện chính
         self.surface = pygame.Surface((self.width, self.height))
         self.current_state = None
         self.prev_state = None
         self.animation_progress = 1.0
+        # Danh sách lưu vị trí của 2 ô bị hoán đổi khi có sự thay đổi trạng thái.
+        # Thông tin này sẽ được dùng để xử lý hoạt ảnh (ví dụ: di chuyển ô từ vị trí cũ đến vị trí mới).
         self.swapped_positions = []
 
     def find_swapped_tiles(self, state1, state2):

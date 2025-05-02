@@ -1,0 +1,92 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{cite}
+\usepackage{longtable}
+
+\geometry{top=1in, bottom=1in, left=1in, right=1in}  % Page margins
+
+% Title and author information
+\title{Final Project}
+\author{Nghiem Quang Huy \\ Email: \texttt{huy211020055@gmail.com} \\ HO CHI MINH University of Technology and Education}
+\date{\today}
+
+% Header and footer settings
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Report - Course Name}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt} % Header line
+
+% Line spacing
+\setstretch{1.5}
+
+\begin{document}
+
+% Title page
+\maketitle
+
+% Abstract
+\begin{abstract}
+    This is the abstract of the report. The abstract provides a brief summary of the report’s objective, the methods used, and the results achieved.
+\end{abstract}
+
+% Table of contents
+\tableofcontents
+\newpage
+
+\section{Introduction}
+\subsection{Report Objective}
+Introduce the objective of the report, the background of the problem, and the significance of the study or research.
+
+\subsection{Report Structure}
+This section gives an overview of the structure of the report.
+
+\section{Methodology}
+Present the methods, processes, or models used in the research or study. This could include experiments, calculations, or the software tools applied.
+
+\subsection{Research Methodology}
+Explain the research methodology in detail, including the steps followed in your study or experiment.
+
+\section{Results}
+Present the results obtained from the research. You can include tables, charts, or graphs to illustrate your findings.
+
+\subsection{Result Table}
+\begin{longtable}{|c|c|c|}
+    \hline
+    \textbf{Column 1} & \textbf{Column 2} & \textbf{Column 3} \\
+    \hline
+    \endfirsthead
+    \hline
+    Data 1 & Data 2 & Data 3 \\
+    Data 4 & Data 5 & Data 6 \\
+    \hline
+\end{longtable}
+
+\subsection{Graphical Representation}
+\begin{figure}[h!]
+    \centering
+    % \includegraphics[width=0.7\textwidth]{your_image_file.png} % Replace with your actual image file
+    \caption{Description of the graph or image}
+    \label{fig:my_label}
+\end{figure}
+
+\section{Discussion}
+This section analyzes and interprets the results, compares them with previous studies or theories, and discusses the implications.
+
+\section{Conclusion}
+Summarize the key results and conclusions, and suggest potential directions for future research or improvements.
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} Author Name, \textit{Title of the Paper}, Journal Name, Volume, Page Numbers, Year of Publication.
+\bibitem{ref2} Author Name, \textit{Title of the Book}, Publisher, Year of Publication.
+\end{thebibliography}
+
+\end{document}
