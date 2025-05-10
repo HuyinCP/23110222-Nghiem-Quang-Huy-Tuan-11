@@ -1,4 +1,4 @@
-﻿# 8_Puzzles_AI_Project
+# 8-Puzzle AI Solver
 
 Mục tiêu của dự án này là cung cấp một công cụ giao diện đồ họa giải bài toán 8-puzzle với nhiều thuật toán tìm kiếm khác nhau như: 
 + Uninformed Search 
