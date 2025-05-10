@@ -1,4 +1,4 @@
-﻿# 8-Puzzle AI Solver
+# 8-Puzzle AI Solver
 
 Mục tiêu của dự án này là cung cấp một công cụ giao diện đồ họa giải bài toán 8-puzzle với nhiều thuật toán tìm kiếm khác nhau như: 
 + Uninformed Search 
@@ -29,14 +29,28 @@ Mục tiêu của dự án này là cung cấp một công cụ giao diện đ�
     - [AND-OR Search Algorithm](#and-or-search-algorithm)
 - [Tính năng giao diện (GUI Features)](#tính-năng-giao-diện-gui-features)
 
+## Cách sử dụng
+
+1. Tải dự án bằng lệnh sau:
+
+        git clone https://github.com/Nnguyen-dev2805/8_Puzzles_AI_Project.git
+
+2. Di chuyển đến thư mục dự án:
+
+        cd 8_Puzzles_AI_Project
+
+3. Chạy chương trình bằng lệnh sau:
+
+        python main.py
+
 ## Thuật toán
 
 Dự án triển khai một loạt thuật toán AI đa dạng, được phân loại thành các nhóm sau:
 
-### Tìm kiếm không thông tin (Uninformed Search)
+### Uninformed Search
 
-#### Breadth-First Search (BFS)
-- **Mô tả**: BFS (Tìm kiếm theo chiều rộng) là một thuật toán tìm kiếm không thông tin, khám phá tất cả các trạng thái theo từng cấp độ độ sâu, từ trạng thái ban đầu đến trạng thái mục tiêu. Thuật toán sử dụng hàng đợi (queue) để mở rộng các trạng thái theo thứ tự từ gần nhất đến xa nhất so với trạng thái ban đầu.
+#### BFS
+- **Mô tả**: BFS (Tìm kiếm theo chiều rộng) là một thuật toán tìm kiếm không thông tin, khám phá toàn bộ các state theo chiều sâu. Sử dụng queue để mở rộng các trạng thái.
 - **Phân tích lý thuyết**:
   - **Tính tối ưu**: BFS đảm bảo tìm ra con đường ngắn nhất đến trạng thái mục tiêu trong không gian tìm kiếm không có trọng số (như bài toán 8-puzzle), vì nó khám phá tất cả các trạng thái ở độ sâu hiện tại trước khi đi sâu hơn.
   - **Hoạt động**: Bắt đầu từ trạng thái ban đầu, BFS mở rộng tất cả các trạng thái con ở độ sâu 1, sau đó độ sâu 2, và tiếp tục cho đến khi tìm thấy trạng thái mục tiêu. Ví dụ, với trạng thái ban đầu `826514037`, BFS sẽ tìm đường đi ngắn nhất đến `123456780`.
