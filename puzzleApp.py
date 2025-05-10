@@ -226,7 +226,7 @@ class PuzzleApp:
     def train_models(self):
         algorithms = [
             (bfs, "BFS"), (ids, "IDS"), (ucs, "UCS"),
-            (a_star_manhattan, "A*"), (ida_star, "IDA*"), (hill_climbing, "Hill Climb"),
+            (a_star_manhattan, "A*"), (ida_star_manhattan, "IDA*"), (hill_climbing, "Hill Climb"),
             (simulated_annealing, "SimuAnnealing"), (beam_search, "BeamSearch"),
             (and_or_search, "AND-OR")
         ]
@@ -453,7 +453,7 @@ class PuzzleApp:
             ))
 
     def run_idastar(self):
-        result = self.run_algorithm(ida_star, "IDA* manhattan")
+        result = self.run_algorithm(ida_star_manhattan, "IDA* manhattan")
         if result:
             self.tree.delete(*self.tree.get_children())
             self.tree.insert("", "end", values=(

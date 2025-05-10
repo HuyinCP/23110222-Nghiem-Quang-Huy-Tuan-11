@@ -220,7 +220,7 @@ def dfs(start_state):
             if neighbor not in visited:
                 visited.add(neighbor)
                 stack.append((neighbor, path + [neighbor]))
-                max_space = max(max_space, len(stack) + len(visited))
+                max_space = max(max_space, len(stack))
     return None
 
 def ucs(start_state):
@@ -257,33 +257,35 @@ def ids(start_state):
     """Uninformed search: tìm kiếm không có thông tin"""
     start_time = time.time()
     max_space = 0
-    visited = set()
+    stack = []
     def dfs(state, path, depth, visited):
+        stack.append(1)
         nonlocal max_space
-        stack = [(state, path, depth)]
+        if state == GOAL_STATE:
+            return path
+        if depth == 0:
+            return None
         visited.add(state)
-        while stack:
-            cur_State, cur_Path, cur_Depth = stack.pop()
-            if cur_State == GOAL_STATE:
-                return cur_Path
-            if cur_Depth > 0:
-                for next_State in get_neighbors(cur_State):
-                    if next_State not in visited:
-                        visited.add(next_State)
-                        stack.append((next_State, cur_Path + [next_State], cur_Depth - 1))
-                        max_space = max(max_space, len(stack))
+        max_space = max(max_space, len(stack))
+
+        for next_state in get_neighbors(state):
+            if next_state not in visited:
+                result = dfs(next_state, path + [next_state], depth - 1, visited)
+                if result:
+                    return result
+        visited.remove(state)
+        stack.pop()
         return None
 
     depth = 0
     while True:
         visited = set()
-        visited.add(start_state)
         result = dfs(start_state, [start_state], depth, visited)
         if result:
             return {
                 "path": result,
                 "steps": len(result) - 1,
-                "cost": len(result) - 1,  
+                "cost": len(result) - 1,
                 "time": time.time() - start_time,
                 "space": max_space
             }
@@ -323,53 +325,49 @@ def a_star_manhattan(start_state):
 
     return None
 
-def ida_star(start_state):
+def ida_star_manhattan(start_state):
     start_time = time.time()
     max_space = 0
-
-    def dfs(start_state, bound):
+    stack = []
+    def dfs(state, g, bound, path, visited):
+        stack.append(1)
         nonlocal max_space
-        stack = [(start_state, 0, [start_state])]  # (state, g, path)
-        visited = set()
+        f = g + manhattan_distance(state)
+        if f > bound:
+            return f, None
+        if state == GOAL_STATE:
+            return f, path
         min_bound = float('inf')
-
-        while stack:
-            cur_State, cur_g, cur_Path = stack.pop()
-            cur_f = cur_g + manhattan_distance(cur_State)
-            
-            # lớn hơn ngưỡng hiện tại thì dừng mở rộng node này, cập nhật lại ngưỡng
-            if cur_f > bound: 
-                min_bound = min(min_bound, cur_f)
-                continue
-            
-            if cur_State == GOAL_STATE:
-                return {
-                    "path": cur_Path,
-                    "steps": len(cur_Path) - 1,
-                    "cost": len(cur_Path) - 1,
-                    "time": time.time() - start_time,
-                    "space": max_space
-                }, min_bound
-
-            if cur_State not in visited:
-                visited.add(cur_State)
-                max_space = max(max_space, len(stack))
-                for next_State in get_neighbors(cur_State):
-                    if next_State not in visited:
-                        stack.append((next_State, cur_g + 1, cur_Path + [next_State]))
-
-        return None, min_bound
+        visited.add(state)
+        max_space = max(max_space, len(stack))
+        for next_State in get_neighbors(state):
+            if next_State not in visited:
+                visited.add(next_State)
+                new_f, result = dfs(next_State, g + 1, bound, path + [next_State], visited)
+                visited.remove(next_State)
+                if result:
+                    return new_f, result
+                min_bound = min(min_bound, new_f)
+        stack.pop()
+        return min_bound, None
 
     bound = manhattan_distance(start_state)
 
     while True:
-        result, new_bound = dfs(start_state, bound)
-        bound = new_bound
+        visited = set()
+        visited.add(start_state)
+        new_bound, result = dfs(start_state, 0, bound, [start_state], visited)
         if result:
-            return result
+            return {
+                "path": result,
+                "steps": len(result) - 1,
+                "cost": len(result) - 1,
+                "time": time.time() - start_time,
+                "space": max_space
+            }
         if new_bound == float('inf'):
             return None
-
+        bound = new_bound
 
 def greedy_FS(start_state):
     """Informed Search: tìm kiếm có thông tin"""
@@ -448,7 +446,7 @@ def hill_climbing(start_state):
 
     while current_state != GOAL_STATE:
         neighbors = get_neighbors(current_state)
-        next_state = min(neighbors, key=linear_conflict, default=None)
+        next_state = min(neighbors, key=manhattan_distance, default=None)
         if not next_state or linear_conflict(next_state) >= linear_conflict(current_state):
             return None
         current_state = next_state

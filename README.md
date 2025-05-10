@@ -1,9 +1,14 @@
-﻿# 8_Puzzles_AI_Project
+﻿# 8-Puzzle AI Solver
 
-Kho lưu trữ này chứa dự án **8-Puzzle Solver with AI Algorithms** – một ứng dụng giải bài toán 8-puzzle cổ điển bằng nhiều thuật toán Trí tuệ Nhân tạo (AI) khác nhau. Dự án không chỉ triển khai các thuật toán tìm kiếm (uninformed & informed) mà còn hỗ trợ giao diện đồ họa thân thiện, giúp người dùng dễ dàng theo dõi quá trình giải và so sánh hiệu quả của các thuật toán.
+Mục tiêu của dự án này là cung cấp một công cụ giao diện đồ họa giải bài toán 8-puzzle với nhiều thuật toán tìm kiếm khác nhau như: 
++ Uninformed Search 
++ Informed Search 
++ Local Search 
++ complex spaces search 
++ constrained search
++ Reforcement Learning
 
 ## Mục lục
-- [Cách sử dụng](#cách-sử-dụng)
 - [Thuật toán](#thuật-toán)
   - [Tìm kiếm không thông tin (Uninformed Search)](#tìm-kiếm-không-thông-tin-uninformed-search)
     - [Breadth-First Search (BFS)](#breadth-first-search-bfs)
@@ -23,20 +28,6 @@ Kho lưu trữ này chứa dự án **8-Puzzle Solver with AI Algorithms** – m
   - [Tìm kiếm không xác định (Non-deterministic Search)](#tìm-kiếm-không-xác-định-non-deterministic-search)
     - [AND-OR Search Algorithm](#and-or-search-algorithm)
 - [Tính năng giao diện (GUI Features)](#tính-năng-giao-diện-gui-features)
-
-## Cách sử dụng
-
-1. Tải dự án bằng lệnh sau:
-
-        git clone https://github.com/Nnguyen-dev2805/8_Puzzles_AI_Project.git
-
-2. Di chuyển đến thư mục dự án:
-
-        cd 8_Puzzles_AI_Project
-
-3. Chạy chương trình bằng lệnh sau:
-
-        python main.py
 
 ## Thuật toán
 
