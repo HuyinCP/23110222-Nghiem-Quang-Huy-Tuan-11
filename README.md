@@ -9,7 +9,6 @@ Mục tiêu của dự án này là cung cấp một công cụ giao diện đ�
 + Reforcement Learning
 
 ## Mục lục
-- [Cách sử dụng](#cách-sử-dụng)
 - [Thuật toán](#thuật-toán)
   - [Tìm kiếm không thông tin (Uninformed Search)](#tìm-kiếm-không-thông-tin-uninformed-search)
     - [Breadth-First Search (BFS)](#breadth-first-search-bfs)
@@ -30,19 +29,6 @@ Mục tiêu của dự án này là cung cấp một công cụ giao diện đ�
     - [AND-OR Search Algorithm](#and-or-search-algorithm)
 - [Tính năng giao diện (GUI Features)](#tính-năng-giao-diện-gui-features)
 
-## Cách sử dụng
-
-1. Tải dự án bằng lệnh sau:
-
-        git clone https://github.com/Nnguyen-dev2805/8_Puzzles_AI_Project.git
-
-2. Di chuyển đến thư mục dự án:
-
-        cd 8_Puzzles_AI_Project
-
-3. Chạy chương trình bằng lệnh sau:
-
-        python main.py
 
 ## Thuật toán
 
