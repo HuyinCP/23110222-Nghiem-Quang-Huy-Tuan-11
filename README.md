@@ -1,6 +1,12 @@
 ﻿# 8_Puzzles_AI_Project
 
-Kho lưu trữ này chứa dự án **8-Puzzle Solver with AI Algorithms** – một ứng dụng giải bài toán 8-puzzle cổ điển bằng nhiều thuật toán Trí tuệ Nhân tạo (AI) khác nhau. Dự án không chỉ triển khai các thuật toán tìm kiếm (uninformed & informed) mà còn hỗ trợ giao diện đồ họa thân thiện, giúp người dùng dễ dàng theo dõi quá trình giải và so sánh hiệu quả của các thuật toán.
+Mục tiêu của dự án này là cung cấp một công cụ giao diện đồ họa giải bài toán 8-puzzle với nhiều thuật toán tìm kiếm khác nhau như: 
++ Uninformed Search 
++ Informed Search 
++ Local Search 
++ complex spaces search 
++ constrained search
++ Reforcement Learning
 
 ## Mục lục
 - [Cách sử dụng](#cách-sử-dụng)
