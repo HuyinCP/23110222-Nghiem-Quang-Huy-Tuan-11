@@ -11,7 +11,7 @@ class Game:
         self.WHITE = (255, 255, 255)
         self.BLACK = (0, 0, 0)
         self.GRAY = (200, 200, 200)
-        self.RED = (255, 0, 0)  #swap color
+        self.RED = (255, 0, 0)
 
 
 GOAL_STATE = (1, 2, 3, 4, 5, 6, 7, 8, 0)

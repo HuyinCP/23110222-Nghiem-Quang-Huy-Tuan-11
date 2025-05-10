@@ -24,10 +24,11 @@ GOAL_STATE = [1, 2, 3, 4, 5, 6, 7, 8, 0]
 class PuzzleApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("8-Puzzle Solver")
+        self.root.title("Nghiêm Quang Huy OI 2025")
         self.root.geometry(f"{game.WIDTH + 200}x{game.HEIGHT + 400}")
         self.root.configure(bg="#f0f4f8")
         self.root.resizable(False, False)
+        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
 
         self.canvas = tk.Canvas(
             self.root, 
@@ -69,7 +70,7 @@ class PuzzleApp:
         self.control_frame = tk.Frame(self.main_frame, bg="#ffffff", bd=2, relief="groove")
         self.control_frame.pack(side=tk.RIGHT, padx=20, pady=20, fill="y", expand=True)
 
-        self.header_label = tk.Label(self.control_frame, text="8-Puzzle Solver", font=("JetBrains Mono", 18, "bold"),
+        self.header_label = tk.Label(self.control_frame, text="Will win OI 2025 🦅", font=("JetBrains Mono", 18, "bold"),
                                     bg="#d3e0ea", fg="#2c3e50", pady=10)
         self.header_label.pack(fill="x")
 
@@ -117,21 +118,28 @@ class PuzzleApp:
                   foreground=[('active', 'red')])
 
         buttons = [
+            #Uniform cost search
             ("BFS", self.run_bfs), 
             ("DFS", self.run_dfs), 
             ("IDS", self.run_ids), 
             ("UCS", self.run_ucs),
-            ("A*", self.run_astar), 
+
+            #Inform cost search
+            ("A* manhattan", self.run_a_star_manhattan), 
+            ("A* linear conflict", self.run_a_start_linear_conflict),
             ("IDA*", self.run_idastar), 
+            ("Greedy FS", self.run_greedy_FS), 
+
             ("Hill Climb", self.run_hillclimbing),
             ("Reset", self.reset), 
             ("SimuAnnealing", self.run_simulated_annealing),
-            ("BeamSearch", self.run_beam_search), 
             ("AND-OR", self.run_andor_search), 
+            ("BeamSearch", self.run_beam_search), 
             ("Compare", self.compare_algorithms),
             ("Belief", self.run_partialy_observable_search),
             ("Roll", self.roll_random_state),
             ("Predict", self.predict_fastest_algorithm)
+            
         ]
 
         for i, (text, cmd) in enumerate(buttons):
@@ -218,11 +226,11 @@ class PuzzleApp:
     def train_models(self):
         algorithms = [
             (bfs, "BFS"), (ids, "IDS"), (ucs, "UCS"),
-            (a_star, "A*"), (ida_star, "IDA*"), (hill_climbing, "Hill Climb"),
+            (a_star_manhattan, "A*"), (ida_star, "IDA*"), (hill_climbing, "Hill Climb"),
             (simulated_annealing, "SimuAnnealing"), (beam_search, "BeamSearch"),
             (and_or_search, "AND-OR")
         ]
-        n_samples = 1000  # Giữ giá trị bạn đã đặt
+        n_samples = 10  # Số lượng mẫu
         X = []
         y = {algo: [] for _, algo in algorithms}
         MAX_TIME = 1000.0  # Giá trị thời gian lớn thay cho float('inf')
@@ -230,16 +238,21 @@ class PuzzleApp:
         self.status_label.config(text="Training models...")
         self.root.update()
 
-        for _ in range(n_samples):
+        for sample_idx in range(n_samples):
             state = self.generate_random_state()
             features = self.calculate_features(state)
             X.append(features)
+            print(f"Sample {sample_idx + 1}/{n_samples} - Features: {features}")  # Debug features
+
             for algo_func, algo_name in algorithms:
                 result = algo_func(tuple(state))
-                y[algo_name].append(result["time"] if result and result["time"] < float('inf') else MAX_TIME)
+                time_taken = result["time"] if result and result["time"] < float('inf') else MAX_TIME
+                y[algo_name].append(time_taken)
+                print(f"Algorithm: {algo_name}, Time: {time_taken}")  # Debug labels
 
         models = {}
         for algo_name in y:
+            print(f"Training model for {algo_name} with labels: {y[algo_name]}")  # Debug labels for each algorithm
             model = RandomForestRegressor(n_estimators=100, random_state=42)
             model.fit(X, y[algo_name])
             models[algo_name] = model
@@ -392,7 +405,7 @@ class PuzzleApp:
             ))
 
     def run_dfs(self):
-        result = self.run_algorithm(dfs_recursive, "DFS recursive")
+        result = self.run_algorithm(dfs, "DFS")
         if result:
             self.tree.delete(*self.tree.get_children())
             self.tree.insert("", "end", values=(
@@ -427,8 +440,8 @@ class PuzzleApp:
                 result["space"]
             ))
 
-    def run_astar(self):
-        result = self.run_algorithm(a_star, "A*")
+    def run_a_star_manhattan(self):
+        result = self.run_algorithm(a_star_manhattan, "A* manhattan")
         if result:
             self.tree.delete(*self.tree.get_children())
             self.tree.insert("", "end", values=(
@@ -440,7 +453,19 @@ class PuzzleApp:
             ))
 
     def run_idastar(self):
-        result = self.run_algorithm(ida_star, "IDA*")
+        result = self.run_algorithm(ida_star, "IDA* manhattan")
+        if result:
+            self.tree.delete(*self.tree.get_children())
+            self.tree.insert("", "end", values=(
+                result["algorithm"],
+                result["steps"],
+                result["cost"],
+                f"{result['time']:.4f}",
+                result["space"]
+            ))
+
+    def run_greedy_FS(self):
+        result = self.run_algorithm(greedy_FS, "Greedy FS")
         if result:
             self.tree.delete(*self.tree.get_children())
             self.tree.insert("", "end", values=(
@@ -453,6 +478,18 @@ class PuzzleApp:
 
     def run_hillclimbing(self):
         result = self.run_algorithm(hill_climbing, "Hill Climb")
+        if result:
+            self.tree.delete(*self.tree.get_children())
+            self.tree.insert("", "end", values=(
+                result["algorithm"],
+                result["steps"],
+                result["cost"],
+                f"{result['time']:.4f}",
+                result["space"]
+            ))
+
+    def run_a_start_linear_conflict(self):
+        result = self.run_algorithm(a_start_linear_conflict, "A* linear conflict")
         if result:
             self.tree.delete(*self.tree.get_children())
             self.tree.insert("", "end", values=(
@@ -585,10 +622,11 @@ class PuzzleApp:
                 (dfs, "DFS"),
                 (ids, "IDS"),
                 (ucs, "UCS"),
-                (a_star, "A*"),
+                (a_star_mahatan, "A*"),
                 (ida_star, "IDA*"),
                 (hill_climbing, "Hill Climb"),
                 (simulated_annealing, "SimuAnnealing"),
+                (a_start_linear_conflict, "A* linear conflict"),  # Add the missing comma here
                 (beam_search, "BeamSearch"),
                 (and_or_search, "AND-OR")
             ]
@@ -639,3 +677,11 @@ class PuzzleApp:
         self.tree.delete(*self.tree.get_children())
         self.conclusion_label.config(text="Conclusion: Select an algorithm and click Compare to see the evaluation.")
         self.status_label.config(text="Enter 9 numbers (0-8)")
+    
+    def on_close(self):
+        """Handle cleanup before closing the application."""
+        try:
+            self.root.after_cancel(self.update)  # Cancel any scheduled updates
+        except Exception:
+            pass
+        self.root.destroy()

@@ -4,7 +4,6 @@ import heapq
 import random
 import math
 
-# Goal state for the 8-puzzle
 GOAL_STATE = (1, 2, 3, 4, 5, 6, 7, 8, 0)
 
 def is_solvable(state):
@@ -33,15 +32,17 @@ def get_neighbors(state):
             neighbors.append(tuple(new_state))
     return neighbors
 
-def manhattan_distance(state):
+def manhattan_distance(state): 
     """Calculate Manhattan distance heuristic for the state."""
     distance = 0
     for i, tile in enumerate(state):
+
         if tile != 0:
             goal_row, goal_col = (tile - 1) // 3, (tile - 1) % 3
             curr_row, curr_col = i // 3, i % 3
             distance += abs(goal_row - curr_row) + abs(goal_col - curr_col)
     return distance
+
 def linear_conflict(state):
     """Calculate the linear conflict heuristic for the state."""
     distance = manhattan_distance(state)
@@ -69,7 +70,7 @@ def linear_conflict(state):
                     if goal_i_col == goal_j_col and goal_i_row > goal_j_row:
                         conflict += 2
 
-    return distance + conflict
+    return conflict
 
 def and_or_search(start_state, max_depth=30, time_limit=5.0):
     """Optimized AND-OR Search with heuristic-guided pruning and iterative deepening."""
@@ -175,6 +176,7 @@ def and_or_search(start_state, max_depth=30, time_limit=5.0):
     return None
 
 def bfs(start_state):
+    """Uninformed search: tìm kiếm không có thông tin"""
     start_time = time.time()
     queue = deque([(start_state, [start_state])]) # (state, path)
     visited = {start_state}
@@ -194,18 +196,18 @@ def bfs(start_state):
             if next_state not in visited:
                 visited.add(next_state)
                 queue.append((next_state, path + [next_state]))
-                max_space = max(max_space, len(queue) + len(visited))
+                max_space = max(max_space, len(queue))
     return None
 
 def dfs(start_state):
+    """Uninformed search: tìm kiếm không có thông tin"""
     start_time = time.time()
     stack = [(start_state, [start_state])]  # (state, path)
     visited = {start_state}
-    max_space = 1
+    max_space = len(stack)
 
     while stack:
         state, path = stack.pop()
-
         if state == GOAL_STATE:
             return {
                 "path": path,
@@ -214,79 +216,74 @@ def dfs(start_state):
                 "time": time.time() - start_time,
                 "space": max_space
             }
-
         for neighbor in get_neighbors(state):
             if neighbor not in visited:
                 visited.add(neighbor)
                 stack.append((neighbor, path + [neighbor]))
                 max_space = max(max_space, len(stack) + len(visited))
-
-    print("DFS: No solution found within constraints!")
     return None
 
-def dfs_recursive(start_state):
+def ucs(start_state):
+    """Uninformed search: tìm kiếm không có thông tin"""
     start_time = time.time()
+    priority_queue = []  
+    heapq.heappush(priority_queue, (0, start_state, [start_state]))
     visited = set()
-    max_space = [0]  # dùng list để có thể cập nhật trong hàm lồng
-    solution = []
+    dist = {start_state: 0}
+    max_space = len(priority_queue)
 
-    def dfs(state, path):
-        if state == GOAL_STATE:
-            solution.append(path)
-            return True
-
-        visited.add(state)
-        max_space[0] = max(max_space[0], len(visited))
-
-        for neighbor in get_neighbors(state):
-            if neighbor not in visited:
-                if dfs(neighbor, path + [neighbor]):
-                    return True  # dừng ngay khi tìm thấy
-
-        return False  # không tìm thấy trong nhánh này
-
-    found = dfs(start_state, [start_state])
-    if found:
-        return {
-            "path": solution[0],
-            "steps": len(solution[0]) - 1,
-            "cost": len(solution[0]) - 1,
-            "time": time.time() - start_time,
-            "space": max_space[0]
-        }
-    else:
-        print("DFS Recursive: No solution found")
-        return None
-
+    while priority_queue:
+        cur_Cost, cur_State, cur_Path = heapq.heappop(priority_queue)
+        if cur_Cost > dist.get(cur_State, float('inf')):
+            continue
+        if cur_State == GOAL_STATE:
+            return {
+                "path": cur_Path,
+                "steps": len(cur_Path) - 1,
+                "cost": cur_Cost,
+                "time": time.time() - start_time,
+                "space": max_space
+            } 
+        for next_state in get_neighbors(cur_State):
+            new_cost = cur_Cost + 1
+            if new_cost < dist.get(next_state, float('inf')) and next_state not in visited:
+                visited.add(next_state)
+                dist[next_state] = new_cost
+                heapq.heappush(priority_queue, (new_cost, next_state, cur_Path + [next_state]))
+                max_space = max(max_space, len(priority_queue))
+    return None
 
 def ids(start_state):
+    """Uninformed search: tìm kiếm không có thông tin"""
     start_time = time.time()
     max_space = 0
-
-    def dls(state, path, depth, visited):
+    visited = set()
+    def dfs(state, path, depth, visited):
         nonlocal max_space
-        if state == GOAL_STATE:
-            return path
-        if depth == 0:
-            return None
-        for next_state in get_neighbors(state):
-            if next_state not in visited:
-                visited.add(next_state)
-                max_space = max(max_space, len(visited))
-                result = dls(next_state, path + [next_state], depth - 1, visited)
-                if result:
-                    return result
+        stack = [(state, path, depth)]
+        visited.add(state)
+        while stack:
+            cur_State, cur_Path, cur_Depth = stack.pop()
+            if cur_State == GOAL_STATE:
+                return cur_Path
+            if cur_Depth > 0:
+                for next_State in get_neighbors(cur_State):
+                    if next_State not in visited:
+                        visited.add(next_State)
+                        stack.append((next_State, cur_Path + [next_State], cur_Depth - 1))
+                        max_space = max(max_space, len(stack))
         return None
 
     depth = 0
     while True:
-        visited = {start_state}
-        result = dls(start_state, [start_state], depth, visited)
+        visited = set()
+        visited.add(start_state)
+        result = dfs(start_state, [start_state], depth, visited)
         if result:
             return {
                 "path": result,
                 "steps": len(result) - 1,
-                "cost": len(result) - 1,
+                "cost": len(result) - 1,  
                 "time": time.time() - start_time,
                 "space": max_space
             }
@@ -294,111 +291,153 @@ def ids(start_state):
         if depth > 50:
             return None
 
-
-def ucs(start_state):
-    """
-        giả sử ta tìm đường đi ngắn nhất giữa 2 node bất kì trong đồ thị có trọng số
-        
-    """
-    import time, heapq
+def a_star_manhattan(start_state):
+    """Informed Search: tìm kiếm có thông tin"""
     start_time = time.time()
+    priority_queue = []
+    # f(n) = g(n) + h(n), bắt đầu từ start_state
+    heapq.heappush(priority_queue, (manhattan_distance(start_state), start_state, [start_state]))  # (f(n), curState, curPath) 
+    # dp là dictionary lưu chi phí tối thiểu g(n) cho trạng thái đó
+    dp = {}  
+    dp[start_state] = 0  # Chi phí thực tế từ start_state đến nút hiện tại
+    max_space = len(priority_queue)
+
+    while priority_queue:
+        cur_f, cur_State, cur_Path = heapq.heappop(priority_queue)
     
-    queue = []  
-    heapq.heappush(queue, (0, start_state, [start_state]))  # (cost, state, path)
-    visited = set()
-    dist = {start_state: 0}
-    max_space = 1
-
-    while queue:
-        current_cost, current_state, current_path = heapq.heappop(queue)
-        if current_state in visited:
-            continue
-        visited.add(current_state)
-        if current_cost > dist.get(current_state, float('inf')):
-            continue
-        if current_state == GOAL_STATE:
+        if cur_State == GOAL_STATE:
             return {
-                "path": current_path,
-                "steps": len(current_path) - 1,
-                "cost": current_cost,
-                "time": time.time() - start_time,
-                "space": max_space
-            } 
-        
-        for next_state in get_neighbors(current_state):
-            new_cost = current_cost + 1
-            if new_cost <= dist.get(next_state, float('inf')):  
-                dist[next_state] = new_cost
-                heapq.heappush(queue, (new_cost, next_state, current_path + [next_state]))
-        
-        max_space = max(max_space, len(queue) + len(visited))
-
-
-    return None
-
-
-def a_star(start_state):
-    start_time = time.time()
-    queue = [(0 + linear_conflict(start_state), 0, start_state, [start_state])]
-    visited = {start_state}
-    max_space = 1
-
-    while queue:
-        _, cost, state, path = heapq.heappop(queue)
-        if state == GOAL_STATE:
-            return {
-                "path": path,
-                "steps": len(path) - 1,
-                "cost": cost,
+                "path": cur_Path,
+                "steps": len(cur_Path) - 1,
+                "cost": len(cur_Path) - 1, 
                 "time": time.time() - start_time,
                 "space": max_space
             }
-        for next_state in get_neighbors(state):
-            if next_state not in visited:
-                visited.add(next_state)
-                new_cost = cost + 1
-                heapq.heappush(queue, (new_cost + linear_conflict(next_state), new_cost, next_state, path + [next_state]))
-                max_space = max(max_space, len(queue) + len(visited))
+
+        for next_State in get_neighbors(cur_State):
+            if next_State not in dp or dp[cur_State] + 1 < dp[next_State]:
+                dp[next_State] = dp[cur_State] + 1
+                new_f = dp[cur_State] + 1 + manhattan_distance(next_State)  # f(n) = g(n) + h(n)
+                heapq.heappush(priority_queue, (new_f, next_State, cur_Path + [next_State]))
+                max_space = max(max_space, len(priority_queue))
+
     return None
 
 def ida_star(start_state):
     start_time = time.time()
     max_space = 0
 
-    def search(state, g, bound, path, visited):
+    def dfs(start_state, bound):
         nonlocal max_space
-        f = g + linear_conflict(state)
-        if f > bound:
-            return f, None
-        if state == GOAL_STATE:
-            return f, path
+        stack = [(start_state, 0, [start_state])]  # (state, g, path)
+        visited = set()
         min_bound = float('inf')
-        for next_state in get_neighbors(state):
-            if next_state not in visited:
-                visited.add(next_state)
-                max_space = max(max_space, len(visited))
-                new_f, result = search(next_state, g + 1, bound, path + [next_state], visited)
-                visited.remove(next_state)
-                if result:
-                    return new_f, result
-                min_bound = min(min_bound, new_f)
-        return min_bound, None
 
-    bound = linear_conflict(start_state)
-    visited = {start_state}
+        while stack:
+            cur_State, cur_g, cur_Path = stack.pop()
+            cur_f = cur_g + manhattan_distance(cur_State)
+            
+            # lớn hơn ngưỡng hiện tại thì dừng mở rộng node này, cập nhật lại ngưỡng
+            if cur_f > bound: 
+                min_bound = min(min_bound, cur_f)
+                continue
+            
+            if cur_State == GOAL_STATE:
+                return {
+                    "path": cur_Path,
+                    "steps": len(cur_Path) - 1,
+                    "cost": len(cur_Path) - 1,
+                    "time": time.time() - start_time,
+                    "space": max_space
+                }, min_bound
+
+            if cur_State not in visited:
+                visited.add(cur_State)
+                max_space = max(max_space, len(stack))
+                for next_State in get_neighbors(cur_State):
+                    if next_State not in visited:
+                        stack.append((next_State, cur_g + 1, cur_Path + [next_State]))
+
+        return None, min_bound
+
+    bound = manhattan_distance(start_state)
+
     while True:
-        new_bound, result = search(start_state, 0, bound, [start_state], visited)
+        result, new_bound = dfs(start_state, bound)
+        bound = new_bound
         if result:
+            return result
+        if new_bound == float('inf'):
+            return None
+
+
+def greedy_FS(start_state):
+    """Informed Search: tìm kiếm có thông tin"""
+    visited = set()
+    start_time = time.time()
+    max_space = 0
+    curPath = [start_state]
+    return cal_greedy_FS(start_state, visited, start_time, max_space, curPath)
+
+def cal_greedy_FS(curState, visited, start_time, max_space, curPath):
+    stack = [(curState, curPath)]
+    visited.add(curState)
+    while stack:
+        curState, curPath = stack.pop()
+        if curState == GOAL_STATE:
             return {
-                "path": result,
-                "steps": len(result) - 1,
-                "cost": len(result) - 1,
+                "path": curPath,
+                "steps": len(curPath) - 1,
+                "cost": len(curPath) - 1,
                 "time": time.time() - start_time,
                 "space": max_space
             }
-        if new_bound == float('inf'):
+        
+        lst_Next_Heuristic = []
+        for next_State in get_neighbors(curState):
+            if next_State not in visited:
+                visited.add(next_State)
+                lst_Next_Heuristic.append((manhattan_distance(next_State), next_State))
+
+        if len(lst_Next_Heuristic) == 0:
             return None
-        bound = new_bound
+
+        lst_Next_Heuristic.sort(key=lambda x: x[0])
+
+        for _, next_State in reversed(lst_Next_Heuristic): 
+            stack.append((next_State, curPath + [next_State]))
+            max_space = max(max_space, len(stack))
+
+    return None
+
+def a_start_linear_conflict(start_state):
+    start_time = time.time()
+    queue = []  
+    heapq.heappush(queue, (linear_conflict(start_state), 0, start_state, [start_state]))  # (heuristic_cost, current_cost, current_state, current_path)
+    visited = {start_state}
+    max_space = 1
+    while queue:
+        curent_h, curent_g, current_state, current_path = heapq.heappop(queue)
+        
+        if current_state == GOAL_STATE:
+            return {
+                "path": current_path,
+                "steps": len(current_path) - 1,
+                "cost": curent_h + curent_g,
+                "time": time.time() - start_time,
+                "space": max_space
+            }
+        
+        for next_state in get_neighbors(current_state):
+            if next_state not in visited:
+                visited.add(next_state)
+                next_h = linear_conflict(next_state)  # heuristic for next state
+                next_g = curent_g + 1  # actual cost to reach next state
+                next_f = next_h + next_g  # total cost = g(n) + h(n)
+                heapq.heappush(queue, (next_f, next_g, next_state, current_path + [next_state]))
+                max_space = max(max_space, len(queue) + len(visited))
+    
+    return None
 
 def hill_climbing(start_state):
     start_time = time.time()
