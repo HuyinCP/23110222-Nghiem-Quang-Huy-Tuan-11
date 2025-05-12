@@ -126,19 +126,24 @@ class PuzzleApp:
 
             #Inform cost search
             ("A* manhattan", self.run_a_star_manhattan), 
-            ("A* linear conflict", self.run_a_start_linear_conflict),
             ("IDA*", self.run_idastar), 
             ("Greedy FS", self.run_greedy_FS), 
 
-            ("Hill Climb", self.run_hillclimbing),
-            ("Reset", self.reset), 
-            ("SimuAnnealing", self.run_simulated_annealing),
-            ("AND-OR", self.run_andor_search), 
+            
+            #local search
+            ("Steepest Hill Climb", self.run_steepest_hill_climbing),
+            ("Simulated Annealing", self.run_simulated_annealing),
             ("BeamSearch", self.run_beam_search), 
-            ("Compare", self.compare_algorithms),
+            ("AND-OR", self.run_andor_search), 
             ("Belief", self.run_partialy_observable_search),
+
+            #reforment learning
+            ("Q-Learning", self.run_q_learning),  
+
+            #some features
+            ("Compare", self.compare_algorithms),
             ("Roll", self.roll_random_state),
-            ("Predict", self.predict_fastest_algorithm)
+            ("Reset", self.reset)
             
         ]
 
@@ -192,24 +197,6 @@ class PuzzleApp:
 
         self.update()
 
-    def calculate_features(self, state):
-        manhattan_distance = 0
-        for i, num in enumerate(state):
-            if num == 0:
-                continue
-            target_x, target_y = (num - 1) // 3, (num - 1) % 3
-            current_x, current_y = i // 3, i % 3
-            manhattan_distance += abs(target_x - current_x) + abs(target_y - current_y)
-        
-        misplaced_tiles = sum(1 for i, num in enumerate(state) if num != 0 and num != GOAL_STATE[i])
-        
-        inversions = 0
-        for i in range(len(state)):
-            for j in range(i + 1, len(state)):
-                if state[i] != 0 and state[j] != 0 and state[i] > state[j]:
-                    inversions += 1
-        print([manhattan_distance, misplaced_tiles, inversions])
-        return [manhattan_distance, misplaced_tiles, inversions]
 
     def load_or_initialize_models(self):
         try:
@@ -222,85 +209,7 @@ class PuzzleApp:
                             "SimuAnnealing", "BeamSearch", "AND-OR"]
             }
         return models
-
-    def train_models(self):
-        algorithms = [
-            (bfs, "BFS"), (ids, "IDS"), (ucs, "UCS"),
-            (a_star_manhattan, "A*"), (ida_star_manhattan, "IDA*"), (hill_climbing, "Hill Climb"),
-            (simulated_annealing, "SimuAnnealing"), (beam_search, "BeamSearch"),
-            (and_or_search, "AND-OR")
-        ]
-        n_samples = 10  # Số lượng mẫu
-        X = []
-        y = {algo: [] for _, algo in algorithms}
-        MAX_TIME = 1000.0  # Giá trị thời gian lớn thay cho float('inf')
-
-        self.status_label.config(text="Training models...")
-        self.root.update()
-
-        for sample_idx in range(n_samples):
-            state = self.generate_random_state()
-            features = self.calculate_features(state)
-            X.append(features)
-            print(f"Sample {sample_idx + 1}/{n_samples} - Features: {features}")  # Debug features
-
-            for algo_func, algo_name in algorithms:
-                result = algo_func(tuple(state))
-                time_taken = result["time"] if result and result["time"] < float('inf') else MAX_TIME
-                y[algo_name].append(time_taken)
-                print(f"Algorithm: {algo_name}, Time: {time_taken}")  # Debug labels
-
-        models = {}
-        for algo_name in y:
-            print(f"Training model for {algo_name} with labels: {y[algo_name]}")  # Debug labels for each algorithm
-            model = RandomForestRegressor(n_estimators=100, random_state=42)
-            model.fit(X, y[algo_name])
-            models[algo_name] = model
-
-        with open("models.pkl", "wb") as f:
-            pickle.dump(models, f)
-
-        self.status_label.config(text="Model training complete")
-        return models
-
-    def predict_fastest_algorithm(self):
-        try:
-            nums = []
-            for i in range(3):
-                for j in range(3):
-                    value = self.input_grid[i][j].get()
-                    if not value.isdigit() or int(value) < 0 or int(value) > 8:
-                        messagebox.showerror("Error", "Each cell must contain a number between 0 and 8!")
-                        return
-                    nums.append(int(value))
-
-            if len(set(nums)) != 9:
-                messagebox.showerror("Error", "Numbers must be unique (0-8)!")
-                return
-
-            if len(nums) != 9 or not is_solvable(tuple(nums)):
-                messagebox.showerror("Error", "Invalid or unsolvable puzzle!")
-                return
-
-            features = self.calculate_features(nums)
-            predictions = {}
-            for algo, model in self.models.items():
-                try:
-                    predicted_time = model.predict([features])[0]
-                    predictions[algo] = predicted_time
-                except:
-                    predictions[algo] = float('inf')
-
-            fastest_algo = min(predictions, key=predictions.get)
-            fastest_time = predictions[fastest_algo]
-
-            self.status_label.config(text=f"Predicted fastest: {fastest_algo} ({fastest_time:.4f}s)")
-            messagebox.showinfo("Prediction", f"Fastest algorithm: {fastest_algo} ({fastest_time:.4f}s)")
-
-        except Exception as e:
-            messagebox.showerror("Error", f"Prediction error: {str(e)}")
-            self.status_label.config(text="Algorithm Details Table")
-
+    
     def generate_random_state(self):
         while True:
             state = list(range(9))
@@ -476,8 +385,8 @@ class PuzzleApp:
                 result["space"]
             ))
 
-    def run_hillclimbing(self):
-        result = self.run_algorithm(hill_climbing, "Hill Climb")
+    def run_steepest_hill_climbing(self):
+        result = self.run_algorithm(steepest_hill_climbing, "Steepest Hill Climb")
         if result:
             self.tree.delete(*self.tree.get_children())
             self.tree.insert("", "end", values=(
@@ -548,6 +457,18 @@ class PuzzleApp:
                 result["space"]
             ))
 
+    def run_q_learning(self):
+        result = self.run_algorithm(lambda state: q_learning(state, episodes=500), "Q-Learning")
+        if result:
+            self.tree.delete(*self.tree.get_children())
+            self.tree.insert("", "end", values=(
+                result["algorithm"],
+                result["steps"],
+                result["cost"],
+                f"{result['time']:.4f}",
+                result["space"]
+            ))
+            
     def generate_conclusion(self):
         if not self.comparison_results:
             return "Conclusion: No results to evaluate. Run Compare to see the evaluation."
@@ -622,11 +543,11 @@ class PuzzleApp:
                 (dfs, "DFS"),
                 (ids, "IDS"),
                 (ucs, "UCS"),
-                (a_star_mahatan, "A*"),
-                (ida_star, "IDA*"),
-                (hill_climbing, "Hill Climb"),
+                (a_star_manhattan, "A*"),
+                (ida_star_manhattan, "IDA*"),
+                (steepest_hill_climbing, "Steepest Hill Climb"),
                 (simulated_annealing, "SimuAnnealing"),
-                (a_start_linear_conflict, "A* linear conflict"),  # Add the missing comma here
+                (a_start_linear_conflict, "A* linear conflict"),
                 (beam_search, "BeamSearch"),
                 (and_or_search, "AND-OR")
             ]
@@ -679,9 +600,4 @@ class PuzzleApp:
         self.status_label.config(text="Enter 9 numbers (0-8)")
     
     def on_close(self):
-        """Handle cleanup before closing the application."""
-        try:
-            self.root.after_cancel(self.update)  # Cancel any scheduled updates
-        except Exception:
-            pass
-        self.root.destroy()
+        pass

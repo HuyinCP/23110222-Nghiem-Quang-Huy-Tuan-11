@@ -3,6 +3,10 @@ from collections import deque
 import heapq
 import random
 import math
+from collections import defaultdict
+import matplotlib.pyplot as plt
+import numpy as np
+import pickle
 
 GOAL_STATE = (1, 2, 3, 4, 5, 6, 7, 8, 0)
 
@@ -437,65 +441,74 @@ def a_start_linear_conflict(start_state):
     
     return None
 
-def hill_climbing(start_state):
-    start_time = time.time()
-    current_state = start_state
-    path = [current_state]
-    visited = {current_state}
-    max_space = 1
+def steepest_hill_climbing(start_state):
+    start_time = time.time()  
+    cur_State = start_state 
+    cur_Path = [cur_State]
+    f = manhattan_distance(cur_State)  
+    visited = set()
+    max_space = 0  
 
-    while current_state != GOAL_STATE:
-        neighbors = get_neighbors(current_state)
-        next_state = min(neighbors, key=manhattan_distance, default=None)
-        if not next_state or linear_conflict(next_state) >= linear_conflict(current_state):
-            return None
-        current_state = next_state
-        path.append(current_state)
-        visited.add(current_state)
+    while True:
+        best_neighbor = None
+        best_f_value = manhattan_distance(cur_State)
+        visited.add(cur_State)
         max_space = max(max_space, len(visited))
-    return {
-        "path": path,
-        "steps": len(path) - 1,
-        "cost": len(path) - 1,
-        "time": time.time() - start_time,
-        "space": max_space
-    }
+        for next_State in get_neighbors(cur_State):
+            next_f = manhattan_distance(next_State)
+            if next_f < best_f_value:
+                best_f_value = next_f
+                best_neighbor = next_State
+
+        if best_f_value >= manhattan_distance(cur_State):
+            return {
+                "path": cur_Path,
+                "steps": len(visited) - 1,
+                "cost": f,  
+                "time": time.time() - start_time,
+                "space": max_space
+            }
+        cur_Path = cur_Path + [best_neighbor]
+        cur_State = best_neighbor
+        f = best_f_value
 
 def simulated_annealing(start_state):
     start_time = time.time()
     current_state = start_state
     path = [current_state]
-    visited = {current_state}
+    visited = set()
+    visited.add(current_state)
     max_space = 1
     temperature = 1000
+    iterations = 100000
     cooling_rate = 0.995
-    iterations = 1000
 
     while current_state != GOAL_STATE and iterations > 0:
-        temperature *= cooling_rate
         neighbors = get_neighbors(current_state)
         next_state = random.choice(neighbors)
-        delta = linear_conflict(next_state) - linear_conflict(current_state)
-        if delta <= 0 or random.random() < math.exp(-delta / temperature):
+        delta = abs(manhattan_distance(next_state) - manhattan_distance(current_state))
+        if random.random() < math.exp(-delta / temperature) and next_state not in visited:
             current_state = next_state
-            path.append(current_state)
+            path = path + [current_state]
             visited.add(current_state)
             max_space = max(max_space, len(visited))
         iterations -= 1
-    if current_state == GOAL_STATE:
-        return {
+        temperature *= cooling_rate
+
+
+    return {
             "path": path,
             "steps": len(path) - 1,
             "cost": len(path) - 1,
             "time": time.time() - start_time,
             "space": max_space
         }
-    return None
 
-def beam_search(start_state, beam_width=3):
+def beam_search(start_state, beam_width=2):
     start_time = time.time()
-    beam = [(linear_conflict(start_state), start_state, [start_state])]
-    visited = {start_state}
+    beam = [(manhattan_distance(start_state), start_state, [start_state])]
+    visited = set()
+    visited.add(start_state)
     max_space = 1
 
     while beam:
@@ -512,12 +525,136 @@ def beam_search(start_state, beam_width=3):
             for next_state in get_neighbors(state):
                 if next_state not in visited:
                     visited.add(next_state)
-                    new_beam.append((linear_conflict(next_state), next_state, path + [next_state]))
+                    new_beam.append((manhattan_distance(next_state), next_state, path + [next_state]))
+        
         beam = sorted(new_beam)[:beam_width]
-        max_space = max(max_space, len(beam) + len(visited))
+        max_space = max(max_space, len(beam))
         if not beam:
             break
     return None
+
+def q_learning(start_state, episodes=10000, alpha=0.1, gamma=0.9, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.995, q_table_file="q_table.pkl"):
+    """Q-learning algorithm for 8-puzzle with Q-table persistence."""
+    start_time = time.time()
+    actions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # Up, Down, Left, Right
+
+    # Load existing Q-table if available
+    try:
+        with open(q_table_file, "rb") as f:
+            q_table = pickle.load(f)
+            q_table = defaultdict(lambda: np.zeros(4), q_table)  # Convert back to defaultdict
+    except FileNotFoundError:
+        q_table = defaultdict(lambda: np.zeros(4))  # Initialize new Q-table
+
+    max_space = len(q_table)
+
+    def state_to_tuple(state):
+        return tuple(state)
+
+    def get_action(state, epsilon):
+        if random.random() < epsilon: # chọn hành động khai phá
+            valid_actions = []
+            zero_idx = state.index(0)
+            row, col = zero_idx // 3, zero_idx % 3
+            for i, (dr, dc) in enumerate(actions):
+                new_row, new_col = row + dr, col + dc
+                if 0 <= new_row < 3 and 0 <= new_col < 3:
+                    valid_actions.append(i)
+            return random.choice(valid_actions) if valid_actions else random.randint(0, 3)
+        else: # chọn hành động khai thác
+            valid_actions = []
+            zero_idx = state.index(0)
+            row, col = zero_idx // 3, zero_idx % 3
+            #q_values = [Q(state,a0), Q(state,a1), Q(state,a2), Q(state,a3)]).
+            q_values = q_table[state_to_tuple(state)]
+            for i, (dr, dc) in enumerate(actions):
+                new_row, new_col = row + dr, col + dc
+                if 0 <= new_row < 3 and 0 <= new_col < 3:
+                    valid_actions.append((q_values[i], i))
+            if not valid_actions: # Nếu không có hành động hợp lệ, chọn đại một hành động.
+                return random.randint(0, 3)
+            return max(valid_actions)[1] # Ngược chọn hành động có Q-value cao nhất (max(valid_actions) trả về tuple có Q lớn nhất, [1] là chỉ số hành động).
+
+    def apply_action(state, action_idx):
+        zero_idx = state.index(0)
+        row, col = zero_idx // 3, zero_idx % 3
+        dr, dc = actions[action_idx]
+        new_row, new_col = row + dr, col + dc
+        if 0 <= new_row < 3 and 0 <= new_col < 3:
+            new_idx = new_row * 3 + new_col
+            new_state = list(state)
+            new_state[zero_idx], new_state[new_idx] = new_state[new_idx], new_state[zero_idx]
+            return tuple(new_state), -1  # Reward -1 for each move
+        return state, -10  # Penalty for invalid move
+
+    # Training phase
+    epsilon = epsilon_start
+    for episode in range(episodes):
+        state = start_state if episode % 100 == 0 else tuple(random.sample(range(9), 9))  # Random state
+        if not is_solvable(state):
+            continue
+        steps = 0
+        while steps < 1000000000:  # Max steps per episode
+            action = get_action(state, epsilon)
+            next_state, reward = apply_action(state, action)
+            if next_state == GOAL_STATE:
+                reward = 100  # Reward for reaching goal
+            next_q_values = q_table[state_to_tuple(next_state)]
+            q_table[state_to_tuple(state)][action] += alpha * (
+                reward + gamma * np.max(next_q_values) - q_table[state_to_tuple(state)][action]
+            )
+            state = next_state
+            steps += 1
+            max_space = max(max_space, len(q_table))
+            if state == GOAL_STATE:
+                break
+
+        epsilon = max(epsilon_end, epsilon * epsilon_decay)
+
+    # Save Q-table to file
+    with open(q_table_file, "wb") as f:
+        pickle.dump(dict(q_table), f)
+
+    # Inference phase: find path from start_state
+    if not is_solvable(start_state):
+        return None
+    state = start_state
+    path = [state]
+    visited = {state}
+    steps = 0
+    while state != GOAL_STATE and steps < 1000000000:
+        action = get_action(state, 0)  # Greedy action (epsilon=0)
+        next_state, _ = apply_action(state, action)
+        if next_state in visited or next_state == state:
+            return None  # Stuck or invalid move
+        state = next_state
+        path.append(state)
+        visited.add(state)
+        steps += 1
+        max_space = max(max_space, len(q_table))
+
+    if state != GOAL_STATE:
+        return None
+    
+    
+    for i, state in enumerate(path):
+        q_vals = q_table[state]
+        plt.figure()
+        plt.plot(['Up', 'Down', 'Left', 'Right'], q_vals, marker='o', linestyle='-', color='b')  # Vẽ đường
+        plt.title(f"Step {i}: State = {state}")
+        plt.ylabel("Q-value")
+        plt.ylim(-10, 100)  # Điều chỉnh tùy theo reward trong thuật toán
+        plt.xlabel("Actions")  # Nhãn cho trục x
+        plt.grid(True)
+        plt.show()
+
+    return {
+        "path": path,
+        "steps": len(path) - 1,
+        "cost": len(path) - 1,
+        "time": time.time() - start_time,
+        "space": max_space
+    }
 
 def belief(start_state, belief_state=(1, 2, 3)):
     """
