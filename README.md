@@ -60,7 +60,10 @@ Tìm kiếm theo phương pháp cục bộ như:
 Áp dụng các kỹ thuật tìm kiếm trong không gian trạng thái phức tạp hoặc rất lớn, phục vụ các bài toán khó xử lý.
 
 ### 5. Constrained Search  
-Giải bài toán với các ràng buộc cụ thể, sử dụng các kỹ thuật CSP (Constraint Satisfaction Problem).
+Giải bài toán với các ràng buộc cụ thể, sử dụng các kỹ thuật CSP (Constraint Satisfaction Problem), điển hình như:
+
+- **Backtracking**: phương pháp duyệt không gian trạng thái bằng cách thử từng giá trị và quay lui khi gặp xung đột, giúp tìm lời giải thỏa mãn các ràng buộc.
+- Các kỹ thuật bổ trợ như **Forward Checking**, **Constraint Propagation** để tăng hiệu quả tìm kiếm.
 
 ### 6. Reinforcement Learning  
 Ứng dụng học tăng cường để tìm chính sách giải quyết bài toán thông qua tương tác với môi trường, ví dụ:  
