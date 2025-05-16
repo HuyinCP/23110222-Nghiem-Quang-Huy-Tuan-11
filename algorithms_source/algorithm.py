@@ -76,109 +76,6 @@ def linear_conflict(state):
 
     return conflict
 
-def and_or_search(start_state, max_depth=30, time_limit=5.0):
-    """Optimized AND-OR Search with heuristic-guided pruning and iterative deepening."""
-    start_time = time.time()
-    visited = set()
-    max_space = 0
-    best_solution = None
-    best_f_score = float('inf')
-
-    def or_search(state, path, g_cost, depth, bound):
-        """
-        Perform an OR search to find a solution path in a state space using heuristic guidance.
-        This function explores a state space using a combination of depth-first search and 
-        heuristic-based pruning. It calculates the f-cost (g-cost + h-cost) for each state 
-        and prunes paths that exceed the given bound or depth limit. The function prioritizes 
-        promising moves by sorting neighbors based on their heuristic values.
-        Args:
-            state: The current state in the search space.
-            path: A list representing the path taken to reach the current state.
-            g_cost: The cost incurred to reach the current state.
-            depth: The current depth in the search tree.
-            bound: The maximum allowable f-cost for pruning.
-        Returns:
-            A tuple containing:
-                - A dictionary with the solution path and its cost, or None if no solution is found.
-                - The minimum f-cost encountered during the search.
-        """
-        """OR node: Choose a move with heuristic guidance."""
-        nonlocal max_space, best_solution, best_f_score, start_time
-
-        # Check time limit
-        if time.time() - start_time > time_limit:
-            return None, float('inf')
-
-        # Calculate f = g + h (cost + heuristic)
-        h_cost = linear_conflict(state)
-        f_cost = g_cost + h_cost
-
-        # Prune if f_cost exceeds bound or depth limit
-        if f_cost > bound or depth > max_depth:
-            return None, f_cost
-
-        if state == GOAL_STATE:
-            return {"path": path, "cost": g_cost}, f_cost
-
-        if state in visited:
-            return None, float('inf')
-
-        visited.add(state)
-        max_space = max(max_space, len(visited))
-
-        # Sort neighbors by f = g + h to prioritize promising moves
-        neighbors = [(linear_conflict(next_state), next_state) for next_state in get_neighbors(state)]
-        neighbors.sort()  # Sort by heuristic value
-        solutions = []
-        min_f = float('inf')
-
-        # AND node: Explore all promising neighbors
-        for _, next_state in neighbors:
-            if next_state not in visited:
-                result, new_f = or_search(next_state, path + [next_state], g_cost + 1, depth + 1, bound)
-                if result:
-                    solutions.append(result)
-                    if result["cost"] < best_f_score:
-                        best_f_score = result["cost"]
-                        best_solution = result
-                        # Early termination if optimal solution found
-                        if best_f_score <= h_cost:
-                            visited.remove(state)
-                            return best_solution, best_f_score
-                min_f = min(min_f, new_f)
-
-        visited.remove(state)  # Backtrack to save memory
-        if solutions:
-            best_result = min(solutions, key=lambda x: x["cost"])
-            return best_result, best_result["cost"]
-        return None, min_f
-
-    if not is_solvable(start_state):
-        return None
-
-    # Iterative deepening with f-cost bound
-    bound = linear_conflict(start_state)
-    while True:
-        if time.time() - start_time > time_limit:
-            break
-        result, new_bound = or_search(start_state, [start_state], 0, 0, bound)
-        if result:
-            result["steps"] = len(result["path"]) - 1
-            result["time"] = time.time() - start_time
-            result["space"] = max_space
-            return result
-        if new_bound == float('inf'):
-            break
-        bound = new_bound * 1.5  # Increase bound more aggressively
-
-    # Return best solution found within limits
-    if best_solution:
-        best_solution["steps"] = len(best_solution["path"]) - 1
-        best_solution["time"] = time.time() - start_time
-        best_solution["space"] = max_space
-        return best_solution
-    return None
-
 def bfs(start_state):
     """Uninformed search: tìm kiếm không có thông tin"""
     start_time = time.time()
@@ -310,7 +207,6 @@ def a_star_manhattan(start_state):
 
     while priority_queue:
         cur_f, cur_State, cur_Path = heapq.heappop(priority_queue)
-    
         if cur_State == GOAL_STATE:
             return {
                 "path": cur_Path,
@@ -441,7 +337,33 @@ def a_start_linear_conflict(start_state):
     
     return None
 
+def simple_hill_climbing(start_state):
+    """chọn lân cận đầu tiên tốt hơn hiện tại"""
+    start_time = time.time()
+    cur_state = start_state
+    cur_path = [cur_state]
+    visited = set()
+    max_space = 0
+
+    while True:
+        visited.add(cur_state)
+        max_space = max(max_space, len(visited))
+        for neighbor in get_neighbors(cur_state):
+            if manhattan_distance(neighbor) < manhattan_distance(cur_state):
+                cur_state = neighbor
+                cur_path.append(cur_state)
+                break
+        else:
+            return {
+                "path": cur_path,
+                "steps": len(visited) - 1,
+                "cost": manhattan_distance(cur_state),
+                "time": time.time() - start_time,
+                "space": max_space
+            }
+        
 def steepest_hill_climbing(start_state):
+    """Leo đồi dốc nhất, chọn lận cận tốt nhất"""
     start_time = time.time()  
     cur_State = start_state 
     cur_Path = [cur_State]
@@ -472,6 +394,32 @@ def steepest_hill_climbing(start_state):
         cur_State = best_neighbor
         f = best_f_value
 
+def stochastic_hill_climbing(start_state):
+    """sinh ra toàn bộ các lân cận tốt hơn hiện tại và random chọn 1 tron số tốt nhất"""
+    start_time = time.time()
+    cur_state = start_state
+    cur_path = [cur_state]
+    visited = set()
+    max_space = 0
+
+    while True:
+        visited.add(cur_state)
+        max_space = max(max_space, len(visited))
+        neighbors = [x for x in get_neighbors(cur_state) if manhattan_distance(x) < manhattan_distance(cur_state)]
+
+        if not neighbors:
+            return {
+                "path": cur_path,
+                "steps": len(visited) - 1,
+                "cost": manhattan_distance(cur_state),
+                "time": time.time() - start_time,
+                "space": max_space
+            }
+
+        next_state = random.choice(neighbors)
+        cur_state = next_state
+        cur_path.append(cur_state)
+
 def simulated_annealing(start_state):
     start_time = time.time()
     current_state = start_state
@@ -480,9 +428,8 @@ def simulated_annealing(start_state):
     visited.add(current_state)
     max_space = 1
     temperature = 1000
-    iterations = 100000
+    iterations = 1000
     cooling_rate = 0.995
-
     while current_state != GOAL_STATE and iterations > 0:
         neighbors = get_neighbors(current_state)
         next_state = random.choice(neighbors)
@@ -494,8 +441,6 @@ def simulated_annealing(start_state):
             max_space = max(max_space, len(visited))
         iterations -= 1
         temperature *= cooling_rate
-
-
     return {
             "path": path,
             "steps": len(path) - 1,
@@ -536,15 +481,14 @@ def beam_search(start_state, beam_width=2):
 def q_learning(start_state, episodes=10000, alpha=0.1, gamma=0.9, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.995, q_table_file="q_table.pkl"):
     """Q-learning algorithm for 8-puzzle with Q-table persistence."""
     start_time = time.time()
-    actions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # Up, Down, Left, Right
+    actions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
-    # Load existing Q-table if available
     try:
         with open(q_table_file, "rb") as f:
             q_table = pickle.load(f)
-            q_table = defaultdict(lambda: np.zeros(4), q_table)  # Convert back to defaultdict
+            q_table = defaultdict(lambda: np.zeros(4), q_table)
     except FileNotFoundError:
-        q_table = defaultdict(lambda: np.zeros(4))  # Initialize new Q-table
+        q_table = defaultdict(lambda: np.zeros(4))
 
     max_space = len(q_table)
 
@@ -552,7 +496,9 @@ def q_learning(start_state, episodes=10000, alpha=0.1, gamma=0.9, epsilon_start=
         return tuple(state)
 
     def get_action(state, epsilon):
-        if random.random() < epsilon: # chọn hành động khai phá
+        # xác xuất khám phá là epsilon
+        # p < epsilon khám phá 
+        if random.random() < epsilon: 
             valid_actions = []
             zero_idx = state.index(0)
             row, col = zero_idx // 3, zero_idx % 3
@@ -561,7 +507,7 @@ def q_learning(start_state, episodes=10000, alpha=0.1, gamma=0.9, epsilon_start=
                 if 0 <= new_row < 3 and 0 <= new_col < 3:
                     valid_actions.append(i)
             return random.choice(valid_actions) if valid_actions else random.randint(0, 3)
-        else: # chọn hành động khai thác
+        else: # xác xuất > epsilon thực hiện khai thác
             valid_actions = []
             zero_idx = state.index(0)
             row, col = zero_idx // 3, zero_idx % 3
@@ -594,7 +540,7 @@ def q_learning(start_state, episodes=10000, alpha=0.1, gamma=0.9, epsilon_start=
         if not is_solvable(state):
             continue
         steps = 0
-        while steps < 1000000000:  # Max steps per episode
+        while steps < 1000:  # Max steps per episode
             action = get_action(state, epsilon)
             next_state, reward = apply_action(state, action)
             if next_state == GOAL_STATE:
@@ -611,19 +557,17 @@ def q_learning(start_state, episodes=10000, alpha=0.1, gamma=0.9, epsilon_start=
 
         epsilon = max(epsilon_end, epsilon * epsilon_decay)
 
-    # Save Q-table to file
     with open(q_table_file, "wb") as f:
         pickle.dump(dict(q_table), f)
 
-    # Inference phase: find path from start_state
     if not is_solvable(start_state):
         return None
     state = start_state
     path = [state]
     visited = {state}
     steps = 0
-    while state != GOAL_STATE and steps < 1000000000:
-        action = get_action(state, 0)  # Greedy action (epsilon=0)
+    while state != GOAL_STATE and steps < 1000:
+        action = get_action(state, 0)
         next_state, _ = apply_action(state, action)
         if next_state in visited or next_state == state:
             return None  # Stuck or invalid move
@@ -697,4 +641,99 @@ def belief(start_state, belief_state=(1, 2, 3)):
                 max_space = max(max_space, len(stack) + len(visited))
     
     print("Belief: No solution found within constraints!")
+    return None
+
+def and_or_search(start_state, max_depth=30, time_limit=5.0):
+    start_time = time.time()
+
+    if start_state == GOAL_STATE:
+        return {
+            "path": [start_state],
+            "steps": 0,
+            "cost": 0,
+            "time": 0.0,
+            "space": 1
+        }
+
+    visited = set()
+    max_space = 0
+    best_solution = None
+    best_f_score = float('inf')
+    visited_limit = 10000 
+
+    def or_search(state, path, g_cost, depth, bound):
+        """OR node: Choose a move with heuristic guidance."""
+        nonlocal max_space, best_solution, best_f_score, start_time
+
+        # Check time limit
+        if time.time() - start_time > time_limit:
+            return None, float('inf')
+
+        # Calculate f = g + h (cost + heuristic)
+        h_cost = manhattan_distance(state)
+        f_cost = g_cost + h_cost
+
+        # Prune if f_cost exceeds bound or depth limit
+        if f_cost > bound or depth > max_depth:
+            return None, f_cost
+
+        if state == GOAL_STATE:
+            return {"path": path, "cost": g_cost}, f_cost
+
+        if state in visited:
+            return None, float('inf')
+
+        visited.add(state)
+        if len(visited) > visited_limit:  # Clear old states
+            visited.clear()
+            visited.add(state)
+        max_space = max(max_space, len(visited))
+
+        # Sort neighbors by f = g + h to prioritize promising moves
+        neighbors = [(manhattan_distance(next_state), next_state) for next_state in get_neighbors(state)]
+        neighbors.sort()  # Sort by heuristic value
+        solutions = []
+        min_f = float('inf')
+
+        for _, next_state in neighbors:
+            if next_state not in visited:
+                result, new_f = or_search(next_state, path + [next_state], g_cost + 1, depth + 1, bound)
+                if result:
+                    solutions.append(result)
+                    if result["cost"] < best_f_score:
+                        best_f_score = result["cost"]
+                        best_solution = result
+                        if best_f_score <= h_cost:
+                            visited.remove(state)
+                            return best_solution, best_f_score
+                min_f = min(min_f, new_f)
+
+        visited.remove(state)  
+        if solutions:
+            best_result = min(solutions, key=lambda x: x["cost"])
+            return best_result, best_result["cost"]
+        return None, min_f
+
+    if not is_solvable(start_state):
+        return None
+
+    bound = manhattan_distance(start_state)
+    while True:
+        if time.time() - start_time > time_limit:
+            break
+        result, new_bound = or_search(start_state, [start_state], 0, 0, bound)
+        if result:
+            result["steps"] = len(result["path"]) - 1
+            result["time"] = time.time() - start_time
+            result["space"] = max_space
+            return result
+        if new_bound == float('inf'):
+            break
+        bound = new_bound * 1.5  # Increase bound more aggressively
+
+    if best_solution:
+        best_solution["steps"] = len(best_solution["path"]) - 1
+        best_solution["time"] = time.time() - start_time
+        best_solution["space"] = max_space
+        return best_solution
     return None

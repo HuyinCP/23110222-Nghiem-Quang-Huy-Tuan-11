@@ -44,7 +44,7 @@ class PuzzleApp:
         self.canvas.create_rectangle(0, 0, game.WIDTH + 200, game.HEIGHT + 400, fill="#e6ecf0", outline="")
         self.canvas.create_rectangle(0, 0, game.WIDTH + 200, 250, fill="#d3e0ea", outline="")
 
-        self.initial_state = [1, 2, 3, 4, 5, 6, 0, 7, 8]
+        self.initial_state = [1, 2, 3, 0, 5, 6, 4, 7, 8]
         self.result = None
         self.step = 0
         self.last_step_time = time.time()
@@ -128,22 +128,27 @@ class PuzzleApp:
             ("A* manhattan", self.run_a_star_manhattan), 
             ("IDA*", self.run_idastar), 
             ("Greedy FS", self.run_greedy_FS), 
-
             
             #local search
+            ("Simple Hill Climb", self.run_simple_hill_climbing),
             ("Steepest Hill Climb", self.run_steepest_hill_climbing),
+            ("Stochastic Hill Climb", self.run_stochastic_hill_climbing),
             ("Simulated Annealing", self.run_simulated_annealing),
             ("BeamSearch", self.run_beam_search), 
             ("AND-OR", self.run_andor_search), 
             ("Belief", self.run_partialy_observable_search),
 
+            # Tìm kiếm trong môi trường có ràng buộc
+            ("Backtracking", self.showbacktracking),
+            
             #reforment learning
             ("Q-Learning", self.run_q_learning),  
 
             #some features
             ("Compare", self.compare_algorithms),
             ("Roll", self.roll_random_state),
-            ("Reset", self.reset)
+            ("Reset", self.reset),
+
             
         ]
 
@@ -385,8 +390,32 @@ class PuzzleApp:
                 result["space"]
             ))
 
+    def run_simple_hill_climbing(self):
+        result = self.run_algorithm(simple_hill_climbing, "Simple Hill Climb")
+        if result:
+            self.tree.delete(*self.tree.get_children())
+            self.tree.insert("", "end", values=(
+                result["algorithm"],
+                result["steps"],
+                result["cost"],
+                f"{result['time']:.4f}",
+                result["space"]
+            ))
+
     def run_steepest_hill_climbing(self):
         result = self.run_algorithm(steepest_hill_climbing, "Steepest Hill Climb")
+        if result:
+            self.tree.delete(*self.tree.get_children())
+            self.tree.insert("", "end", values=(
+                result["algorithm"],
+                result["steps"],
+                result["cost"],
+                f"{result['time']:.4f}",
+                result["space"]
+            ))
+
+    def run_stochastic_hill_climbing(self):
+        result = self.run_algorithm(stochastic_hill_climbing, "Steepest Hill Climb")
         if result:
             self.tree.delete(*self.tree.get_children())
             self.tree.insert("", "end", values=(
@@ -458,7 +487,7 @@ class PuzzleApp:
             ))
 
     def run_q_learning(self):
-        result = self.run_algorithm(lambda state: q_learning(state, episodes=500), "Q-Learning")
+        result = self.run_algorithm(lambda state: q_learning(state, episodes=1000), "Q-Learning")
         if result:
             self.tree.delete(*self.tree.get_children())
             self.tree.insert("", "end", values=(
@@ -468,7 +497,108 @@ class PuzzleApp:
                 f"{result['time']:.4f}",
                 result["space"]
             ))
-            
+
+    def showbacktracking(self):
+        # Tạo cửa sổ mới
+        backtrack_window = tk.Toplevel(self.root)
+        backtrack_window.title("Backtracking Visualization")
+        backtrack_window.geometry("400x400")
+        backtrack_window.configure(bg="#f0f4f8")
+
+        # Tạo lưới 3x3
+        grid_frame = tk.Frame(backtrack_window, bg="#ffffff")
+        grid_frame.pack(padx=20, pady=20)
+
+        self.backtrack_labels = []  # Lưu các ô để cập nhật sau này
+        for row in range(3):
+            label_row = []
+            for col in range(3):
+                label = tk.Label(
+                    grid_frame,
+                    text="",
+                    width=5,
+                    height=2,
+                    font=("JetBrains Mono", 20, "bold"),
+                    relief="solid",
+                    borderwidth=1,
+                    bg="#ecf0f1",
+                    fg="#2c3e50"
+                )
+                label.grid(row=row, column=col, padx=5, pady=5)
+                label_row.append(label)
+            self.backtrack_labels.append(label_row)
+
+        start_button = tk.Button(
+            backtrack_window,
+            text="Start Backtracking",
+            font=("JetBrains Mono", 12, "bold"),
+            bg="#4a90e2",
+            fg="#ffffff",
+            command=self.run_backtracking
+        )
+        start_button.pack(pady=10)
+
+        # Nút để đóng cửa sổ
+        close_button = tk.Button(
+            backtrack_window,
+            text="Close",
+            font=("JetBrains Mono", 12, "bold"),
+            bg="#e74c3c",
+            fg="#ffffff",
+            command=backtrack_window.destroy
+        )
+        close_button.pack(pady=10)
+
+    def run_backtracking(self):
+        def update_grid(state):
+            for i in range(3):
+                for j in range(3):
+                    value = state[i * 3 + j]
+                    self.backtrack_labels[i][j].config(text=str(value) if value != 0 else "")
+
+        def Try(cur_state, path, visited, idx):
+            print(cur_state, f" {idx}")
+            if idx == 8:
+                if cur_state == tuple(GOAL_STATE):
+                        return True
+                else: 
+                    return False
+            else:
+                if cur_state[idx] != 0:
+                    return Try(cur_state, path, visited, idx + 1)
+
+                for value in range(8, 0, -1):
+                    if value not in visited:
+                        if len(path) > 0:
+                            last_value = path[-1][1]
+                            if abs(value - last_value) >= 2:
+                                continue
+
+                        next_state = list(cur_state)
+                        next_state[idx] = value
+                        visited.add(value)
+
+                        update_grid(next_state)
+                        self.root.update()
+                        time.sleep(0.1)
+
+                        if Try(tuple(next_state), path + [(idx, value)], visited, idx + 1):
+                            return True
+
+                        next_state[idx] = 0
+                        visited.remove(value)
+            return False
+
+        initial_state = tuple([0] * 9)
+        path = []
+        visited = set()
+
+        update_grid(initial_state)
+        if Try(initial_state, path, visited, 0):
+            messagebox.showinfo("KAKA", "Found Solution")
+        else:
+            messagebox.showerror("KAKA", "Not Found")
+
     def generate_conclusion(self):
         if not self.comparison_results:
             return "Conclusion: No results to evaluate. Run Compare to see the evaluation."
@@ -586,7 +716,7 @@ class PuzzleApp:
             self.status_label.config(text="Algorithm Details Table")
 
     def reset(self):
-        self.initial_state = [1, 2, 3, 4, 5, 6, 0, 7, 8]
+        self.initial_state = [1, 2, 3, 0, 5, 6, 4, 7, 8]
         for i in range(3):
             for j in range(3):
                 self.input_grid[i][j].delete(0, tk.END)
@@ -598,6 +728,6 @@ class PuzzleApp:
         self.tree.delete(*self.tree.get_children())
         self.conclusion_label.config(text="Conclusion: Select an algorithm and click Compare to see the evaluation.")
         self.status_label.config(text="Enter 9 numbers (0-8)")
-    
+
     def on_close(self):
         pass
