@@ -346,8 +346,7 @@ Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng c�
   - Không cần lưu trữ toàn bộ không gian.
 ---
 
-## Hướng dẫn sử dụng
-
+## Mục tiêu
 ### Yêu cầu hệ thống
 - **Hệ điều hành**: Windows, macOS, hoặc Linux.
 - **Phần mềm**:
