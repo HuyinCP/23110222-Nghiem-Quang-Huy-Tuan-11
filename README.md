@@ -56,7 +56,6 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 * **Cấu trúc dữ liệu**: Queue.
 * **Ưu điểm**: Luôn tìm được lời giải ngắn nhất nếu chi phí giữa các bước là như nhau.
 * **Nhược điểm**: Do phải lưu trữ toàn bộ các nút ở một mức độ trước khi chuyển sang mức tiếp theo.
->>>>>>> f91d031c195f780e525e593497539cfbc0eb8d81
 * **Độ phức tạp**:
   - Thời gian: `O(b^d)`
   - Bộ nhớ: `O(b^d)`
@@ -80,7 +79,6 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 #### ▸ Uniform Cost Search (UCS)
 ![Alt text](source%20image/UCS.gif)
 * **Chiến lược**: Mở rộng trạng thái mà có **tổng chi phí thấp nhất** từ gốc đến hiện tại.
->>>>>>> f91d031c195f780e525e593497539cfbc0eb8d81
 * **Cấu trúc dữ liệu**: Priority Queue.
 * **Ưu điểm**: Luôn tìm được lời giải tối ưu (chi phí thấp nhất), với điều kiện mọi bước đi đều có chi phí dương.
 * **Nhược điểm**: Hiệu năng và bộ nhớ sử dụng tương đương BFS trong các không gian tìm kiếm lớn.
@@ -95,7 +93,6 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 #### ▸ Iterative Deepening Search (IDS)
 ![Alt text](source%20image/IDS.gif)
 * **Chiến lược**: Kết hợp ưu điểm của DFS và BFS bằng cách thực hiện DFS lặp lại nhiều lần với giới hạn độ sâu tăng dần (depth limit). Mỗi lần lặp, thuật toán tìm kiếm trên cây đến một độ sâu nhất định rồi quay lại từ gốc với giới hạn mới.
->>>>>>> f91d031c195f780e525e593497539cfbc0eb8d81    
 * **Ưu điểm**: Tìm được lời giải **ngắn nhất** như BFS nhưng **tốn ít bộ nhớ** như DFS.
 * **Nhược điểm**: Thời gian bị lãng phí do phải lặp lại việc duyệt các trạng ở các độ sâu nhỏ nhiều lần.
 * **Độ phức tạp**:
