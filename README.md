@@ -52,80 +52,50 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 
 #### ▸ Depth-First Search (DFS)
 - **Chiến lược**: Duyệt **sâu trước**, mở rộng hết một nhánh rồi quay lại.
-- **Cấu trúc dữ liệu**: Ngăn xếp (LIFO).
-- **Ưu điểm**: Tốn ít bộ nhớ.
-- **Nhược điểm**: Không đảm bảo tìm lời giải ngắn nhất, dễ đi vào vòng lặp nếu không kiểm tra trạng thái.
+- **Cấu trúc dữ liệu**: Ngăn xếp (Last In First Out).
+- **Ưu điểm**: Tốn ít bộ nhớ hơn BFS.
+- **Nhược điểm**: Không đảm bảo tìm lời giải ngắn nhất, dễ rơi vào vòng lặp nếu không kiểm tra trạng thái đã duyệt.
 - **Phức tạp**:
-  - Thời gian: `O(b^m)`  
-  - Bộ nhớ: `O(bm)`
-       - b (branching factor): số lượng trạng thái con (đỉnh con), Bài toán 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
-       - m (maximum depth): độ sâu lớn nhất mà thuật toán DFS có thể đi tới trong cây tìm kiếm, có thể lớn hơn độ sâu lời giải nếu lời giải nằm sâu.
+  - Thời gian: \(O(b^m)\)  
+  - Bộ nhớ: \(O(bm)\)
+- **Giải thích các ký hiệu**:
+  - \(b\) là branching factor, tối đa 4 ở bài 8 Puzzle.
+  - \(m\) là độ sâu lớn nhất có thể tìm được (có thể rất sâu).
+- **Áp dụng trong 8 Puzzle**:  
+  DFS sẽ đi sâu vào một chuỗi trạng thái cho tới khi đạt tới trạng thái đích hoặc không còn đường đi tiếp, rồi quay lui để thử nhánh khác.
 
 #### ▸ Uniform Cost Search (UCS)
-- **Chiến lược**: Mở rộng node có **tổng chi phí thấp nhất** từ gốc đến hiện tại.
-- **Cấu trúc dữ liệu**: Priority Queue (Hàng đợi ưu tiên).
+- **Chiến lược**: Mở rộng node có **tổng chi phí thấp nhất** từ gốc đến trạng thái hiện tại.
+- **Cấu trúc dữ liệu**: Hàng đợi ưu tiên (Priority Queue).
 - **Ưu điểm**: Tìm lời giải **tối ưu** nếu chi phí luôn dương.
 - **Nhược điểm**: Tốn bộ nhớ và thời gian như BFS trong không gian lớn.
 - **Phức tạp**:
-  - Thời gian/Bộ nhớ: `O(b^{1 + C*/ε})`  
-  - Với `C*` là chi phí tối ưu và `ε` là bước chi phí nhỏ nhất.
+  - Thời gian và bộ nhớ:
+  
+  $$
+  O\left(b^{1 + \frac{C^*}{\varepsilon}}\right)
+  $$
+  
+  - Trong đó:
+    - \(b\) là branching factor.
+    - \(C^*\) là chi phí tối ưu của lời giải.
+    - \(\varepsilon\) là bước chi phí nhỏ nhất.
+- **Áp dụng trong 8 Puzzle**:  
+  UCS mở rộng trạng thái theo thứ tự tổng chi phí nhỏ nhất, thích hợp khi mỗi bước di chuyển có chi phí khác nhau (ví dụ, chi phí di chuyển khác nhau giữa các hướng).
 
 #### ▸ Iterative Deepening Search (IDS)
 - **Chiến lược**: Kết hợp DFS và BFS bằng cách lặp lại DFS với giới hạn độ sâu tăng dần.
-- **Ưu điểm**: Tìm được lời giải **ngắn nhất** như BFS nhưng **tốn ít bộ nhớ** như DFS.
-- **Nhược điểm**: Tốn thời gian do lặp lại các node.
+- **Ưu điểm**: Tìm lời giải ngắn nhất như BFS, nhưng tốn bộ nhớ ít như DFS.
+- **Nhược điểm**: Tốn thời gian do lặp lại các node nhiều lần.
 - **Phức tạp**:
-  - Thời gian: `O(b^d)`  
-  - Bộ nhớ: `O(bd)`
+  - Thời gian: \(O(b^d)\)  
+  - Bộ nhớ: \(O(bd)\)
+- **Giải thích các ký hiệu**:
+  - \(b\) là branching factor.
+  - \(d\) là độ sâu lời giải.
+- **Áp dụng trong 8 Puzzle**:  
+  IDS sẽ thực hiện DFS với độ sâu 0, rồi 1, rồi 2... cho tới khi tìm được trạng thái đích.
 
 ---
 
-### 2. Informed Search  
-Các thuật toán sử dụng heuristic để ước lượng chi phí từ trạng thái hiện tại đến đích:
-
-- **Greedy Best-First Search**
-- **A\*** (sử dụng cả chi phí đã đi và ước lượng còn lại)
-- **IDA\*** (Iterative Deepening A*)
-
----
-
-### 3. Local Search  
-Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không cần lưu toàn bộ đường đi:
-
-- Hill Climbing (Simple, Steepest, Stochastic)
-- Simulated Annealing
-- Beam Search
-- AND-OR Graph Search
-- Belief Search
-
----
-
-### 4. Complex Spaces Search  
-Các kỹ thuật dành cho không gian tìm kiếm rất lớn hoặc có cấu trúc phức tạp. Có thể áp dụng tree decomposition, domain-specific search, hoặc phân cụm trạng thái.
-
----
-
-### 5. Constrained Search  
-Giải quyết các bài toán ràng buộc như Sudoku, bản đồ màu, v.v.:
-
-- **Backtracking**
-- **Forward Checking**
-- **Constraint Propagation**
-
----
-
-### 6. Reinforcement Learning  
-Tìm chính sách hành động tối ưu thông qua tương tác với môi trường:
-
-- **Q-Learning**
-- **SARSA**
-- **Deep Q-Networks (DQN)** – với không gian trạng thái lớn
-
----
-
-## Liên hệ
-Mọi đóng góp hoặc phản hồi vui lòng gửi về nhóm sinh viên thực hiện thông qua GitHub hoặc email cá nhân.
-
----
-
-*Cảm ơn bạn đã quan tâm đến dự án!*
+Bạn có muốn mình mở rộng phần **Informed Search** hay các nhóm thuật toán khác chi tiết như vậy không?
