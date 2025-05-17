@@ -55,7 +55,11 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 * **Chiến lược**: Mở rộng tất cả các trạng thái ở một mức độ (lớp) trước khi đi sâu xuống mức tiếp theo.
 * **Cấu trúc dữ liệu**: Queue.
 * **Ưu điểm**: Luôn tìm được lời giải ngắn nhất nếu chi phí giữa các bước là như nhau.
+<<<<<<< HEAD
 * **Nhược điểm**: Tốn bộ nhớ khi không gian tìm kiếm rộng (9! = 362,880 trạng thái).
+=======
+* **Nhược điểm**: Do phải lưu trữ toàn bộ các nút ở một mức độ trước khi chuyển sang mức tiếp theo.
+>>>>>>> f91d031c195f780e525e593497539cfbc0eb8d81
 * **Độ phức tạp**:
   - Thời gian: `O(b^d)`
   - Bộ nhớ: `O(b^d)`
@@ -67,8 +71,8 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 ![Alt text](source%20image/DFS.gif)
 * **Chiến lược**: Duyệt **sâu trước**, mở rộng hết một nhánh rồi quay lại.
 * **Cấu trúc dữ liệu**: Stack.
-* **Ưu điểm**: Tốn ít bộ nhớ.
-* **Nhược điểm**: Không đảm bảo tìm lời giải ngắn nhất, dễ đi vào vòng lặp nếu không kiểm tra trạng thái.
+* **Ưu điểm**: Sử dụng bộ nhớ hiệu quả hơn so với BFS, do không cần lưu trữ tất cả các trạng thái ở cùng một mức độ.
+* **Nhược điểm**: Không đảm bảo tìm được lời giải ngắn nhất nếu tồn tại nhiều đường đi đến mục tiêu.
 * **Độ phức tạp**:
   - Thời gian: `O(b^m)`
   - Bộ nhớ: `O(bm)`
@@ -78,10 +82,14 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 
 #### ▸ Uniform Cost Search (UCS)
 ![Alt text](source%20image/UCS.gif)
+<<<<<<< HEAD
 * **Chiến lược**: Mở rộng node có **tổng chi phí thấp nhất** từ gốc đến hiện tại.
+=======
+* **Chiến lược**: Mở rộng trạng thái mà có **tổng chi phí thấp nhất** từ gốc đến hiện tại.
+>>>>>>> f91d031c195f780e525e593497539cfbc0eb8d81
 * **Cấu trúc dữ liệu**: Priority Queue.
-* **Ưu điểm**: Tìm lời giải **tối ưu** nếu chi phí luôn dương.
-* **Nhược điểm**: Tốn bộ nhớ và thời gian như BFS trong không gian lớn.
+* **Ưu điểm**: Luôn tìm được lời giải tối ưu (chi phí thấp nhất), với điều kiện mọi bước đi đều có chi phí dương.
+* **Nhược điểm**: Hiệu năng và bộ nhớ sử dụng tương đương BFS trong các không gian tìm kiếm lớn.
 * **Độ phức tạp**:
   - Thời gian: `O(b^{1 + C*/ε})`
   - Bộ nhớ: `O(b^{1 + C*/ε})`
@@ -92,9 +100,13 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 
 #### ▸ Iterative Deepening Search (IDS)
 ![Alt text](source%20image/IDS.gif)
+<<<<<<< HEAD
 * **Chiến lược**: Kết hợp DFS và BFS bằng cách lặp lại DFS với giới hạn độ sâu tăng dần.
+=======
+* **Chiến lược**: Kết hợp ưu điểm của DFS và BFS bằng cách thực hiện DFS lặp lại nhiều lần với giới hạn độ sâu tăng dần (depth limit). Mỗi lần lặp, thuật toán tìm kiếm trên cây đến một độ sâu nhất định rồi quay lại từ gốc với giới hạn mới.
+>>>>>>> f91d031c195f780e525e593497539cfbc0eb8d81
 * **Ưu điểm**: Tìm được lời giải **ngắn nhất** như BFS nhưng **tốn ít bộ nhớ** như DFS.
-* **Nhược điểm**: Tốn thời gian do lặp lại các node.
+* **Nhược điểm**: Thời gian bị lãng phí do phải lặp lại việc duyệt các trạng ở các độ sâu nhỏ nhiều lần.
 * **Độ phức tạp**:
   - Thời gian: `O(b^d)`
   - Bộ nhớ: `O(bd)`
@@ -271,7 +283,7 @@ Tìm chính sách hành động tối ưu thông qua tương tác với môi tr�
 - **Chiến lược**:  
   Học chính sách hành động bằng cách cập nhật bảng Q (Q-table) dựa trên kinh nghiệm thu thập được từ tương tác với môi trường.  
   Sử dụng chính sách **epsilon-greedy** để cân bằng giữa **khám phá** (exploration) và **khai thác** (exploitation).
-
+![Alt text](source%20image/Qvalue.png)
 - **Công thức cập nhật Q-value**:
 
   ```math
@@ -306,12 +318,11 @@ Tìm chính sách hành động tối ưu thông qua tương tác với môi tr�
 ### 6. Constraint Satisfaction Problem (CSP)
 
 Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng cách gán giá trị cho các biến, sử dụng thuật toán **Backtracking**.
-
+![Alt text](source%20image/Backtracking.gif)
 #### ▸ Chiến lược:
 - Đại diện bài toán như một tập hợp các **biến** (9 ô trong ma trận 3x3 của 8 Puzzle).
 - Mỗi biến có **miền giá trị** (domain) là các số từ 1 đến 8 (vì 1 ô luôn là `0` đại diện ô trống).
 - Gán từng giá trị cho các biến theo thứ tự từ trái sang phải, **không lặp lại** các giá trị đã dùng.
-  
 **Các ràng buộc được áp dụng:**
 1. **Ràng buộc toàn cục (Global Constraint)**:
    - Mỗi số từ 1 đến 8 chỉ được gán **một lần duy nhất**.
