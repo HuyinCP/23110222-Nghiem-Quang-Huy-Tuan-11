@@ -305,7 +305,7 @@ Tìm chính sách hành động tối ưu thông qua tương tác với môi tr�
   
 ---
 
-### 6. Constraint Satisfaction Problem (CSP)
+### 6. Constraint Satisfaction
 
 Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng cách gán giá trị cho các biến, sử dụng thuật toán **Backtracking**.
 ![Alt text](source%20image/Backtracking.gif)
