@@ -38,12 +38,14 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 
 #### ▸ Breadth-First Search (BFS)
 - **Chiến lược**: Duyệt theo **chiều rộng**, mở rộng từng lớp trước khi xuống sâu hơn.
-- **Cấu trúc dữ liệu**: Hàng đợi (FIFO).
+- **Cấu trúc dữ liệu**: Hàng đợi (First In First Out).
 - **Ưu điểm**: Tìm được lời giải **ngắn nhất** nếu chi phí đều.
 - **Nhược điểm**: Tốn bộ nhớ khi không gian tìm kiếm rộng.
 - **Phức tạp**:
   - Thời gian: `O(b^d)`
   - Bộ nhớ: `O(b^d)`
+       - b (branching factor): số lượng trạng thái con (đỉnh con), Bài toán 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
+       - d (depth): độ sâu nút GOAL-STATE trong cây.
 
 #### ▸ Depth-First Search (DFS)
 - **Chiến lược**: Duyệt **sâu trước**, mở rộng hết một nhánh rồi quay lại.
