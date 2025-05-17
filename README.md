@@ -360,9 +360,9 @@ Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng c�
    ```
 3. **Clone project từ GitHub**:
    ```bash
-   git clone https://github.com/tenban/du-an-8-puzzle.git
+   git clone https://github.com/HuyinCP/8-Puzzle-AI-solver-.git
    ```
-4. **Chạy chương trình trong terminal**:
+5. **Chạy chương trình trong terminal**:
    ```bash
    python main.py
    ```
