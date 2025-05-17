@@ -1,4 +1,4 @@
-# 🧩 Xây dựng ứng dụng giải bài toán 8 Puzzle bằng các thuật toán tìm kiếm
+# 🧩 Xây dựng ứng dụng giải bài toán 8 Puzzle
 
 ## Thông tin đề tài
 
