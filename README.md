@@ -92,8 +92,8 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 
   * Thời gian: `O(b^d)`
   * Bộ nhớ: `O(bd)`
-       * b (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
-       * d (depth): độ sâu của nút GOAL_STATE trong cây.
+       * `b` (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy `b` = 4.
+       * `d` (depth): độ sâu của nút GOAL_STATE trong cây.
 
 ---
 
