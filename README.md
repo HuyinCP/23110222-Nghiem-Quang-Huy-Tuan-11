@@ -46,7 +46,7 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 #### ▸ Breadth-First Search (BFS)
 
 * **Chiến lược**: Duyệt theo **chiều rộng**, mở rộng từng lớp trước khi xuống sâu hơn.
-* **Cấu trúc dữ liệu**: Hàng đợi (FIFO).
+* **Cấu trúc dữ liệu**: Queue.
 * **Ưu điểm**: Tìm được lời giải **ngắn nhất** nếu chi phí đều.
 * **Nhược điểm**: Tốn bộ nhớ khi không gian tìm kiếm rộng.
 * **Phức tạp**:
@@ -59,7 +59,7 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 #### ▸ Depth-First Search (DFS)
 
 * **Chiến lược**: Duyệt **sâu trước**, mở rộng hết một nhánh rồi quay lại.
-* **Cấu trúc dữ liệu**: Ngăn xếp (LIFO).
+* **Cấu trúc dữ liệu**: Stack.
 * **Ưu điểm**: Tốn ít bộ nhớ.
 * **Nhược điểm**: Không đảm bảo tìm lời giải ngắn nhất, dễ đi vào vòng lặp nếu không kiểm tra trạng thái.
 * **Phức tạp**:
@@ -72,7 +72,7 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 #### ▸ Uniform Cost Search (UCS)
 
 * **Chiến lược**: Mở rộng node có **tổng chi phí thấp nhất** từ gốc đến hiện tại.
-* **Cấu trúc dữ liệu**: Priority Queue (Hàng đợi ưu tiên).
+* **Cấu trúc dữ liệu**: Priority Queue.
 * **Ưu điểm**: Tìm lời giải **tối ưu** nếu chi phí luôn dương.
 * **Nhược điểm**: Tốn bộ nhớ và thời gian như BFS trong không gian lớn.
 * **Phức tạp**:
