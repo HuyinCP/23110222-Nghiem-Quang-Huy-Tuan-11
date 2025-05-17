@@ -665,6 +665,7 @@ class PuzzleApp:
                 messagebox.showerror("Error", "Invalid or unsolvable puzzle!")
                 return
 
+            
             self.initial_state = nums
             self.comparison_results = []
             algorithms = [
@@ -672,13 +673,17 @@ class PuzzleApp:
                 (dfs, "DFS"),
                 (ids, "IDS"),
                 (ucs, "UCS"),
-                (a_star_manhattan, "A*"),
-                (ida_star_manhattan, "IDA*"),
-                (steepest_hill_climbing, "Steepest Hill Climb"),
-                (simulated_annealing, "SimuAnnealing"),
-                (a_start_linear_conflict, "A* linear conflict"),
-                (beam_search, "BeamSearch"),
-                (and_or_search, "AND-OR")
+                # (a_star_manhattan, "A* manhattan"),
+                # (ida_star_manhattan, "IDA* manhattan"),
+                # (greedy_FS, "Greedy FS"),
+                # (simple_hill_climbing, "Simple Hill Climb"),
+                # (steepest_hill_climbing, "Steepest Hill Climb"),
+                # (stochastic_hill_climbing, "Stochastic Hill Climb"),
+                # (simulated_annealing, "SimuAnnealing"),
+                # (beam_search, "BeamSearch"),
+                # (and_or_search, "AND-OR"),
+                # (belief, "BELIFE"),
+                # (lambda state: q_learning(state, episodes=1000), "Q-Learning"),
             ]
 
             self.status_label.config(text="Comparing algorithms...")
