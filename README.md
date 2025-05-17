@@ -294,8 +294,6 @@ Tìm chính sách hành động tối ưu thông qua tương tác với môi tr�
 
 Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng cách gán giá trị cho các biến, sử dụng thuật toán **Backtracking**.
 
----
-
 #### ▸ Chiến lược:
 - Đại diện bài toán như một tập hợp các **biến** (9 ô trong ma trận 3x3 của 8 Puzzle).
 - Mỗi biến có **miền giá trị** (domain) là các số từ 1 đến 8 (vì 1 ô luôn là `0` đại diện ô trống).
@@ -309,8 +307,6 @@ Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng c�
    - Khi gán giá trị mới, kiểm tra hiệu tuyệt đối với giá trị vừa gán trước đó phải nhỏ hơn 2:  
      `abs(value - last_value) < 2`
    - Điều này giúp giảm số nhánh không cần thiết trong không gian tìm kiếm.
-
----
 
 #### ▸ Ưu điểm:
 - Ràng buộc rõ ràng giúp **giảm mạnh không gian tìm kiếm**.
