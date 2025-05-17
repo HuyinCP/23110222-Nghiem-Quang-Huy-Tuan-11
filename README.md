@@ -122,32 +122,36 @@ Trong bài toán **8 Puzzle**, các thuật toán Informed Search như:
 
 #### ▸ A* Search
 
-* **Chiến lược**: Kết hợp chi phí thực tế đã đi từ gốc `g(n)` và ước lượng heuristic còn lại `h(n)` để đánh giá node theo `f(n) = g(n) + h(n)`.
+* **Chiến lược**: Kết hợp chi phí thực tế đã đi từ gốc đến hiện tại `g(n)` và ước lượng chi phí đến đích heuristic `h(n)` để đánh giá node theo `f(n) = g(n) + h(n)`.
 * **Ưu điểm**:  
-  - Tìm được lời giải tối ưu nếu heuristic là **đúng và không vượt quá thực tế** (admissible).  
+  - Tìm được lời giải tối ưu nếu heuristic là **đúng và không vượt quá thực tế**. 
   - Hiệu quả hơn so với tìm kiếm không thông tin.
 * **Nhược điểm**: Tốn bộ nhớ lớn khi không gian tìm kiếm rộng.
 * **Độ phức tạp**:
   - **Thời gian**: 
     - Trường hợp xấu nhất là `O(b^d)`.
-    - Phụ thuộc vào cách thiết kế heuristic.
+    - Phụ thuộc vào cách thiết kế heuristic, heuristic tốt thì khả năng cao tìm nhanh, heuristic xấu thì khả năng cao tìm lâu.
   - **Bộ nhớ**: 
     - `O(b^d)`, vì A* lưu toàn bộ các node đã duyệt trong bộ nhớ để tránh lặp lại và đảm bảo tìm lời giải tối ưu.
-
-*Chú thích:*
-- \(b\): branching factor (số lượng trạng thái con trung bình)
-- \(d\): độ sâu (độ dài) của lời giải tối ưu
-
+      - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
+      - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
+  
 ---
 
 #### ▸ Iterative Deepening A* (IDA*)
 
-* **Chiến lược**: Kết hợp ý tưởng của IDS và A* bằng cách sử dụng iterative deepening dựa trên ngưỡng \(f\)-cost tăng dần.
+* **Chiến lược**: Kết hợp ý tưởng IDS và A* bằng cách lặp lại tìm kiếm sâu với ngưỡng giới hạn tăng dần, mỗi lần tìm kiếm sâu chỉ mở rộng các nút có `f(n) <= ngưỡng hiện tại` trong đó `f(n) tương tự của A*.
 * **Ưu điểm**:  
   - Giảm bộ nhớ sử dụng so với A*.  
   - Vẫn giữ được tính tối ưu của A*.
 * **Nhược điểm**: Có thể lặp lại mở rộng node nhiều lần, gây tốn thời gian.
-* **Phức tạp**: Tương tự A* nhưng bộ nhớ thấp hơn.
+* **Độ phức tạp**:
+  - **Thời gian**: 
+    - Trường hợp xấu nhất là `O(b^d)`.
+  - **Bộ nhớ**: 
+    - `O(d)`, vì IDA* chỉ lưu trữ đường đi hiện tại trong stack thay thì toàn bộ cây như A*.
+      - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
+      - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
 
 ---
 
