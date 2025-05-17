@@ -43,7 +43,6 @@ Phát triển ứng dụng giải bài toán **8 Puzzle**, sử dụng và so s�
 * **Reinforcement Learning** (Học tăng cường)
 * **Constraint Satisfaction** (Tìm kiếm trong môi trường có ràng buộc)
 
----
 
 ## Tổng quan các thuật toán áp dụng
 
@@ -250,7 +249,6 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
     * `m` (maximum depth): độ sâu lớn nhất mà thuật toán có thể đi tới.
     * `k` (beam width): số trạng thái tốt nhất được giữ lại.
 
----
 
 ### 4. Complex Spaces Search
 
