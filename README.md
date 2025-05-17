@@ -33,7 +33,7 @@ Dự án này phát triển một ứng dụng sử dụng các thuật toán tr
 
 ## Mục tiêu
 
-Phát triển ứng dụng giải bài toán **8 Puzzle** 🧩, sử dụng và so sánh hiệu quả các nhóm thuật toán tìm kiếm phổ biến trong trí tuệ nhân tạo, gồm:
+Phát triển ứng dụng giải bài toán **8 Puzzle**, sử dụng và so sánh hiệu quả các nhóm thuật toán tìm kiếm phổ biến trong trí tuệ nhân tạo, gồm:
 
 * **Uninformed Search** (Tìm kiếm không thông tin)
 * **Informed Search** (Tìm kiếm có thông tin)
