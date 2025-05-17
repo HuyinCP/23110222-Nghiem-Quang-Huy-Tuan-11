@@ -347,12 +347,6 @@ Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng c�
 ---
 
 ## Hướng dẫn sử dụng
-### Yêu cầu hệ thống
-- **Hệ điều hành**: Windows, macOS, hoặc Linux.
-- **Phần mềm**:
-  - Python 3.6+ ([tải tại python.org](https://www.python.org/downloads/)).
-  - Thư viện: `tkinter` (thường có sẵn), `matplotlib`, `numpy`.
-- **Dung lượng**: ~50MB.
 
 ### Cài đặt
 1. **Tải và cài Python**:
@@ -362,5 +356,14 @@ Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng c�
 
 2. **Cài thư viện**:
    ```bash
-   pip install matplotlib numpy
+   pip install matplotlib numpy pygame
+   ```
+3. **Clone project từ GitHub**:
+   ```bash
+   git clone https://github.com/tenban/du-an-8-puzzle.git
+   ```
+4. **Chạy chương trình trong terminal**:
+   ```bash
+   python main.py
+   ```
 
