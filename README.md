@@ -44,7 +44,6 @@ Phát triển ứng dụng giải bài toán **8 Puzzle** sử dụng và so sá
 Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động hoàn toàn dựa vào cấu trúc không gian trạng thái:
 
 #### ▸ Breadth-First Search (BFS)
-
 * **Chiến lược**: Duyệt theo **chiều rộng**, mở rộng từng lớp trước khi xuống sâu hơn.
 * **Cấu trúc dữ liệu**: Queue.
 * **Ưu điểm**: Tìm được lời giải **ngắn nhất** nếu chi phí đều.
@@ -57,7 +56,6 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
      * d (depth): độ sâu của nút GOAL_STATE trong cây.
 
 #### ▸ Depth-First Search (DFS)
-
 * **Chiến lược**: Duyệt **sâu trước**, mở rộng hết một nhánh rồi quay lại.
 * **Cấu trúc dữ liệu**: Stack.
 * **Ưu điểm**: Tốn ít bộ nhớ.
@@ -70,7 +68,6 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
       * `m` (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
 
 #### ▸ Uniform Cost Search (UCS)
-
 * **Chiến lược**: Mở rộng node có **tổng chi phí thấp nhất** từ gốc đến hiện tại.
 * **Cấu trúc dữ liệu**: Priority Queue.
 * **Ưu điểm**: Tìm lời giải **tối ưu** nếu chi phí luôn dương.
@@ -85,7 +82,6 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
       * `ε`: là bước chi phí nhỏ nhất.
 
 #### ▸ Iterative Deepening Search (IDS)
-
 * **Chiến lược**: Kết hợp DFS và BFS bằng cách lặp lại DFS với giới hạn độ sâu tăng dần.
 * **Ưu điểm**: Tìm được lời giải **ngắn nhất** như BFS nhưng **tốn ít bộ nhớ** như DFS.
 * **Nhược điểm**: Tốn thời gian do lặp lại các node.
@@ -108,7 +104,6 @@ Trong bài toán **8 Puzzle**, các thuật toán Informed Search như:
 - Iterative Deepening A* (IDA*)  
 
 #### ▸ Greedy Best-First Search (GBFS)
-
 * **Chiến lược**: Giả sử đang đứng ở trạng thái X thì ta luôn mở rộng trạng thái lận cận X có giá trị heuristic `h(n)` nhỏ nhất.
 * **Cấu trúc dữ liệu**: Priority Queue (min heap).
 * **Ưu điểm**:  
@@ -122,11 +117,8 @@ Trong bài toán **8 Puzzle**, các thuật toán Informed Search như:
   - Trong đó:
     - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
     - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
-    
----
 
 #### ▸ A* Search
-
 * **Chiến lược**: Kết hợp chi phí thực tế đã đi từ gốc đến hiện tại `g(n)` và ước lượng chi phí đến đích heuristic `h(n)` để đánh giá node theo `f(n) = g(n) + h(n)`.
 * **Ưu điểm**:  
   - Tìm được lời giải tối ưu nếu heuristic là **đúng và không vượt quá thực tế**. 
@@ -141,11 +133,8 @@ Trong bài toán **8 Puzzle**, các thuật toán Informed Search như:
   - Trong đó:
     - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
     - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
-  
----
 
 #### ▸ Iterative Deepening A* (IDA*)
-
 * **Chiến lược**: Kết hợp ý tưởng IDS và A* bằng cách lặp lại tìm kiếm sâu với ngưỡng giới hạn tăng dần, mỗi lần tìm kiếm sâu chỉ mở rộng các nút có `f(n) <= ngưỡng hiện tại` trong đó `f(n) tương tự của A*.
 * **Ưu điểm**:  
   - Giảm bộ nhớ sử dụng so với A*.  
@@ -161,6 +150,7 @@ Trong bài toán **8 Puzzle**, các thuật toán Informed Search như:
     - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
 
 ---
+
 
 ### 3. Local Search
 
@@ -180,11 +170,11 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
   - Thời gian: 
     - Trường hợp xấu nhất là `O(bm)`.
   - Bộ nhớ: 
-    - `O(1)`, vì A* lưu toàn bộ các node đã duyệt trong bộ nhớ để tránh lặp lại và đảm bảo tìm lời giải tối ưu.
+    - `O(1)`.
   - Trong đó:
     - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
     - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
----
+
 #### ▸ Steepest Hill Climbing
 * **Chiến lược**: So sánh toàn bộ trạng thái lân cận và chọn trạng thái có giá trị heuristic tốt nhất.
 * **Ưu điểm**: Tăng khả năng tránh lựa chọn sai như Simple Hill Climbing.
@@ -193,11 +183,11 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
   - Thời gian: 
     - Trường hợp xấu nhất là `O(bm)`.
   - Bộ nhớ: 
-    - `O(1)`, vì A* lưu toàn bộ các node đã duyệt trong bộ nhớ để tránh lặp lại và đảm bảo tìm lời giải tối ưu.
+    - `O(1)`.
   - Trong đó:
     - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
     - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
----
+
 #### ▸ Stochastic Hill Climbing
 * **Chiến lược**: Chọn ngẫu nhiên một trong các trạng thái lân cận có cải thiện heuristic, thay vì chọn tốt nhất.
 * **Ưu điểm**: Tăng khả năng thoát local optimum, tránh rơi vào vùng phẳng (plateau).
@@ -206,11 +196,11 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
   - Thời gian: 
     - Trường hợp xấu nhất là `O(bm)`.
   - Bộ nhớ: 
-    - `O(1)`, vì A* lưu toàn bộ các node đã duyệt trong bộ nhớ để tránh lặp lại và đảm bảo tìm lời giải tối ưu.
+    - `O(1)`.
   - Trong đó:
     - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
     - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
----
+
 #### ▸ Simulated Annealing
 * **Chiến lược**: Cho phép chọn trạng thái xấu hơn với xác suất giảm dần theo thời gian, tránh mắc kẹt ở local optimum.
 * **Ưu điểm**: Có thể thoát local optimum và tìm lời giải tốt hơn.
@@ -219,37 +209,52 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
   - Thời gian: 
     - Trường hợp xấu nhất là `O(bm)`.
   - Bộ nhớ: 
-    - `O(1)`, vì A* lưu toàn bộ các node đã duyệt trong bộ nhớ để tránh lặp lại và đảm bảo tìm lời giải tối ưu.
+    - `O(1)`.
   - Trong đó:
     - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
     - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
----
+
+#### ▸ Beam Search
+* **Chiến lược**: Tại mỗi bước, giữ lại `k` trạng thái tốt nhất (k gọi là beam width) thay vì chỉ một.
+* **Ưu điểm**: Dễ mở rộng, tránh kẹt local optimum tốt hơn Hill Climbing.
+* **Nhược điểm**: Không đảm bảo tối ưu, dễ bỏ sót lời giải nếu `k` quá nhỏ.
+* **Độ phức tạp**:
+  - Thời gian: 
+    - Trường hợp xấu nhất `O(kbm)`.
+  - Bộ nhớ: 
+    - `O(k)`.
+  - Trong đó:
+    - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
+    - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
+    - `k`: (beam width): k trạng thái tốt nhất.
+
 #### ▸ AND-OR Graph Search
-* **Chiến lược**: Từ trạng thái hiện tại, chọn trạng thái đầu tiên có giá trị heuristic tốt hơn, nói cách khác chọn next_state đầu tiên sao cho `h(current_state) < h(next_state)` .
-* **Ưu điểm**: Cài đặt đơn giản, tốc độ nhanh
-* **Nhược điểm**: Dễ kẹt ở local optimum, plateau hoặc điểm cao giả (shoulder).
+* **Chiến lược**: Dành cho bài toán có tính phân nhánh điều kiện (non-deterministic); kết hợp cả node "AND" (cần tất cả con) và "OR" (chỉ cần một con).
+* **Ưu điểm**: Tốt cho các hệ thống có nhiều kết quả khả thi phụ thuộc vào hành động.
+* **Nhược điểm**: Cấu trúc phức tạp, khó triển khai với không gian lớn như 8 Puzzle.
 * **Độ phức tạp**:
   - Thời gian: 
     - Trường hợp xấu nhất là `O(bm)`.
   - Bộ nhớ: 
-    - `O(1)`, vì A* lưu toàn bộ các node đã duyệt trong bộ nhớ để tránh lặp lại và đảm bảo tìm lời giải tối ưu.
+    - `O(b^d)`.
   - Trong đó:
     - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
-    - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
----
+    - `d` (depth): độ sâu của nút GOAL_STATE trong cây.
+
 #### ▸ Belief Search
-* **Chiến lược**: Từ trạng thái hiện tại, chọn trạng thái đầu tiên có giá trị heuristic tốt hơn, nói cách khác chọn next_state đầu tiên sao cho `h(current_state) < h(next_state)` .
-* **Ưu điểm**: Cài đặt đơn giản, tốc độ nhanh
-* **Nhược điểm**: Dễ kẹt ở local optimum, plateau hoặc điểm cao giả (shoulder).
+* **Chiến lược**: Tìm kiếm trong không gian xác suất (belief space), nơi trạng thái không xác định chính xác mà là một phân phối xác suất..
+* **Ưu điểm**: Áp dụng được trong môi trường không chắc chắn, ví dụ như robot sensing.
+* **Nhược điểm**: Không phù hợp với bài toán xác định như 8 Puzzle, tính toán phức tạp.
 * **Độ phức tạp**:
   - Thời gian: 
-    - Trường hợp xấu nhất là `O(bm)`.
+    - Trường hợp xấu nhất là `O(b^m)`.
   - Bộ nhớ: 
-    - `O(1)`, vì A* lưu toàn bộ các node đã duyệt trong bộ nhớ để tránh lặp lại và đảm bảo tìm lời giải tối ưu.
+    - `O(b^m * N)`, vì A* lưu toàn bộ các node đã duyệt trong bộ nhớ để tránh lặp lại và đảm bảo tìm lời giải tối ưu.
   - Trong đó:
     - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
-    - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
----
+    - `d` (depth): độ sâu của nút GOAL_STATE trong cây.
+    - `N`: số lượng trạng thái trong không gian ban đầu (với 8 Puzzle là 9! = 362,880).
+
 
 ### 4. Complex Spaces Search
 
