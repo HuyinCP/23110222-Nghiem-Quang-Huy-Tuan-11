@@ -99,11 +99,65 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 
 ### 2. Informed Search
 
-Các thuật toán sử dụng heuristic để ước lượng chi phí từ trạng thái hiện tại đến đích:
+Các thuật toán sử dụng heuristic để ước lượng chi phí từ trạng thái hiện tại đến đích, ưu tiên mở rộng các trạng thái có khả năng dẫn đến lời giải nhanh hơn.
+Trong bài toán **8 Puzzle**, các thuật toán Informed Search như:
 
-* **Greedy Best-First Search**
-* **A\*** (sử dụng cả chi phí đã đi và ước lượng còn lại)
-* **IDA\*** (Iterative Deepening A\*)
+- Greedy Best-First Search  
+- A* Search  
+- Iterative Deepening A* (IDA*)  
+
+đều sử dụng chung một hàm heuristic phổ biến là **khoảng cách Manhattan**.
+
+#### Khoảng cách Manhattan là gì?
+
+- Khoảng cách Manhattan giữa một ô trong trạng thái hiện tại và vị trí đúng của nó là tổng số bước đi theo chiều ngang và chiều dọc cần thiết để di chuyển ô đó về đúng vị trí.
+- Cụ thể, với mỗi ô có tọa độ hiện tại \((x_1, y_1)\) và tọa độ đích \((x_2, y_2)\), khoảng cách Manhattan được tính bằng:
+
+\[
+h = |x_1 - x_2| + |y_1 - y_2|
+\]
+
+- Hàm heuristic tổng là tổng khoảng cách Manhattan của tất cả các ô trên bảng (trừ ô trống).
+#### ▸ Greedy Best-First Search (GBFS)
+
+* **Chiến lược**: Luôn mở rộng node có giá trị heuristic `h(n)` nhỏ nhất — tức là node được ước lượng gần đích nhất.
+* **Cấu trúc dữ liệu**: Priority Queue (hàng đợi ưu tiên), sắp xếp theo giá trị heuristic.
+* **Ưu điểm**:  
+  - Tìm kiếm nhanh, tận dụng thông tin heuristic để đi thẳng đến đích.  
+  - Tiết kiệm bộ nhớ hơn so với các thuật toán tìm kiếm không thông tin như BFS hay UCS nếu heuristic tốt.
+* **Nhược điểm**:  
+  - Không đảm bảo tìm ra lời giải tối ưu (ngắn nhất).  
+  - Có thể bị mắc kẹt ở các điểm local minima hoặc đi sai hướng nếu heuristic không chính xác.
+* **Phức tạp**:  
+  - Thời gian và bộ nhớ trong trường hợp xấu nhất: \(O(b^m)\), trong đó:  
+    - \(b\): branching factor (số nhánh trung bình mỗi node).  
+    - \(m\): độ sâu lớn nhất của cây tìm kiếm.
+
+* **Ứng dụng trong bài toán 8 Puzzle**:  
+  - Sử dụng các heuristic phổ biến như **tổng khoảng cách Manhattan** hoặc **số ô sai vị trí**.  
+  - Thuật toán luôn chọn trạng thái kế tiếp có giá trị heuristic nhỏ nhất để mở rộng, giúp tìm đường đi đến trạng thái đích nhanh hơn.
+
+---
+
+#### ▸ A* Search
+
+* **Chiến lược**: Kết hợp chi phí thực tế đã đi từ gốc \(g(n)\) và ước lượng heuristic còn lại \(h(n)\) để đánh giá node theo \(f(n) = g(n) + h(n)\).
+* **Ưu điểm**:  
+  - Tìm được lời giải tối ưu nếu heuristic là **đúng và không vượt quá thực tế** (admissible).  
+  - Hiệu quả hơn so với tìm kiếm không thông tin.
+* **Nhược điểm**: Tốn bộ nhớ lớn khi không gian tìm kiếm rộng.
+* **Phức tạp**: Tương tự GBFS trong trường hợp xấu nhất, nhưng thực tế thường nhanh hơn.
+
+---
+
+#### ▸ Iterative Deepening A* (IDA*)
+
+* **Chiến lược**: Kết hợp ý tưởng của IDS và A* bằng cách sử dụng iterative deepening dựa trên ngưỡng \(f\)-cost tăng dần.
+* **Ưu điểm**:  
+  - Giảm bộ nhớ sử dụng so với A*.  
+  - Vẫn giữ được tính tối ưu của A*.
+* **Nhược điểm**: Có thể lặp lại mở rộng node nhiều lần, gây tốn thời gian.
+* **Phức tạp**: Tương tự A* nhưng bộ nhớ thấp hơn.
 
 ---
 
