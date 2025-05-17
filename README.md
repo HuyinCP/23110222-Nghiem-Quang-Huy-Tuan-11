@@ -228,6 +228,10 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
     - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
     - `k`: (beam width): k trạng thái tốt nhất.
 
+### 4. Complex Spaces Search
+
+Các kỹ thuật dành cho không gian tìm kiếm rất lớn hoặc có cấu trúc phức tạp. Có thể áp dụng tree decomposition, domain-specific search, hoặc phân cụm trạng thái.
+
 #### ▸ AND-OR Graph Search
 * **Chiến lược**: Dành cho bài toán có tính phân nhánh điều kiện (non-deterministic); kết hợp cả node "AND" (cần tất cả con) và "OR" (chỉ cần một con).
 * **Ưu điểm**: Tốt cho các hệ thống có nhiều kết quả khả thi phụ thuộc vào hành động.
@@ -254,11 +258,6 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
     - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
     - `d` (depth): độ sâu của nút GOAL_STATE trong cây.
     - `N`: số lượng trạng thái trong không gian ban đầu (với 8 Puzzle là 9! = 362,880).
-
-
-### 4. Complex Spaces Search
-
-Các kỹ thuật dành cho không gian tìm kiếm rất lớn hoặc có cấu trúc phức tạp. Có thể áp dụng tree decomposition, domain-specific search, hoặc phân cụm trạng thái.
 
 ---
 
