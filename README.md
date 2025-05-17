@@ -49,8 +49,7 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 * **Cấu trúc dữ liệu**: Queue.
 * **Ưu điểm**: Tìm được lời giải **ngắn nhất** nếu chi phí đều.
 * **Nhược điểm**: Tốn bộ nhớ khi không gian tìm kiếm rộng.
-* **Phức tạp**:
-
+* **Độ phức tạp**:
   * Thời gian: `O(b^d)`
   * Bộ nhớ: `O(b^d)`
      * b (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
@@ -62,8 +61,7 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 * **Cấu trúc dữ liệu**: Stack.
 * **Ưu điểm**: Tốn ít bộ nhớ.
 * **Nhược điểm**: Không đảm bảo tìm lời giải ngắn nhất, dễ đi vào vòng lặp nếu không kiểm tra trạng thái.
-* **Phức tạp**:
-
+* **Độ phức tạp**:
   * Thời gian: `O(b^m)`
   * Bộ nhớ: `O(bm)`
       * `b` (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
@@ -75,9 +73,9 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 * **Cấu trúc dữ liệu**: Priority Queue.
 * **Ưu điểm**: Tìm lời giải **tối ưu** nếu chi phí luôn dương.
 * **Nhược điểm**: Tốn bộ nhớ và thời gian như BFS trong không gian lớn.
-* **Phức tạp**:
-
-  * Thời gian/Bộ nhớ: `O(b^{1 + C*/ε})`
+* **Độ phức tạp**:
+  * Thời gian: `O(b^{1 + C*/ε})`
+  * Bộ nhớ: `O(b^{1 + C*/ε})`
   * Với `C*` là chi phí tối ưu và `ε` là bước chi phí nhỏ nhất.
       * `b` (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
       * `C^*`: chi phí tối ưu để tìm lời giải
@@ -88,8 +86,7 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 * **Chiến lược**: Kết hợp DFS và BFS bằng cách lặp lại DFS với giới hạn độ sâu tăng dần.
 * **Ưu điểm**: Tìm được lời giải **ngắn nhất** như BFS nhưng **tốn ít bộ nhớ** như DFS.
 * **Nhược điểm**: Tốn thời gian do lặp lại các node.
-* **Phức tạp**:
-
+* **Độ phức tạp**:
   * Thời gian: `O(b^d)`
   * Bộ nhớ: `O(bd)`
        * `b` (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy `b` = 4.
@@ -106,47 +103,40 @@ Trong bài toán **8 Puzzle**, các thuật toán Informed Search như:
 - A* Search  
 - Iterative Deepening A* (IDA*)  
 
-đều sử dụng chung một hàm heuristic phổ biến là **khoảng cách Manhattan**.
-
-#### Khoảng cách Manhattan là gì?
-
-- Khoảng cách Manhattan giữa một ô trong trạng thái hiện tại và vị trí đúng của nó là tổng số bước đi theo chiều ngang và chiều dọc cần thiết để di chuyển ô đó về đúng vị trí.
-- Cụ thể, với mỗi ô có tọa độ hiện tại \((x_1, y_1)\) và tọa độ đích \((x_2, y_2)\), khoảng cách Manhattan được tính bằng:
-
-\[
-h = |x_1 - x_2| + |y_1 - y_2|
-\]
-
-- Hàm heuristic tổng là tổng khoảng cách Manhattan của tất cả các ô trên bảng (trừ ô trống).
 #### ▸ Greedy Best-First Search (GBFS)
 
-* **Chiến lược**: Luôn mở rộng node có giá trị heuristic `h(n)` nhỏ nhất — tức là node được ước lượng gần đích nhất.
-* **Cấu trúc dữ liệu**: Priority Queue (hàng đợi ưu tiên), sắp xếp theo giá trị heuristic.
+* **Chiến lược**: Giả sử đang đứng ở trạng thái X thì ta luôn mở rộng trạng thái lận cận X có giá trị heuristic `h(n)` nhỏ nhất.
+* **Cấu trúc dữ liệu**: Priority Queue (min heap).
 * **Ưu điểm**:  
   - Tìm kiếm nhanh, tận dụng thông tin heuristic để đi thẳng đến đích.  
   - Tiết kiệm bộ nhớ hơn so với các thuật toán tìm kiếm không thông tin như BFS hay UCS nếu heuristic tốt.
 * **Nhược điểm**:  
   - Không đảm bảo tìm ra lời giải tối ưu (ngắn nhất).  
   - Có thể bị mắc kẹt ở các điểm local minima hoặc đi sai hướng nếu heuristic không chính xác.
-* **Phức tạp**:  
-  - Thời gian và bộ nhớ trong trường hợp xấu nhất: \(O(b^m)\), trong đó:  
-    - \(b\): branching factor (số nhánh trung bình mỗi node).  
-    - \(m\): độ sâu lớn nhất của cây tìm kiếm.
-
-* **Ứng dụng trong bài toán 8 Puzzle**:  
-  - Sử dụng các heuristic phổ biến như **tổng khoảng cách Manhattan** hoặc **số ô sai vị trí**.  
-  - Thuật toán luôn chọn trạng thái kế tiếp có giá trị heuristic nhỏ nhất để mở rộng, giúp tìm đường đi đến trạng thái đích nhanh hơn.
-
+* **Độ phức tạp**:  
+  - Thời gian và bộ nhớ trong trường hợp xấu nhất: `O(b^m)`:  
+    - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
+    - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
+    
 ---
 
 #### ▸ A* Search
 
-* **Chiến lược**: Kết hợp chi phí thực tế đã đi từ gốc \(g(n)\) và ước lượng heuristic còn lại \(h(n)\) để đánh giá node theo \(f(n) = g(n) + h(n)\).
+* **Chiến lược**: Kết hợp chi phí thực tế đã đi từ gốc `g(n)` và ước lượng heuristic còn lại `h(n)` để đánh giá node theo `f(n) = g(n) + h(n)`.
 * **Ưu điểm**:  
   - Tìm được lời giải tối ưu nếu heuristic là **đúng và không vượt quá thực tế** (admissible).  
   - Hiệu quả hơn so với tìm kiếm không thông tin.
 * **Nhược điểm**: Tốn bộ nhớ lớn khi không gian tìm kiếm rộng.
-* **Phức tạp**: Tương tự GBFS trong trường hợp xấu nhất, nhưng thực tế thường nhanh hơn.
+* **Độ phức tạp**:
+  - **Thời gian**: 
+    - Trường hợp xấu nhất là `O(b^d)`.
+    - Phụ thuộc vào cách thiết kế heuristic.
+  - **Bộ nhớ**: 
+    - `O(b^d)`, vì A* lưu toàn bộ các node đã duyệt trong bộ nhớ để tránh lặp lại và đảm bảo tìm lời giải tối ưu.
+
+*Chú thích:*
+- \(b\): branching factor (số lượng trạng thái con trung bình)
+- \(d\): độ sâu (độ dài) của lời giải tối ưu
 
 ---
 
@@ -206,5 +196,3 @@ Mọi đóng góp hoặc phản hồi vui lòng gửi về nhóm sinh viên th�
 ---
 
 *Cảm ơn bạn đã quan tâm đến dự án!*
-
-ghi rõ cách áp dụng trong bài toán 8 puzzle
