@@ -64,6 +64,8 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
     * `b` (branching factor): số lượng trạng thái con trung bình (~4 trong 8 Puzzle).
     * `d` (depth): độ sâu của trạng thái mục tiêu trong cây.
 
+<div style="page-break-after: always;"></div>
+
 #### ▸ Depth-First Search (DFS)
 ![Alt text](source%20image/DFS.gif)
 * **Chiến lược**: Duyệt **sâu trước**, mở rộng hết một nhánh rồi quay lại.
@@ -76,6 +78,8 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
   - Trong đó:
     * `b` (branching factor): số lượng trạng thái con trung bình (~4 trong 8 Puzzle).
     * `m` (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
+
+<div style="page-break-after: always;"></div>
 
 #### ▸ Uniform Cost Search (UCS)
 ![Alt text](source%20image/UCS.gif)
@@ -91,6 +95,8 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
     * `ε`: bước chi phí nhỏ nhất.
     * `b` (branching factor): số lượng trạng thái con trung bình (~4 trong 8 Puzzle).
 
+<div style="page-break-after: always;"></div>
+
 #### ▸ Iterative Deepening Search (IDS)
 ![Alt text](source%20image/IDS.gif)
 * **Chiến lược**: Kết hợp ưu điểm của DFS và BFS bằng cách thực hiện DFS lặp lại nhiều lần với giới hạn độ sâu tăng dần (depth limit). Mỗi lần lặp, thuật toán tìm kiếm trên cây đến một độ sâu nhất định rồi quay lại từ gốc với giới hạn mới.
@@ -103,7 +109,7 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
     * `b` (branching factor): số lượng trạng thái con trung bình (~4 trong 8 Puzzle).
     * `d` (depth): độ sâu của trạng thái mục tiêu trong cây.
 
----
+<div style="page-break-after: always;"></div>
 
 ### 2. Informed Search
 
@@ -112,6 +118,8 @@ Các thuật toán sử dụng heuristic để ước lượng chi phí từ tr�
 * Greedy Best-First Search
 * A* Search
 * Iterative Deepening A* (IDA*)
+
+<div style="page-break-after: always;"></div>
 
 #### ▸ Greedy Best-First Search (GBFS)
 ![Alt text](source%20image/Greedy%20FS.gif)
@@ -129,6 +137,8 @@ Các thuật toán sử dụng heuristic để ước lượng chi phí từ tr�
     * `b` (branching factor): số lượng trạng thái con trung bình (~4 trong 8 Puzzle).
     * `m` (maximum depth): độ sâu lớn nhất mà thuật toán có thể đi tới.
 
+<div style="page-break-after: always;"></div>
+
 #### ▸ A* Search
 ![Alt text](source%20image/A%20star.gif)
 * **Chiến lược**: Kết hợp chi phí thực tế từ gốc đến hiện tại `g(n)` và ước lượng chi phí đến đích heuristic `h(n)` để đánh giá node theo `f(n) = g(n) + h(n)` (sử dụng Manhattan Distance hoặc Linear Conflict).
@@ -142,6 +152,8 @@ Các thuật toán sử dụng heuristic để ước lượng chi phí từ tr�
   - Trong đó:
     * `b` (branching factor): số lượng trạng thái con trung bình (~4 trong 8 Puzzle).
     * `d` (depth): độ sâu của trạng thái mục tiêu trong cây.
+
+<div style="page-break-after: always;"></div>
 
 #### ▸ Iterative Deepening A* (IDA*)
 ![Alt text](source%20image/IDA%20star.gif)
@@ -157,7 +169,9 @@ Các thuật toán sử dụng heuristic để ước lượng chi phí từ tr�
     * `b` (branching factor): số lượng trạng thái con trung bình (~4 trong 8 Puzzle).
     * `d` (depth): độ sâu của trạng thái mục tiêu trong cây.
 
----
+
+<div style="page-break-after: always;"></div>
+
 
 ### 3. Local Search
 
@@ -179,6 +193,8 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
     * `b` (branching factor): số lượng trạng thái con trung bình (~4 trong 8 Puzzle).
     * `m` (maximum depth): độ sâu lớn nhất mà thuật toán có thể đi tới.
 
+<div style="page-break-after: always;"></div>
+
 #### ▸ Steepest Hill Climbing
 ![Alt text](source%20image/Steepest%20Hill%20Climbing.gif)
 * **Chiến lược**: So sánh toàn bộ trạng thái lân cận và chọn trạng thái có giá trị heuristic tốt nhất (sử dụng Manhattan Distance).
@@ -190,6 +206,8 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
   - Trong đó:
     * `b` (branching factor): số lượng trạng thái con trung bình (~4 trong 8 Puzzle).
     * `m` (maximum depth): độ sâu lớn nhất mà thuật toán có thể đi tới.
+
+<div style="page-break-after: always;"></div>
 
 #### ▸ Stochastic Hill Climbing
 ![Alt text](source%20image/Stochastic%20Hill%20Climbing.gif)
@@ -203,6 +221,8 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
     * `b` (branching factor): số lượng trạng thái con trung bình (~4 trong 8 Puzzle).
     * `m` (maximum depth): độ sâu lớn nhất mà thuật toán có thể đi tới.
 
+<div style="page-break-after: always;"></div>
+
 #### ▸ Simulated Annealing
 ![Alt text](source%20image/Simulated%20Annealing.gif)
 * **Chiến lược**: Cho phép chọn trạng thái xấu hơn với xác suất giảm dần theo thời gian, tránh mắc kẹt ở local optimum (sử dụng Manhattan Distance).
@@ -214,6 +234,8 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
   - Trong đó:
     * `b` (branching factor): số lượng trạng thái con trung bình (~4 trong 8 Puzzle).
     * `m` (maximum depth): độ sâu lớn nhất mà thuật toán có thể đi tới.
+
+<div style="page-break-after: always;"></div>
 
 #### ▸ Beam Search
 ![Alt text](source%20image/Beam%20search.gif)
@@ -262,7 +284,7 @@ Các kỹ thuật dành cho không gian tìm kiếm lớn hoặc có cấu trúc
     * `m` (maximum depth): độ sâu lớn nhất mà thuật toán có thể đi tới.
     * `N`: số lượng trạng thái trong không gian ban đầu (với 8 Puzzle là 9! = 362,880).
 
----
+<div style="page-break-after: always;"></div>
 
 ### 5. Reinforcement Learning
 
@@ -303,7 +325,7 @@ Tìm chính sách hành động tối ưu thông qua tương tác với môi tr�
   - **Thời gian**: Phụ thuộc vào số lượng episode và số bước tối đa mỗi episode.
   - **Bộ nhớ**: Tăng theo kích thước Q-table, có thể lên đến hàng trăm nghìn cặp `(s, a)` trong 8 Puzzle.
   
----
+<div style="page-break-after: always;"></div>
 
 ### 6. Constraint Satisfaction
 
@@ -344,7 +366,9 @@ Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng c�
 - **Bộ nhớ**:
   - Tối đa `O(n)` cho ngăn xếp đệ quy (tối đa 8 cấp).
   - Không cần lưu trữ toàn bộ không gian.
----
+
+<div style="page-break-after: always;"></div>
+
 
 ## Hướng dẫn sử dụng
 
