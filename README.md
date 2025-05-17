@@ -20,8 +20,6 @@
    * [Local Search](#3-local-search)
    * [Complex Spaces Search](#4-complex-spaces-search)
    * [Reinforcement Learning](#5-reinforcement-learning)
-4. [Liên hệ](#liên-hệ)
-
 ---
 
 ## Giới thiệu bài toán 8 Puzzle
