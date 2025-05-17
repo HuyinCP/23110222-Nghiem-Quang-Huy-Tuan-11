@@ -21,7 +21,7 @@
    * [Complex Spaces Search](#4-complex-spaces-search)
    * [Reinforcement Learning](#5-reinforcement-learning)
    * [constraint satisfaction](#6-constraint-satisfaction)
-4. [Hướng dẫn sử dụng](#hướng-sử-dụng)
+4. [Hướng dẫn sử dụng](#hướng-dẫn-sử-dụng)
 ---
 
 ## Giới thiệu bài toán 8 Puzzle
@@ -346,7 +346,7 @@ Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng c�
   - Không cần lưu trữ toàn bộ không gian.
 ---
 
-## Mục tiêu
+## Hướng dẫn sử dụng
 ### Yêu cầu hệ thống
 - **Hệ điều hành**: Windows, macOS, hoặc Linux.
 - **Phần mềm**:
