@@ -311,7 +311,7 @@ Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng c�
 - Đại diện bài toán như một tập hợp các **biến** (9 ô trong ma trận 3x3 của 8 Puzzle).
 - Mỗi biến có **miền giá trị** (domain) là các số từ 1 đến 8 (vì 1 ô luôn là `0` đại diện ô trống).
 - Gán từng giá trị cho các biến theo thứ tự từ trái sang phải, **không lặp lại** các giá trị đã dùng.
-  
+![Alt text](source%20image/Backtracking.gif)
 **Các ràng buộc được áp dụng:**
 1. **Ràng buộc toàn cục (Global Constraint)**:
    - Mỗi số từ 1 đến 8 chỉ được gán **một lần duy nhất**.
