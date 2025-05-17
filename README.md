@@ -5,6 +5,8 @@
 * **Trường**: HCMC University of Technology and Education
 * **Môn học**: Trí Tuệ Nhân Tạo
 * **Giảng viên hướng dẫn**: TS. Phan Thị Huyền Trang
+* **Mã số sinh viên**: 23110222
+* **Tên sinh viên**: Nghiêm Quang Huy 
 
 ---
 
