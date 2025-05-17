@@ -290,4 +290,34 @@ Tìm chính sách hành động tối ưu thông qua tương tác với môi tr�
   
 ---
 
-### 6. Constraint Satisfaction
+### 6. Constraint Satisfaction Problem (CSP)
+
+Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng cách gán giá trị cho các biến theo chiến lược thử và sai (Backtracking).
+
+#### ▸ Chiến lược:
+- Đại diện bài toán như một tập hợp các **biến** (mỗi ô trong 8 Puzzle).
+- Mỗi biến có một **miền giá trị** (domain) là các số từ 1 đến 8.
+- Gán từng giá trị vào biến theo thứ tự từ trái sang phải (chỉ gán nếu ô hiện tại là `0`).
+- **Ràng buộc (Constraints)**:
+  - Mỗi giá trị chỉ được gán **một lần duy nhất** (không trùng lặp).
+  - (Tùy chọn) Ràng buộc cục bộ giữa các giá trị liên tiếp: ví dụ, chỉ gán nếu hiệu tuyệt đối với giá trị trước đó nhỏ hơn 2 (`abs(value - last_value) < 2`).
+- Nếu không thể gán hợp lệ, thuật toán sẽ **quay lui (backtrack)** để thử giá trị khác.
+#### ▸ Ưu điểm:
+- Không cần heuristic hay hàm đánh giá – chỉ cần mô tả ràng buộc.
+- Có thể tìm lời giải hợp lệ với các bài toán tổ hợp ràng buộc rõ ràng.
+- Thích hợp với bài toán có không gian trạng thái nhỏ hoặc ràng buộc chặt.
+#### ▸ Nhược điểm:
+- **Dễ bị bùng nổ tổ hợp** nếu không có đủ ràng buộc để cắt nhánh.
+- Không hiệu quả trong không gian trạng thái lớn như 8 Puzzle (362,880 trạng thái hợp lệ).
+- Không đảm bảo tìm được lời giải **tối ưu** – chỉ tìm thấy **lời giải đầu tiên** hợp lệ.
+#### ▸ Độ phức tạp:
+- **Thời gian**:  
+  Trung bình là `O(d^n)` với:
+  - `d`: số giá trị trong domain (ở đây là 8)
+  - `n`: số biến cần gán (ở đây là 8 ô chứa số)
+- **Bộ nhớ**:
+  - Phụ thuộc vào **chiều sâu đệ quy** và **ngăn xếp lời gọi hàm**.
+  - Trung bình là `O(n)` cho chiều sâu tối đa của lời gọi (ở đây là 8).
+---
+
+
