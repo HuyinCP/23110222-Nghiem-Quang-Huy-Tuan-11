@@ -21,7 +21,7 @@
    * [Complex Spaces Search](#4-complex-spaces-search)
    * [Reinforcement Learning](#5-reinforcement-learning)
    * [constraint satisfaction](#6-constraint-satisfaction)
-4. [Hướng dẫn sử dụng](#hướng-dẫn-sử-dụng)
+4. [Hướng dẫn sử dụng](#hướng-sử-dụng)
 ---
 
 ## Giới thiệu bài toán 8 Puzzle
