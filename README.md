@@ -157,8 +157,8 @@ Trong bài toán **8 Puzzle**, các thuật toán Informed Search như:
   - Bộ nhớ:
   - Trong đó:
     - `O(d)`, vì IDA* chỉ lưu trữ đường đi hiện tại trong stack thay thì toàn bộ cây như A*.
-      - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
-      - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
+    - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
+    - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
 
 ---
 
