@@ -51,6 +51,7 @@ Phát triển ứng dụng giải bài toán **8 Puzzle** 🧩, sử dụng và 
 Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động dựa trên cấu trúc không gian trạng thái của 8 Puzzle:
 
 #### ▸ Breadth-First Search (BFS)
+![Alt text](source%20image/BFS.gif)
 * **Chiến lược**: Duyệt theo **chiều rộng**, mở rộng từng lớp trước khi xuống sâu hơn.
 * **Cấu trúc dữ liệu**: Queue.
 * **Ưu điểm**: Tìm được lời giải **ngắn nhất** nếu chi phí đều.
@@ -63,6 +64,7 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
     * `d` (depth): độ sâu của trạng thái mục tiêu trong cây.
 
 #### ▸ Depth-First Search (DFS)
+![Alt text](source%20image/DFS.gif)
 * **Chiến lược**: Duyệt **sâu trước**, mở rộng hết một nhánh rồi quay lại.
 * **Cấu trúc dữ liệu**: Stack.
 * **Ưu điểm**: Tốn ít bộ nhớ.
@@ -75,6 +77,7 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
     * `m` (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
 
 #### ▸ Uniform Cost Search (UCS)
+![Alt text](source%20image/UCS.gif)
 * **Chiến lược**: Mở rộng node có **tổng chi phí thấp nhất** từ gốc đến hiện tại.
 * **Cấu trúc dữ liệu**: Priority Queue.
 * **Ưu điểm**: Tìm lời giải **tối ưu** nếu chi phí luôn dương.
@@ -88,6 +91,7 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
     * `b` (branching factor): số lượng trạng thái con trung bình (~4 trong 8 Puzzle).
 
 #### ▸ Iterative Deepening Search (IDS)
+![Alt text](source%20image/IDS.gif)
 * **Chiến lược**: Kết hợp DFS và BFS bằng cách lặp lại DFS với giới hạn độ sâu tăng dần.
 * **Ưu điểm**: Tìm được lời giải **ngắn nhất** như BFS nhưng **tốn ít bộ nhớ** như DFS.
 * **Nhược điểm**: Tốn thời gian do lặp lại các node.
@@ -109,6 +113,7 @@ Các thuật toán sử dụng heuristic để ước lượng chi phí từ tr�
 * Iterative Deepening A* (IDA*)
 
 #### ▸ Greedy Best-First Search (GBFS)
+![Alt text](source%20image/Greedy%20FS.gif)
 * **Chiến lược**: Mở rộng trạng thái lân cận có giá trị heuristic `h(n)` nhỏ nhất (sử dụng Manhattan Distance).
 * **Cấu trúc dữ liệu**: Priority Queue (min heap).
 * **Ưu điểm**:
@@ -124,6 +129,7 @@ Các thuật toán sử dụng heuristic để ước lượng chi phí từ tr�
     * `m` (maximum depth): độ sâu lớn nhất mà thuật toán có thể đi tới.
 
 #### ▸ A* Search
+![Alt text](source%20image/A%20Star.gif)
 * **Chiến lược**: Kết hợp chi phí thực tế từ gốc đến hiện tại `g(n)` và ước lượng chi phí đến đích heuristic `h(n)` để đánh giá node theo `f(n) = g(n) + h(n)` (sử dụng Manhattan Distance hoặc Linear Conflict).
 * **Ưu điểm**:
   - Tìm được lời giải tối ưu nếu heuristic là **đúng và không vượt quá thực tế**.
@@ -137,6 +143,7 @@ Các thuật toán sử dụng heuristic để ước lượng chi phí từ tr�
     * `d` (depth): độ sâu của trạng thái mục tiêu trong cây.
 
 #### ▸ Iterative Deepening A* (IDA*)
+![Alt text](source%20image/IDA%20Star.gif)
 * **Chiến lược**: Kết hợp IDS và A* bằng cách lặp lại tìm kiếm sâu với ngưỡng `f(n)` tăng dần, chỉ mở rộng các nút có `f(n) <= ngưỡng hiện tại` (sử dụng Manhattan Distance).
 * **Ưu điểm**:
   - Giảm bộ nhớ sử dụng so với A*.
@@ -160,6 +167,7 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
 * Beam Search
 
 #### ▸ Simple Hill Climbing
+![Alt text](source%20image/Simple%20Hill%20Climbing.gif)
 * **Chiến lược**: Chọn trạng thái lân cận đầu tiên có giá trị heuristic tốt hơn (sử dụng Manhattan Distance).
 * **Ưu điểm**: Cài đặt đơn giản, tốc độ nhanh.
 * **Nhược điểm**: Dễ kẹt ở local optimum hoặc vùng phẳng (plateau).
@@ -171,6 +179,7 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
     * `m` (maximum depth): độ sâu lớn nhất mà thuật toán có thể đi tới.
 
 #### ▸ Steepest Hill Climbing
+![Alt text](source%20image/Steepest%20Hill%20Climbing.gif)
 * **Chiến lược**: So sánh toàn bộ trạng thái lân cận và chọn trạng thái có giá trị heuristic tốt nhất (sử dụng Manhattan Distance).
 * **Ưu điểm**: Tăng khả năng tránh lựa chọn sai như Simple Hill Climbing.
 * **Nhược điểm**: Tốn thời gian để đánh giá toàn bộ lân cận; vẫn dễ bị kẹt ở local optimum.
@@ -182,6 +191,7 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
     * `m` (maximum depth): độ sâu lớn nhất mà thuật toán có thể đi tới.
 
 #### ▸ Stochastic Hill Climbing
+![Alt text](source%20image/Stochastic%20Hill%20Climbing.gif)
 * **Chiến lược**: Chọn ngẫu nhiên một trong các trạng thái lân cận có cải thiện heuristic (sử dụng Manhattan Distance).
 * **Ưu điểm**: Tăng khả năng thoát local optimum, tránh rơi vào vùng phẳng.
 * **Nhược điểm**: Kết quả không ổn định, phụ thuộc vào ngẫu nhiên.
@@ -193,6 +203,7 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
     * `m` (maximum depth): độ sâu lớn nhất mà thuật toán có thể đi tới.
 
 #### ▸ Simulated Annealing
+![Alt text](source%20image/Simulated%20Annealing.gif)
 * **Chiến lược**: Cho phép chọn trạng thái xấu hơn với xác suất giảm dần theo thời gian, tránh mắc kẹt ở local optimum (sử dụng Manhattan Distance).
 * **Ưu điểm**: Có thể thoát local optimum và tìm lời giải tốt hơn.
 * **Nhược điểm**: Hiệu quả phụ thuộc vào cách giảm nhiệt độ (cooling schedule).
@@ -204,6 +215,7 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
     * `m` (maximum depth): độ sâu lớn nhất mà thuật toán có thể đi tới.
 
 #### ▸ Beam Search
+![Alt text](source%20image/Beam%20search.gif)
 * **Chiến lược**: Giữ lại `k` trạng thái tốt nhất tại mỗi bước (k gọi là beam width) thay vì chỉ một (sử dụng Manhattan Distance).
 * **Ưu điểm**: Dễ mở rộng, tránh kẹt local optimum tốt hơn Hill Climbing.
 * **Nhược điểm**: Không đảm bảo tối ưu, dễ bỏ sót lời giải nếu `k` quá nhỏ.
@@ -225,6 +237,7 @@ Các kỹ thuật dành cho không gian tìm kiếm lớn hoặc có cấu trúc
 * Belief Search
 
 #### ▸ AND-OR Graph Search
+![Alt text](source%20image/And%20Or.gif)
 * **Chiến lược**: Kết hợp node "AND" (cần tất cả con) và "OR" (chỉ cần một con), sử dụng Manhattan Distance để ưu tiên.
 * **Ưu điểm**: Tốt cho các hệ thống có nhiều kết quả khả thi phụ thuộc vào hành động.
 * **Nhược điểm**: Cấu trúc phức tạp, khó triển khai với không gian lớn như 8 Puzzle.
@@ -236,6 +249,7 @@ Các kỹ thuật dành cho không gian tìm kiếm lớn hoặc có cấu trúc
     * `d` (depth): độ sâu của trạng thái mục tiêu trong cây.
 
 #### ▸ Belief Search
+![Alt text](source%20image/Belife.gif)
 * **Chiến lược**: Tìm kiếm với ràng buộc belief state (ví dụ: hàng đầu tiên là [1, 2, 3]), sử dụng DFS.
 * **Ưu điểm**: Áp dụng được trong môi trường không chắc chắn.
 * **Nhược điểm**: Không phù hợp với bài toán xác định như 8 Puzzle, giới hạn không gian tìm kiếm.
@@ -254,7 +268,6 @@ Các kỹ thuật dành cho không gian tìm kiếm lớn hoặc có cấu trúc
 Tìm chính sách hành động tối ưu thông qua tương tác với môi trường 8 Puzzle:
 
 #### ▸ Q-Learning
-
 - **Chiến lược**:  
   Học chính sách hành động bằng cách cập nhật bảng Q (Q-table) dựa trên kinh nghiệm thu thập được từ tương tác với môi trường.  
   Sử dụng chính sách **epsilon-greedy** để cân bằng giữa **khám phá** (exploration) và **khai thác** (exploitation).
