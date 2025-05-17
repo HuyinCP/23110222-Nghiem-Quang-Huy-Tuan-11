@@ -164,7 +164,7 @@ Trong bài toán **8 Puzzle**, các thuật toán Informed Search như:
 
 ### 3. Local Search
 
-Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không cần lưu toàn bộ đường đi:
+Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không cần lưu toàn bộ đường đi, phù hợp với không gian trạng thái lớn hoặc không rõ ràng về đích cụ thể:
 
 * Hill Climbing (Simple, Steepest, Stochastic)
 * Simulated Annealing
@@ -172,6 +172,24 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
 * AND-OR Graph Search
 * Belief Search
 
+#### ▸ Simple Hill Climbing
+* **Chiến lược**: Từ trạng thái hiện tại, chọn trạng thái đầu tiên có giá trị heuristic tốt hơn, nói cách khác chọn next_state đầu tiên sao cho `h(current_state) < h(next_state)` .
+* **Ưu điểm**: Cài đặt đơn giản, tốc độ nhanh
+* **Nhược điểm**: Dễ kẹt ở local optimum, plateau hoặc điểm cao giả (shoulder).
+* **Độ phức tạp**:
+  - Thời gian: 
+    - Trường hợp xấu nhất là `O(bm)`.
+  - Bộ nhớ: 
+    - `O(1)`, vì A* lưu toàn bộ các node đã duyệt trong bộ nhớ để tránh lặp lại và đảm bảo tìm lời giải tối ưu.
+  - Trong đó:
+    - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
+    - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
+
+#### ▸ Steepest Hill Climbing
+#### ▸ Stochastic Hill Climbing
+#### ▸ Simulated Annealing
+#### ▸ AND-OR Graph Search
+#### ▸ Belief Search
 ---
 
 ### 4. Complex Spaces Search
