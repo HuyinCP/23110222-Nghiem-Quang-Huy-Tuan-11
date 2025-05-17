@@ -272,15 +272,17 @@ Tìm chính sách hành động tối ưu thông qua tương tác với môi tr�
 - `γ` (gamma): Hệ số chiết khấu (discount factor), thể hiện mức độ ưu tiên phần thưởng tương lai, `0 ≤ γ ≤ 1`
 - `s'`: Trạng thái mới sau khi thực hiện hành động `a`
 - `max(Q(s', a'))`: Giá trị Q lớn nhất có thể đạt được từ trạng thái mới `s'`
+- hành động `a` là thao tác di chuyển ô trống [lên, xuống, trái, phải]
 
 - **Ưu điểm**:
 - Có thể học từ môi trường mà không cần heuristic hay mô hình trạng thái.
+- càng về sau khả năng khai thác càng cao.
 - Áp dụng được trong môi trường không xác định (model-free).
 
 - **Nhược điểm**:
 - Tốn thời gian huấn luyện, đặc biệt khi không gian trạng thái lớn.
 - Phụ thuộc mạnh vào tham số (`alpha`, `gamma`, `epsilon`).
-- Khó áp dụng trực tiếp cho bài toán 8 Puzzle do không gian trạng thái quá lớn (~362,880 trạng thái hợp lệ).
+- tốn thời gian train trong bài toán 8 Puzzle do không gian trạng thái quá lớn (9! / 2 ~ 181,440 trạng thái hợp lệ).
 
 - **Độ phức tạp**:
 - **Thời gian**: Phụ thuộc vào số lượng episode và số bước tối đa mỗi episode.
