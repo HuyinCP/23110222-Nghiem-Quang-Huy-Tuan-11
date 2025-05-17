@@ -283,6 +283,7 @@ Tìm chính sách hành động tối ưu thông qua tương tác với môi tr�
 - **Chiến lược**:  
   Học chính sách hành động bằng cách cập nhật bảng Q (Q-table) dựa trên kinh nghiệm thu thập được từ tương tác với môi trường.  
   Sử dụng chính sách **epsilon-greedy** để cân bằng giữa **khám phá** (exploration) và **khai thác** (exploitation).
+  
 ![Alt text](source%20image/Qvalue.png)
 - **Công thức cập nhật Q-value**:
 
