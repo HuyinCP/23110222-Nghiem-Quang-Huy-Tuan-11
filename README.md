@@ -173,7 +173,7 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
 * Belief Search
 
 #### ▸ Simple Hill Climbing
-* **Chiến lược**: Từ trạng thái hiện tại, chọn trạng thái đầu tiên có giá trị heuristic tốt hơn, nói cách khác chọn next_state đầu tiên sao cho `h(current_state) < h(next_state)` .
+* **Chiến lược**: Từ trạng thái hiện tại, chọn trạng thái đầu tiên có giá trị heuristic tốt hơn, nói cách khác chọn next_state đầu tiên sao cho `h(current_state) < h(next_state)`.
 * **Ưu điểm**: Cài đặt đơn giản, tốc độ nhanh
 * **Nhược điểm**: Dễ kẹt ở local optimum, plateau hoặc điểm cao giả (shoulder).
 * **Độ phức tạp**:
@@ -186,14 +186,69 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
     - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
 ---
 #### ▸ Steepest Hill Climbing
+* **Chiến lược**: So sánh toàn bộ trạng thái lân cận và chọn trạng thái có giá trị heuristic tốt nhất.
+* **Ưu điểm**: Tăng khả năng tránh lựa chọn sai như Simple Hill Climbing.
+* **Nhược điểm**: Tốn thời gian để đánh giá toàn bộ lân cận; vẫn dễ bị kẹt ở local optimum.
+* **Độ phức tạp**:
+  - Thời gian: 
+    - Trường hợp xấu nhất là `O(bm)`.
+  - Bộ nhớ: 
+    - `O(1)`, vì A* lưu toàn bộ các node đã duyệt trong bộ nhớ để tránh lặp lại và đảm bảo tìm lời giải tối ưu.
+  - Trong đó:
+    - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
+    - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
 ---
 #### ▸ Stochastic Hill Climbing
+* **Chiến lược**: Chọn ngẫu nhiên một trong các trạng thái lân cận có cải thiện heuristic, thay vì chọn tốt nhất.
+* **Ưu điểm**: Tăng khả năng thoát local optimum, tránh rơi vào vùng phẳng (plateau).
+* **Nhược điểm**: Kết quả không ổn định, phụ thuộc vào ngẫu nhiên.
+* **Độ phức tạp**:
+  - Thời gian: 
+    - Trường hợp xấu nhất là `O(bm)`.
+  - Bộ nhớ: 
+    - `O(1)`, vì A* lưu toàn bộ các node đã duyệt trong bộ nhớ để tránh lặp lại và đảm bảo tìm lời giải tối ưu.
+  - Trong đó:
+    - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
+    - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
 ---
 #### ▸ Simulated Annealing
+* **Chiến lược**: Cho phép chọn trạng thái xấu hơn với xác suất giảm dần theo thời gian, tránh mắc kẹt ở local optimum.
+* **Ưu điểm**: Có thể thoát local optimum và tìm lời giải tốt hơn.
+* **Nhược điểm**: Hiệu quả phụ thuộc vào cách giảm nhiệt độ (cooling schedule).
+* **Độ phức tạp**:
+  - Thời gian: 
+    - Trường hợp xấu nhất là `O(bm)`.
+  - Bộ nhớ: 
+    - `O(1)`, vì A* lưu toàn bộ các node đã duyệt trong bộ nhớ để tránh lặp lại và đảm bảo tìm lời giải tối ưu.
+  - Trong đó:
+    - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
+    - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
 ---
 #### ▸ AND-OR Graph Search
+* **Chiến lược**: Từ trạng thái hiện tại, chọn trạng thái đầu tiên có giá trị heuristic tốt hơn, nói cách khác chọn next_state đầu tiên sao cho `h(current_state) < h(next_state)` .
+* **Ưu điểm**: Cài đặt đơn giản, tốc độ nhanh
+* **Nhược điểm**: Dễ kẹt ở local optimum, plateau hoặc điểm cao giả (shoulder).
+* **Độ phức tạp**:
+  - Thời gian: 
+    - Trường hợp xấu nhất là `O(bm)`.
+  - Bộ nhớ: 
+    - `O(1)`, vì A* lưu toàn bộ các node đã duyệt trong bộ nhớ để tránh lặp lại và đảm bảo tìm lời giải tối ưu.
+  - Trong đó:
+    - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
+    - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
 ---
 #### ▸ Belief Search
+* **Chiến lược**: Từ trạng thái hiện tại, chọn trạng thái đầu tiên có giá trị heuristic tốt hơn, nói cách khác chọn next_state đầu tiên sao cho `h(current_state) < h(next_state)` .
+* **Ưu điểm**: Cài đặt đơn giản, tốc độ nhanh
+* **Nhược điểm**: Dễ kẹt ở local optimum, plateau hoặc điểm cao giả (shoulder).
+* **Độ phức tạp**:
+  - Thời gian: 
+    - Trường hợp xấu nhất là `O(bm)`.
+  - Bộ nhớ: 
+    - `O(1)`, vì A* lưu toàn bộ các node đã duyệt trong bộ nhớ để tránh lặp lại và đảm bảo tìm lời giải tối ưu.
+  - Trong đó:
+    - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
+    - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
 ---
 
 ### 4. Complex Spaces Search
