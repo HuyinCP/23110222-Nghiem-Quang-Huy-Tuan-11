@@ -184,11 +184,15 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
   - Trong đó:
     - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
     - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
-
+---
 #### ▸ Steepest Hill Climbing
+---
 #### ▸ Stochastic Hill Climbing
+---
 #### ▸ Simulated Annealing
+---
 #### ▸ AND-OR Graph Search
+---
 #### ▸ Belief Search
 ---
 
