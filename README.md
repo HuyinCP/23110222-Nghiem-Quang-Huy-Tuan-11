@@ -254,13 +254,38 @@ Các kỹ thuật dành cho không gian tìm kiếm lớn hoặc có cấu trúc
 Tìm chính sách hành động tối ưu thông qua tương tác với môi trường 8 Puzzle:
 
 #### ▸ Q-Learning
-* **Chiến lược**: Học chính sách hành động bằng cách cập nhật Q-table, sử dụng epsilon-greedy để cân bằng khám phá và khai thác.
-* **Ưu điểm**: Có thể học từ môi trường mà không cần heuristic.
-* **Nhược điểm**: Tốn thời gian huấn luyện, phụ thuộc vào tham số (alpha, gamma, epsilon).
-* **Độ phức tạp**:
-  - Thời gian: Phụ thuộc vào số episode và bước tối đa mỗi episode.
-  - Bộ nhớ: Tăng theo kích thước Q-table.
-    
+
+- **Chiến lược**:  
+  Học chính sách hành động bằng cách cập nhật bảng Q (Q-table) dựa trên kinh nghiệm thu thập được từ tương tác với môi trường.  
+  Sử dụng chính sách **epsilon-greedy** để cân bằng giữa **khám phá** (exploration) và **khai thác** (exploitation).
+
+- **Công thức cập nhật Q-value**:
+
+  ```math
+  Q(s, a) \leftarrow Q(s, a) + \alpha \left[ r + \gamma \cdot \max_{a'} Q(s', a') - Q(s, a) \right]
+  ```
+  
+**Trong đó:**
+- `Q(s, a)`: Giá trị Q hiện tại tại trạng thái `s` khi thực hiện hành động `a`
+- `α` (alpha): Tốc độ học (learning rate), `0 < α ≤ 1`
+- `r`: Phần thưởng nhận được sau khi thực hiện hành động
+- `γ` (gamma): Hệ số chiết khấu (discount factor), thể hiện mức độ ưu tiên phần thưởng tương lai, `0 ≤ γ ≤ 1`
+- `s'`: Trạng thái mới sau khi thực hiện hành động `a`
+- `max(Q(s', a'))`: Giá trị Q lớn nhất có thể đạt được từ trạng thái mới `s'`
+
+- **Ưu điểm**:
+- Có thể học từ môi trường mà không cần heuristic hay mô hình trạng thái.
+- Áp dụng được trong môi trường không xác định (model-free).
+
+- **Nhược điểm**:
+- Tốn thời gian huấn luyện, đặc biệt khi không gian trạng thái lớn.
+- Phụ thuộc mạnh vào tham số (`alpha`, `gamma`, `epsilon`).
+- Khó áp dụng trực tiếp cho bài toán 8 Puzzle do không gian trạng thái quá lớn (~362,880 trạng thái hợp lệ).
+
+- **Độ phức tạp**:
+- **Thời gian**: Phụ thuộc vào số lượng episode và số bước tối đa mỗi episode.
+- **Bộ nhớ**: Tăng theo kích thước Q-table, có thể lên đến hàng trăm nghìn cặp `(s, a)` trong 8 Puzzle.
+  
 ---
 
 ### 6. Constraint Satisfaction
