@@ -129,7 +129,7 @@ Các thuật toán sử dụng heuristic để ước lượng chi phí từ tr�
     * `m` (maximum depth): độ sâu lớn nhất mà thuật toán có thể đi tới.
 
 #### ▸ A* Search
-![Alt text](source%20image/A%20Star.gif)
+![Alt text](source%20image/A%20star.gif)
 * **Chiến lược**: Kết hợp chi phí thực tế từ gốc đến hiện tại `g(n)` và ước lượng chi phí đến đích heuristic `h(n)` để đánh giá node theo `f(n) = g(n) + h(n)` (sử dụng Manhattan Distance hoặc Linear Conflict).
 * **Ưu điểm**:
   - Tìm được lời giải tối ưu nếu heuristic là **đúng và không vượt quá thực tế**.
@@ -143,7 +143,7 @@ Các thuật toán sử dụng heuristic để ước lượng chi phí từ tr�
     * `d` (depth): độ sâu của trạng thái mục tiêu trong cây.
 
 #### ▸ Iterative Deepening A* (IDA*)
-![Alt text](source%20image/IDA%20Star.gif)
+![Alt text](source%20image/IDA%20star.gif)
 * **Chiến lược**: Kết hợp IDS và A* bằng cách lặp lại tìm kiếm sâu với ngưỡng `f(n)` tăng dần, chỉ mở rộng các nút có `f(n) <= ngưỡng hiện tại` (sử dụng Manhattan Distance).
 * **Ưu điểm**:
   - Giảm bộ nhớ sử dụng so với A*.
