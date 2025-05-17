@@ -20,6 +20,7 @@
    * [Local Search](#3-local-search)
    * [Complex Spaces Search](#4-complex-spaces-search)
    * [Reinforcement Learning](#5-reinforcement-learning)
+   * [constraint satisfaction](#6-constraint-satisfaction)
 ---
 
 ## Giới thiệu bài toán 8 Puzzle
@@ -39,6 +40,7 @@ Phát triển ứng dụng giải bài toán **8 Puzzle** 🧩, sử dụng và 
 * **Local Search** (Tìm kiếm cục bộ)
 * **Complex Spaces Search** (Tìm kiếm trong không gian phức tạp)
 * **Reinforcement Learning** (Học tăng cường)
+* **Constraint Satisfaction** (Tìm kiếm trong môi trường có ràng buộc)
 
 ---
 
@@ -258,5 +260,7 @@ Tìm chính sách hành động tối ưu thông qua tương tác với môi tr�
 * **Độ phức tạp**:
   - Thời gian: Phụ thuộc vào số episode và bước tối đa mỗi episode.
   - Bộ nhớ: Tăng theo kích thước Q-table.
-
+    
 ---
+
+### 6. Constraint Satisfaction
