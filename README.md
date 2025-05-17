@@ -97,7 +97,7 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 ### 2. Informed Search
 
 Các thuật toán sử dụng heuristic để ước lượng chi phí từ trạng thái hiện tại đến đích, ưu tiên mở rộng các trạng thái có khả năng dẫn đến lời giải nhanh hơn.
-Trong bài toán **8 Puzzle**, các thuật toán Informed Search như:
+Trong bài toán **8 Puzzle**, các thuật toán nhóm Informed Search như:
 
 - Greedy Best-First Search  
 - A* Search  
@@ -155,12 +155,11 @@ Trong bài toán **8 Puzzle**, các thuật toán Informed Search như:
 ### 3. Local Search
 
 Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không cần lưu toàn bộ đường đi, phù hợp với không gian trạng thái lớn hoặc không rõ ràng về đích cụ thể:
+Trong bài toán **8 Puzzle**, các thuật toán nhóm Local Search như:
 
 * Hill Climbing (Simple, Steepest, Stochastic)
 * Simulated Annealing
 * Beam Search
-* AND-OR Graph Search
-* Belief Search
 
 #### ▸ Simple Hill Climbing
 * **Chiến lược**: Từ trạng thái hiện tại, chọn trạng thái đầu tiên có giá trị heuristic tốt hơn, nói cách khác chọn next_state đầu tiên sao cho `h(current_state) < h(next_state)`.
@@ -230,8 +229,12 @@ Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không c�
 
 ### 4. Complex Spaces Search
 
-Các kỹ thuật dành cho không gian tìm kiếm rất lớn hoặc có cấu trúc phức tạp. Có thể áp dụng tree decomposition, domain-specific search, hoặc phân cụm trạng thái.
+Các kỹ thuật dành cho không gian tìm kiếm rất lớn hoặc có cấu trúc phức tạp.
+Trong bài toán **8 Puzzle**, các thuật toán Complex Spaces Search như:
 
+* AND-OR Graph Search
+* Belief Search
+  
 #### ▸ AND-OR Graph Search
 * **Chiến lược**: Dành cho bài toán có tính phân nhánh điều kiện (non-deterministic); kết hợp cả node "AND" (cần tất cả con) và "OR" (chỉ cần một con).
 * **Ưu điểm**: Tốt cho các hệ thống có nhiều kết quả khả thi phụ thuộc vào hành động.
@@ -276,9 +279,7 @@ Giải quyết các bài toán ràng buộc như Sudoku, bản đồ màu, v.v.:
 Tìm chính sách hành động tối ưu thông qua tương tác với môi trường:
 
 * **Q-Learning**
-* **SARSA**
-* **Deep Q-Networks (DQN)** – với không gian trạng thái lớn
-
+  
 ---
 
 ## Liên hệ
