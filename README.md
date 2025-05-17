@@ -9,7 +9,7 @@
 
 ## Mục lục
 1. [Mục tiêu](#mục-tiêu)  
-2. [Tổng quan các thuật toán áp dụng](#tổng-quan-các-thuật-toán-ápp-dụng)  
+2. [Tổng quan các thuật toán áp dụng](#tổng-quan-các-thuật-toán-áp-dụng)  
    - [Uninformed Search](#1-uninformed-search)  
    - [Informed Search](#2-informed-search)  
    - [Local Search](#3-local-search)  
@@ -34,41 +34,91 @@ Phát triển ứng dụng giải bài toán **8 Puzzle** sử dụng và so sá
 ## Tổng quan các thuật toán áp dụng  
 
 ### 1. Uninformed Search  
-Các thuật toán tìm kiếm không dùng thông tin heuristic như:  
-- BFS (Breadth-First Search)  
-- DFS (Depth-First Search)  
-- UCS (Uniform Cost Search)  
-- IDS (Iterative Deepening Search)
+Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động hoàn toàn dựa vào cấu trúc không gian trạng thái:
 
-### 2. Informed Search  
-Các thuật toán dùng heuristic để định hướng tìm kiếm như:  
-- A*  
-- IDA* (Iterative Deepening A*)  
-- Greedy Best-First Search
+#### ▸ Breadth-First Search (BFS)
+- **Chiến lược**: Duyệt theo **chiều rộng**, mở rộng từng lớp trước khi xuống sâu hơn.
+- **Cấu trúc dữ liệu**: Hàng đợi (FIFO).
+- **Ưu điểm**: Tìm được lời giải **ngắn nhất** nếu chi phí đều.
+- **Nhược điểm**: Tốn bộ nhớ khi không gian tìm kiếm rộng.
+- **Phức tạp**:
+  - Thời gian: `O(b^d)`
+  - Bộ nhớ: `O(b^d)`
 
-### 3. Local Search  
-Tìm kiếm theo phương pháp cục bộ như:  
-- Simple Hill Climb  
-- Steepest Hill Climb  
-- Stochastic Hill Climb  
-- Simulated Annealing  
-- Beam Search  
-- AND-OR Search  
-- Belief Search
+#### ▸ Depth-First Search (DFS)
+- **Chiến lược**: Duyệt **sâu trước**, mở rộng hết một nhánh rồi quay lại.
+- **Cấu trúc dữ liệu**: Ngăn xếp (LIFO).
+- **Ưu điểm**: Tốn ít bộ nhớ.
+- **Nhược điểm**: Không đảm bảo tìm lời giải ngắn nhất, dễ đi vào vòng lặp nếu không kiểm tra trạng thái.
+- **Phức tạp**:
+  - Thời gian: `O(b^m)`  
+  - Bộ nhớ: `O(bm)`
 
-### 4. Complex Spaces Search  
-Áp dụng các kỹ thuật tìm kiếm trong không gian trạng thái phức tạp hoặc rất lớn, phục vụ các bài toán khó xử lý.
+#### ▸ Uniform Cost Search (UCS)
+- **Chiến lược**: Mở rộng node có **tổng chi phí thấp nhất** từ gốc đến hiện tại.
+- **Cấu trúc dữ liệu**: Priority Queue (Hàng đợi ưu tiên).
+- **Ưu điểm**: Tìm lời giải **tối ưu** nếu chi phí luôn dương.
+- **Nhược điểm**: Tốn bộ nhớ và thời gian như BFS trong không gian lớn.
+- **Phức tạp**:
+  - Thời gian/Bộ nhớ: `O(b^{1 + C*/ε})`  
+  - Với `C*` là chi phí tối ưu và `ε` là bước chi phí nhỏ nhất.
 
-### 5. Constrained Search  
-Giải bài toán với các ràng buộc cụ thể, sử dụng các kỹ thuật CSP (Constraint Satisfaction Problem), điển hình như:
-
-- **Backtracking**: phương pháp duyệt không gian trạng thái bằng cách thử từng giá trị và quay lui khi gặp xung đột, giúp tìm lời giải thỏa mãn các ràng buộc.
-- Các kỹ thuật bổ trợ như **Forward Checking**, **Constraint Propagation** để tăng hiệu quả tìm kiếm.
-
-### 6. Reinforcement Learning  
-Ứng dụng học tăng cường để tìm chính sách giải quyết bài toán thông qua tương tác với môi trường, ví dụ:  
-- Q-Learning
+#### ▸ Iterative Deepening Search (IDS)
+- **Chiến lược**: Kết hợp DFS và BFS bằng cách lặp lại DFS với giới hạn độ sâu tăng dần.
+- **Ưu điểm**: Tìm được lời giải **ngắn nhất** như BFS nhưng **tốn ít bộ nhớ** như DFS.
+- **Nhược điểm**: Tốn thời gian do lặp lại các node.
+- **Phức tạp**:
+  - Thời gian: `O(b^d)`  
+  - Bộ nhớ: `O(bd)`
 
 ---
 
-*Cảm ơn bạn đã quan tâm!*
+### 2. Informed Search  
+Các thuật toán sử dụng heuristic để ước lượng chi phí từ trạng thái hiện tại đến đích:
+
+- **Greedy Best-First Search**
+- **A\*** (sử dụng cả chi phí đã đi và ước lượng còn lại)
+- **IDA\*** (Iterative Deepening A*)
+
+---
+
+### 3. Local Search  
+Tìm kiếm theo hướng cải thiện trạng thái hiện tại mà không cần lưu toàn bộ đường đi:
+
+- Hill Climbing (Simple, Steepest, Stochastic)
+- Simulated Annealing
+- Beam Search
+- AND-OR Graph Search
+- Belief Search
+
+---
+
+### 4. Complex Spaces Search  
+Các kỹ thuật dành cho không gian tìm kiếm rất lớn hoặc có cấu trúc phức tạp. Có thể áp dụng tree decomposition, domain-specific search, hoặc phân cụm trạng thái.
+
+---
+
+### 5. Constrained Search  
+Giải quyết các bài toán ràng buộc như Sudoku, bản đồ màu, v.v.:
+
+- **Backtracking**
+- **Forward Checking**
+- **Constraint Propagation**
+
+---
+
+### 6. Reinforcement Learning  
+Tìm chính sách hành động tối ưu thông qua tương tác với môi trường:
+
+- **Q-Learning**
+- **SARSA**
+- **Deep Q-Networks (DQN)** – với không gian trạng thái lớn
+
+---
+
+## Liên hệ
+Mọi đóng góp hoặc phản hồi vui lòng gửi về nhóm sinh viên thực hiện thông qua GitHub hoặc email cá nhân.
+
+---
+
+*Cảm ơn bạn đã quan tâm đến dự án!*
