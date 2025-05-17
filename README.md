@@ -275,18 +275,18 @@ Tìm chính sách hành động tối ưu thông qua tương tác với môi tr�
 - hành động `a` là thao tác di chuyển ô trống [lên, xuống, trái, phải]
 
 - **Ưu điểm**:
-- Có thể học từ môi trường mà không cần heuristic hay mô hình trạng thái.
-- càng về sau khả năng khai thác càng cao.
-- Áp dụng được trong môi trường không xác định (model-free).
+  - Có thể học từ môi trường mà không cần heuristic hay mô hình trạng thái.
+  - càng về sau khả năng khai thác càng cao.
+  - Áp dụng được trong môi trường không xác định (model-free).
 
 - **Nhược điểm**:
-- Tốn thời gian huấn luyện, đặc biệt khi không gian trạng thái lớn.
-- Phụ thuộc mạnh vào tham số (`alpha`, `gamma`, `epsilon`).
-- tốn thời gian train trong bài toán 8 Puzzle do không gian trạng thái quá lớn (9! / 2 ~ 181,440 trạng thái hợp lệ).
+  - Tốn thời gian huấn luyện, đặc biệt khi không gian trạng thái lớn.
+  - Phụ thuộc mạnh vào tham số (`alpha`, `gamma`, `epsilon`).
+  - tốn thời gian train trong bài toán 8 Puzzle do không gian trạng thái quá lớn (9! / 2 ~ 181,440 trạng thái hợp lệ).
 
 - **Độ phức tạp**:
-- **Thời gian**: Phụ thuộc vào số lượng episode và số bước tối đa mỗi episode.
-- **Bộ nhớ**: Tăng theo kích thước Q-table, có thể lên đến hàng trăm nghìn cặp `(s, a)` trong 8 Puzzle.
+  - **Thời gian**: Phụ thuộc vào số lượng episode và số bước tối đa mỗi episode.
+  - **Bộ nhớ**: Tăng theo kích thước Q-table, có thể lên đến hàng trăm nghìn cặp `(s, a)` trong 8 Puzzle.
   
 ---
 
