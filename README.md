@@ -53,6 +53,8 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 
   * Thời gian: `O(b^d)`
   * Bộ nhớ: `O(b^d)`
+     * b (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
+     * d (depth): độ sâu của nút GOAL_STATE trong cây.
 
 #### ▸ Depth-First Search (DFS)
 
@@ -64,6 +66,8 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 
   * Thời gian: `O(b^m)`
   * Bộ nhớ: `O(bm)`
+      * `b` (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
+      * `m` (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
 
 #### ▸ Uniform Cost Search (UCS)
 
@@ -75,6 +79,9 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 
   * Thời gian/Bộ nhớ: `O(b^{1 + C*/ε})`
   * Với `C*` là chi phí tối ưu và `ε` là bước chi phí nhỏ nhất.
+      * `b` (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
+      * `C^*`: chi phí tối ưu để tìm lời giải
+      * `ε`: là bước chi phí nhỏ nhất.
 
 #### ▸ Iterative Deepening Search (IDS)
 
@@ -85,6 +92,8 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 
   * Thời gian: `O(b^d)`
   * Bộ nhớ: `O(bd)`
+       * b (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
+       * d (depth): độ sâu của nút GOAL_STATE trong cây.
 
 ---
 
