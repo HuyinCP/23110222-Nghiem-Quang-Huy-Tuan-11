@@ -292,32 +292,48 @@ Tìm chính sách hành động tối ưu thông qua tương tác với môi tr�
 
 ### 6. Constraint Satisfaction Problem (CSP)
 
-Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng cách gán giá trị cho các biến theo chiến lược thử và sai (Backtracking).
+Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng cách gán giá trị cho các biến, sử dụng thuật toán **Backtracking**.
+
+---
 
 #### ▸ Chiến lược:
-- Đại diện bài toán như một tập hợp các **biến** (mỗi ô trong 8 Puzzle).
-- Mỗi biến có một **miền giá trị** (domain) là các số từ 1 đến 8.
-- Gán từng giá trị vào biến theo thứ tự từ trái sang phải (chỉ gán nếu ô hiện tại là `0`).
-- **Ràng buộc (Constraints)**:
-  - Mỗi giá trị chỉ được gán **một lần duy nhất** (không trùng lặp).
-  - (Tùy chọn) Ràng buộc cục bộ giữa các giá trị liên tiếp: ví dụ, chỉ gán nếu hiệu tuyệt đối với giá trị trước đó nhỏ hơn 2 (`abs(value - last_value) < 2`).
-- Nếu không thể gán hợp lệ, thuật toán sẽ **quay lui (backtrack)** để thử giá trị khác.
+- Đại diện bài toán như một tập hợp các **biến** (9 ô trong ma trận 3x3 của 8 Puzzle).
+- Mỗi biến có **miền giá trị** (domain) là các số từ 1 đến 8 (vì 1 ô luôn là `0` đại diện ô trống).
+- Gán từng giá trị cho các biến theo thứ tự từ trái sang phải, **không lặp lại** các giá trị đã dùng.
+  
+**Các ràng buộc được áp dụng:**
+1. **Ràng buộc toàn cục (Global Constraint)**:
+   - Mỗi số từ 1 đến 8 chỉ được gán **một lần duy nhất**.
+   - Trạng thái cuối cùng phải khớp với trạng thái **mục tiêu (goal state)**.
+2. **Ràng buộc cục bộ (Local Constraint)** – *tùy chọn tăng độ chính xác và cắt nhánh*:
+   - Khi gán giá trị mới, kiểm tra hiệu tuyệt đối với giá trị vừa gán trước đó phải nhỏ hơn 2:  
+     `abs(value - last_value) < 2`
+   - Điều này giúp giảm số nhánh không cần thiết trong không gian tìm kiếm.
+
+---
+
 #### ▸ Ưu điểm:
-- Không cần heuristic hay hàm đánh giá – chỉ cần mô tả ràng buộc.
-- Có thể tìm lời giải hợp lệ với các bài toán tổ hợp ràng buộc rõ ràng.
-- Thích hợp với bài toán có không gian trạng thái nhỏ hoặc ràng buộc chặt.
+- Ràng buộc rõ ràng giúp **giảm mạnh không gian tìm kiếm**.
+- Đơn giản, dễ cài đặt và dễ trực quan hóa quá trình hoạt động.
+- Không cần heuristic hay mô hình môi trường – chỉ cần mô tả ràng buộc.
+- Có thể **giải quyết các biến thể của bài toán 8 Puzzle** có tính ràng buộc.
+
 #### ▸ Nhược điểm:
-- **Dễ bị bùng nổ tổ hợp** nếu không có đủ ràng buộc để cắt nhánh.
-- Không hiệu quả trong không gian trạng thái lớn như 8 Puzzle (362,880 trạng thái hợp lệ).
-- Không đảm bảo tìm được lời giải **tối ưu** – chỉ tìm thấy **lời giải đầu tiên** hợp lệ.
+- **Không tìm ra lời giải tối ưu**, chỉ trả về lời giải đầu tiên hợp lệ.
+- **Không đảm bảo luôn tìm được lời giải**, nếu ràng buộc quá chặt có thể không tồn tại lời giải.
+- Dễ bị **bùng nổ tổ hợp** nếu không có thêm chiến lược cắt tỉa ràng buộc (constraint propagation).
+
 #### ▸ Độ phức tạp:
 - **Thời gian**:  
-  Trung bình là `O(d^n)` với:
-  - `d`: số giá trị trong domain (ở đây là 8)
-  - `n`: số biến cần gán (ở đây là 8 ô chứa số)
+  - Trung bình là `O(d^n)`, với:
+    - `d` = 8 (số giá trị cần gán)
+    - `n` = 8 (số ô chứa số)
+  - Tệ nhất duyệt hết tất cả hoán vị: \(8! = 40,320\) trạng thái.
+  - Việc áp dụng ràng buộc cục bộ giúp **giảm đáng kể số lần thử**.
+
 - **Bộ nhớ**:
-  - Phụ thuộc vào **chiều sâu đệ quy** và **ngăn xếp lời gọi hàm**.
-  - Trung bình là `O(n)` cho chiều sâu tối đa của lời gọi (ở đây là 8).
+  - Tối đa `O(n)` cho ngăn xếp đệ quy (tối đa 8 cấp).
+  - Không cần lưu trữ toàn bộ không gian.
 ---
 
 
