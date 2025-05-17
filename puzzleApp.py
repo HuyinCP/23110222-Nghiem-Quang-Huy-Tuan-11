@@ -201,8 +201,7 @@ class PuzzleApp:
         style.map("Custom.TCheckbutton", background=[('active', 'red')])
 
         self.update()
-
-
+        
     def load_or_initialize_models(self):
         try:
             with open("models.pkl", "rb") as f:

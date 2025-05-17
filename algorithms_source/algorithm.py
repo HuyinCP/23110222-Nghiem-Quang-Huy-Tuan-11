@@ -485,6 +485,7 @@ def q_learning(start_state, episodes=10000, alpha=0.1, gamma=0.9, epsilon_start=
 
     try:
         with open(q_table_file, "rb") as f:
+            # defaultdict là một lớp con của dict, cho phép định nghĩa sẵn giá trị mặc định cho các key chưa từng tồn tại
             q_table = pickle.load(f)
             q_table = defaultdict(lambda: np.zeros(4), q_table)
     except FileNotFoundError:
@@ -492,12 +493,7 @@ def q_learning(start_state, episodes=10000, alpha=0.1, gamma=0.9, epsilon_start=
 
     max_space = len(q_table)
 
-    def state_to_tuple(state):
-        return tuple(state)
-
     def get_action(state, epsilon):
-        # xác xuất khám phá là epsilon
-        # p < epsilon khám phá 
         if random.random() < epsilon: 
             valid_actions = []
             zero_idx = state.index(0)
@@ -507,12 +503,13 @@ def q_learning(start_state, episodes=10000, alpha=0.1, gamma=0.9, epsilon_start=
                 if 0 <= new_row < 3 and 0 <= new_col < 3:
                     valid_actions.append(i)
             return random.choice(valid_actions) if valid_actions else random.randint(0, 3)
+
         else: # xác xuất > epsilon thực hiện khai thác
             valid_actions = []
             zero_idx = state.index(0)
             row, col = zero_idx // 3, zero_idx % 3
             #q_values = [Q(state,a0), Q(state,a1), Q(state,a2), Q(state,a3)]).
-            q_values = q_table[state_to_tuple(state)]
+            q_values = q_table[tuple(state)]
             for i, (dr, dc) in enumerate(actions):
                 new_row, new_col = row + dr, col + dc
                 if 0 <= new_row < 3 and 0 <= new_col < 3:
@@ -530,24 +527,24 @@ def q_learning(start_state, episodes=10000, alpha=0.1, gamma=0.9, epsilon_start=
             new_idx = new_row * 3 + new_col
             new_state = list(state)
             new_state[zero_idx], new_state[new_idx] = new_state[new_idx], new_state[zero_idx]
-            return tuple(new_state), -1  # Reward -1 for each move
-        return state, -10  # Penalty for invalid move
-
-    # Training phase
+            return tuple(new_state), -1
+        else:
+            return state, -10 
+    
     epsilon = epsilon_start
-    for episode in range(episodes):
+    for episode in range(episodes): # mỗi episodes là một lượt chơi
         state = start_state if episode % 100 == 0 else tuple(random.sample(range(9), 9))  # Random state
         if not is_solvable(state):
             continue
         steps = 0
-        while steps < 1000:  # Max steps per episode
-            action = get_action(state, epsilon)
-            next_state, reward = apply_action(state, action)
+        while steps < 1000:  # mỗi lượt chơi có khoản 1000 bước để lấy hành động
+            action = get_action(state, epsilon) # chọn hành động khám phá hay là khai thác
+            next_state, reward = apply_action(state, action) 
             if next_state == GOAL_STATE:
-                reward = 100  # Reward for reaching goal
-            next_q_values = q_table[state_to_tuple(next_state)]
-            q_table[state_to_tuple(state)][action] += alpha * (
-                reward + gamma * np.max(next_q_values) - q_table[state_to_tuple(state)][action]
+                reward = 100
+            next_q_values = q_table[tuple(next_state)]
+            q_table[tuple(state)][action] += alpha * (
+                reward + gamma * np.max(next_q_values) - q_table[tuple(state)][action]
             )
             state = next_state
             steps += 1
@@ -560,8 +557,10 @@ def q_learning(start_state, episodes=10000, alpha=0.1, gamma=0.9, epsilon_start=
     with open(q_table_file, "wb") as f:
         pickle.dump(dict(q_table), f)
 
+
     if not is_solvable(start_state):
         return None
+    
     state = start_state
     path = [state]
     visited = {state}
@@ -570,7 +569,7 @@ def q_learning(start_state, episodes=10000, alpha=0.1, gamma=0.9, epsilon_start=
         action = get_action(state, 0)
         next_state, _ = apply_action(state, action)
         if next_state in visited or next_state == state:
-            return None  # Stuck or invalid move
+            return None  
         state = next_state
         path.append(state)
         visited.add(state)
@@ -579,18 +578,52 @@ def q_learning(start_state, episodes=10000, alpha=0.1, gamma=0.9, epsilon_start=
 
     if state != GOAL_STATE:
         return None
-    
-    
+
+    cols = 4
+    rows = math.ceil(len(path) / cols)
+
+    fig, axes = plt.subplots(rows * 2, cols, figsize=(4 * cols, 2 * rows * 3))  # *2 hàng mỗi bước
+    fig.suptitle("Q-values and Puzzle State for each step on the path", fontsize=16)
+
+    axes = axes.flatten()
+
     for i, state in enumerate(path):
         q_vals = q_table[state]
-        plt.figure()
-        plt.plot(['Up', 'Down', 'Left', 'Right'], q_vals, marker='o', linestyle='-', color='b')  # Vẽ đường
-        plt.title(f"Step {i}: State = {state}")
-        plt.ylabel("Q-value")
-        plt.ylim(-10, 100)  # Điều chỉnh tùy theo reward trong thuật toán
-        plt.xlabel("Actions")  # Nhãn cho trục x
-        plt.grid(True)
-        plt.show()
+        ax_q = axes[2 * i]       # hàng trên vẽ biểu đồ Q-values
+        ax_state = axes[2 * i + 1]  # hàng dưới vẽ trạng thái puzzle
+
+        # Vẽ biểu đồ Q-values (hàng trên)
+        ax_q.plot(['Up', 'Down', 'Left', 'Right'], q_vals, marker='o', linestyle='-', color='b')
+        ax_q.set_ylim(-10, 100)
+        ax_q.grid(True)
+        ax_q.set_title(f"Step {i}")
+
+        # Vẽ trạng thái 8-puzzle (hàng dưới)
+        ax_state.axis('off')
+        state_array = np.array(state).reshape((3,3))
+
+        for c in range(3):
+            for r in range(3):
+                val = state_array[r,c]
+                rect = plt.Rectangle((c, r), 1, 1, fill=True, 
+                                    color='lightgray' if val == 0 else 'white', ec='black')
+                ax_state.add_patch(rect)
+                if val != 0:
+                    ax_state.text(c + 0.5, r + 0.5, str(val), ha='center', va='center', fontsize=12)
+
+
+        ax_state.set_xlim(0, 3)
+        ax_state.set_ylim(0, 3)
+        ax_state.set_aspect('equal')
+        ax_state.invert_yaxis()
+
+    # Xóa các subplot thừa (nếu có)
+    for j in range(2 * i + 2, len(axes)):
+        fig.delaxes(axes[j])
+
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+    plt.show()
+
 
     return {
         "path": path,
