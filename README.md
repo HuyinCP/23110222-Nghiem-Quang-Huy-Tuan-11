@@ -50,8 +50,9 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 * **Ưu điểm**: Tìm được lời giải **ngắn nhất** nếu chi phí đều.
 * **Nhược điểm**: Tốn bộ nhớ khi không gian tìm kiếm rộng.
 * **Độ phức tạp**:
-  * Thời gian: `O(b^d)`
-  * Bộ nhớ: `O(b^d)`
+  - Thời gian: `O(b^d)`
+  - Bộ nhớ: `O(b^d)`
+  - Trong đó:
      * b (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
      * d (depth): độ sâu của nút GOAL_STATE trong cây.
 
@@ -62,8 +63,9 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 * **Ưu điểm**: Tốn ít bộ nhớ.
 * **Nhược điểm**: Không đảm bảo tìm lời giải ngắn nhất, dễ đi vào vòng lặp nếu không kiểm tra trạng thái.
 * **Độ phức tạp**:
-  * Thời gian: `O(b^m)`
-  * Bộ nhớ: `O(bm)`
+  - Thời gian: `O(b^m)`
+  - Bộ nhớ: `O(bm)`
+  - Trong đó:
       * `b` (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
       * `m` (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
 
@@ -74,9 +76,10 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 * **Ưu điểm**: Tìm lời giải **tối ưu** nếu chi phí luôn dương.
 * **Nhược điểm**: Tốn bộ nhớ và thời gian như BFS trong không gian lớn.
 * **Độ phức tạp**:
-  * Thời gian: `O(b^{1 + C*/ε})`
-  * Bộ nhớ: `O(b^{1 + C*/ε})`
-  * Với `C*` là chi phí tối ưu và `ε` là bước chi phí nhỏ nhất.
+  - Thời gian: `O(b^{1 + C*/ε})`
+  - Bộ nhớ: `O(b^{1 + C*/ε})`
+  - Trong đó:
+      * `C*` là chi phí tối ưu và `ε` là bước chi phí nhỏ nhất.
       * `b` (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
       * `C^*`: chi phí tối ưu để tìm lời giải
       * `ε`: là bước chi phí nhỏ nhất.
@@ -87,8 +90,9 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 * **Ưu điểm**: Tìm được lời giải **ngắn nhất** như BFS nhưng **tốn ít bộ nhớ** như DFS.
 * **Nhược điểm**: Tốn thời gian do lặp lại các node.
 * **Độ phức tạp**:
-  * Thời gian: `O(b^d)`
-  * Bộ nhớ: `O(bd)`
+  - Thời gian: `O(b^d)`
+  - Bộ nhớ: `O(bd)`
+  - Trong đó:
        * `b` (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy `b` = 4.
        * `d` (depth): độ sâu của nút GOAL_STATE trong cây.
 
@@ -114,7 +118,8 @@ Trong bài toán **8 Puzzle**, các thuật toán Informed Search như:
   - Không đảm bảo tìm ra lời giải tối ưu (ngắn nhất).  
   - Có thể bị mắc kẹt ở các điểm local minima hoặc đi sai hướng nếu heuristic không chính xác.
 * **Độ phức tạp**:  
-  - Thời gian và bộ nhớ trong trường hợp xấu nhất: `O(b^m)`:  
+  - Thời gian và bộ nhớ trong trường hợp xấu nhất: `O(b^m)`:
+  - Trong đó:
     - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
     - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
     
@@ -128,13 +133,14 @@ Trong bài toán **8 Puzzle**, các thuật toán Informed Search như:
   - Hiệu quả hơn so với tìm kiếm không thông tin.
 * **Nhược điểm**: Tốn bộ nhớ lớn khi không gian tìm kiếm rộng.
 * **Độ phức tạp**:
-  - **Thời gian**: 
+  - Thời gian: 
     - Trường hợp xấu nhất là `O(b^d)`.
     - Phụ thuộc vào cách thiết kế heuristic, heuristic tốt thì khả năng cao tìm nhanh, heuristic xấu thì khả năng cao tìm lâu.
-  - **Bộ nhớ**: 
+  - Bộ nhớ: 
     - `O(b^d)`, vì A* lưu toàn bộ các node đã duyệt trong bộ nhớ để tránh lặp lại và đảm bảo tìm lời giải tối ưu.
-      - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
-      - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
+  - Trong đó:
+    - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
+    - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
   
 ---
 
@@ -146,9 +152,10 @@ Trong bài toán **8 Puzzle**, các thuật toán Informed Search như:
   - Vẫn giữ được tính tối ưu của A*.
 * **Nhược điểm**: Có thể lặp lại mở rộng node nhiều lần, gây tốn thời gian.
 * **Độ phức tạp**:
-  - **Thời gian**: 
+  - Thời gian: 
     - Trường hợp xấu nhất là `O(b^d)`.
-  - **Bộ nhớ**: 
+  - Bộ nhớ:
+  - Trong đó:
     - `O(d)`, vì IDA* chỉ lưu trữ đường đi hiện tại trong stack thay thì toàn bộ cây như A*.
       - `b`: (branching factor): số lượng trạng thái con trung. Trong 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
       - `m`: (maximum depth): độ sâu lớn nhất mà DFS có thể đi tới trong cây.
