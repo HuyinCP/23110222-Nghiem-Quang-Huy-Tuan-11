@@ -42,10 +42,13 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 - **Ưu điểm**: Tìm được lời giải **ngắn nhất** nếu chi phí đều.
 - **Nhược điểm**: Tốn bộ nhớ khi không gian tìm kiếm rộng.
 - **Phức tạp**:
-  - Thời gian: `O(b^d)`
-  - Bộ nhớ: `O(b^d)`
-       - b (branching factor): số lượng trạng thái con (đỉnh con), Bài toán 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
-       - d (depth): độ sâu nút GOAL-STATE trong cây.
+  - Thời gian: \(O(b^d)\)  
+  - Bộ nhớ: \(O(b^d)\)
+- **Giải thích các ký hiệu**:
+  - \(b\) (branching factor): số lượng trạng thái con trung bình mà mỗi trạng thái sinh ra. Trong bài toán 8 Puzzle, tối đa là 4.
+  - \(d\) (depth): độ sâu của nút giải pháp trong cây tìm kiếm, tức số bước di chuyển từ trạng thái ban đầu đến trạng thái đích.
+- **Áp dụng trong 8 Puzzle**:  
+  BFS sẽ duyệt theo từng lớp trạng thái, từ trạng thái ban đầu mở rộng tất cả các trạng thái có thể đi tới sau 1 bước, sau đó 2 bước, ... cho tới khi tìm được trạng thái đích.
 
 #### ▸ Depth-First Search (DFS)
 - **Chiến lược**: Duyệt **sâu trước**, mở rộng hết một nhánh rồi quay lại.
@@ -55,6 +58,8 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 - **Phức tạp**:
   - Thời gian: `O(b^m)`  
   - Bộ nhớ: `O(bm)`
+       - b (branching factor): số lượng trạng thái con (đỉnh con), Bài toán 8 Puzzle, tối đa có 4 nước đi (lên, xuống, trái, phải), vậy b = 4.
+       - m (maximum depth): độ sâu lớn nhất mà thuật toán DFS có thể đi tới trong cây tìm kiếm, có thể lớn hơn độ sâu lời giải nếu lời giải nằm sâu.
 
 #### ▸ Uniform Cost Search (UCS)
 - **Chiến lược**: Mở rộng node có **tổng chi phí thấp nhất** từ gốc đến hiện tại.
