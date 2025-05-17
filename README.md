@@ -21,6 +21,7 @@
    * [Complex Spaces Search](#4-complex-spaces-search)
    * [Reinforcement Learning](#5-reinforcement-learning)
    * [constraint satisfaction](#6-constraint-satisfaction)
+4. [Hướng dẫn sử dụng](#7hướng-dẫn-sử-dụng)
 ---
 
 ## Giới thiệu bài toán 8 Puzzle
@@ -345,4 +346,22 @@ Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng c�
   - Không cần lưu trữ toàn bộ không gian.
 ---
 
+### 7. Yêu cầu hệ thống
+
+- **Hệ điều hành**: Windows, macOS, hoặc Linux.
+- **Phần mềm**:
+  - Python 3.6+ ([tải tại python.org](https://www.python.org/downloads/)).
+  - Thư viện: `tkinter` (thường có sẵn), `matplotlib`, `numpy`.
+- **Dung lượng**: ~50MB.
+
+## Cài đặt
+
+1. **Tải và cài Python**:
+   - Tải Python 3.6+ từ [python.org](https://www.python.org/downloads/).
+   - Cài đặt, tích chọn **Add Python to PATH**.
+   - Kiểm tra: `python --version` trong terminal (Command Prompt hoặc Terminal).
+
+2. **Cài thư viện**:
+   ```bash
+   pip install matplotlib numpy
 
