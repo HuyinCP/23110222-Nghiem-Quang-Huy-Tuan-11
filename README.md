@@ -397,6 +397,40 @@ Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng c�
 | **Belief Search**              | ❌        | ❌         | ✅                     | ✅                  | ❌ Khó         | ❌ Cao     | Môi trường không chắc chắn                    |
 | **Q-Learning (Reinforcement)** | ✅ dần    | ✅ dần     | ✅                     | ❌                  | ❌ Phức tạp    | ❌ Cao     | Học từ tương tác môi trường                   |
 
+## 🔁 Hướng dẫn sử dụng nút Compare để so sánh các thuật toán
+
+### 📁 File: `puzzleApp.py`
+
+Trong hàm `compare_algorithms`, bạn có thể chọn các thuật toán cần so sánh bằng cách bật (bỏ comment `#`) hoặc tắt (comment lại) tại danh sách `algorithms`.
+
+```python
+algorithms = [
+    # Uniform Cost Search và các thuật toán không sử dụng heuristic
+    # (bfs, "BFS"),
+    # (dfs, "DFS"),
+    # (ids, "IDS"),
+    # (ucs, "UCS"),
+
+    # Heuristic-based Search (có sử dụng hàm đánh giá)
+    # (a_star_manhattan, "A* Manhattan"),
+    # (ida_star_manhattan, "IDA* Manhattan"),
+    # (greedy_FS, "Greedy FS"),
+
+    # Local Search (tìm kiếm cục bộ)
+    (simple_hill_climbing, "Simple Hill Climb"),
+    (steepest_hill_climbing, "Steepest Hill Climb"),
+    (stochastic_hill_climbing, "Stochastic Hill Climb"),
+
+    # Các thuật toán khác (bật nếu muốn)
+    # (simulated_annealing, "SimuAnnealing"),
+    # (beam_search, "BeamSearch"),
+    # (and_or_search, "AND-OR"),
+    # (belief, "BELIEF"),
+    # (lambda state: q_learning(state, episodes=1000), "Q-Learning"),
+]
+```
+ví dụ sau khi so sánh có biểu đồ như sau:
+
 ## Hướng dẫn sử dụng
 
 ### Cài đặt
