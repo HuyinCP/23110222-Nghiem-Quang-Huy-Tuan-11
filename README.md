@@ -437,7 +437,7 @@ Hình dưới đây thể hiện so sánh 4 thuật toán: **BFS**, **DFS**, **U
 - 💾 **Space**: Bộ nhớ sử dụng (số node đã mở)
 - 🧭 **Cost**: Độ dài đường đi (cost của lời giải)
 
-![Biểu đồ so sánh các thuật toán](compareAlo.png)
+![Biểu đồ so sánh các thuật toán](source%20image/compareAlo.png)
 
 ### 🔎 Phân tích biểu đồ:
 
