@@ -380,6 +380,26 @@ Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng c�
 
 ## So sánh hiệu suất
 
+### 🔍 Bảng so sánh các thuật toán tìm kiếm
+
+| Thuật toán                      | Tối ưu? | Hoàn tất? | Có dùng hàm chi phí? | Dựa vào heuristic? | Dễ implement? | Bộ nhớ    | Ghi chú                                         |
+|--------------------------------|---------|-----------|------------------------|---------------------|----------------|-----------|------------------------------------------------|
+| **Breadth-First Search**       | ✅       | ✅         | ❌                     | ❌                  | ✅             | ❌ Cao    | Tìm lời giải ngắn nhất                         |
+| **Depth-First Search**         | ❌       | ❌         | ❌                     | ❌                  | ✅✅           | ✅ Thấp   | Dễ bị lặp, có thể đi sâu vô tận                |
+| **Uniform Cost Search**        | ✅       | ✅         | ✅                     | ❌                  | ✅             | ❌ Cao    | Ưu tiên đường đi rẻ nhất                       |
+| **Iterative Deepening Search** | ✅       | ✅         | ❌                     | ❌                  | ✅             | ✅ Thấp   | Kết hợp DFS + BFS                              |
+| **Greedy Best-First Search**   | ❌       | ❌         | ❌                     | ✅                  | ✅             | ❌ Cao    | Nhanh, dễ đi sai hướng                         |
+| **A\* Search**                 | ✅       | ✅         | ✅                     | ✅                  | ❌ Trung bình | ❌ Cao    | Cần hàm heuristic tốt                          |
+| **Iterative Deepening A\***    | ✅       | ✅         | ✅                     | ✅                  | ❌ Khó hơn    | ✅ Tốt    | A* tiết kiệm RAM                               |
+| **Simple Hill Climbing**       | ❌       | ❌         | ❌                     | ✅                  | ✅             | ✅ Thấp   | Dễ kẹt tại cực trị địa phương                 |
+| **Steepest Hill Climbing**     | ❌       | ❌         | ❌                     | ✅                  | ✅             | ✅ Thấp   | Chọn hướng tốt nhất tại mỗi bước               |
+| **Stochastic Hill Climbing**   | ❌       | ❌         | ❌                     | ✅                  | ✅             | ✅ Thấp   | Chọn ngẫu nhiên từ các hướng tốt               |
+| **Simulated Annealing**        | ❌       | ✅*        | ❌                     | ✅                  | ❌ Trung bình | ✅ Thấp   | Tránh cực trị bằng cách giảm nhiệt độ dần     |
+| **Beam Search**                | ❌       | ❌         | ❌                     | ✅                  | ❌ Trung bình | ❌ Giới hạn | Chỉ giữ K node tốt nhất                        |
+| **AND-OR Graph Search**        | ✅       | ✅         | ✅                     | ✅                  | ❌ Khó        | ❌ Cao    | Cho bài toán có phân nhánh logic (phi tuyến)   |
+| **Belief Search**              | ❌       | ❌         | ✅                     | ✅                  | ❌ Khó        | ❌ Cao    | Môi trường không chắc chắn                    |
+| **Q-Learning (Reinforcement)** | ✅ dần   | ✅ dần     | ✅                     | ❌                  | ❌ Phức tạp   | ❌ Cao    | Học từ tương tác môi trường                   |
+
 ## Hướng dẫn sử dụng
 
 ### Cài đặt
