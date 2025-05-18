@@ -21,7 +21,8 @@
    * [Complex Spaces Search](#4-complex-spaces-search)
    * [Reinforcement Learning](#5-reinforcement-learning)
    * [constraint satisfaction](#6-constraint-satisfaction)
-4. [Hướng dẫn sử dụng](#hướng-dẫn-sử-dụng)
+4. [So sánh hiệu suất](#so-sánh-hiệu-suất)
+5. [Hướng dẫn sử dụng](#hướng-dẫn-sử-dụng)
    
 ---
 
@@ -376,6 +377,8 @@ Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng c�
 
 <div style="page-break-after: always;"></div>
 
+
+## So sánh hiệu suất
 
 ## Hướng dẫn sử dụng
 
