@@ -332,6 +332,43 @@ Tìm chính sách hành động tối ưu thông qua tương tác với môi tr�
   
 <div style="page-break-after: always;"></div>
 
+#### ▸ TD-Learning
+- **Chiến lược**:  
+  Học giá trị trạng thái (V-value) bằng cách cập nhật bảng giá trị (V-table) dựa trên kinh nghiệm thu thập được từ tương tác với môi trường.  
+  Sử dụng chính sách epsilon-greedy để cân bằng giữa khám phá (exploration) và khai thác (exploitation), chọn hành động dẫn đến trạng thái có giá trị V thấp nhất.
+  
+- **Công thức cập nhật Q-value**:
+
+  ```math
+  V(s) \leftarrow V(s) + \alpha \left[ r + \gamma \cdot V(s') - V(s) \right]
+  ```
+  
+**Trong đó:**
+- `V(s)`: Giá trị trạng thái hiện tại tại trạng thái `s`
+- `α` (alpha): Tốc độ học (learning rate), `0 < α ≤ 1`
+- `r`: Phần thưởng nhận được sau khi thực hiện hành động
+- `γ` (gamma): Hệ số chiết khấu (discount factor), thể hiện mức độ ưu tiên phần thưởng tương lai, `0 ≤ γ ≤ 1`
+- `s'`: Trạng thái mới sau khi thực hiện hành động `a`
+- hành động `a` là thao tác di chuyển ô trống [lên, xuống, trái, phải]
+
+- **Ưu điểm**:
+  - Học trực tiếp từ môi trường mà không cần heuristic hay mô hình trạng thái (model-free).
+  - Càng về sau, khả năng khai thác càng cao nhờ giá trị trạng thái được cập nhật.
+  - Phù hợp với các bài toán có không gian trạng thái lớn nhưng không cần lưu trữ giá trị cho   mọi cặp trạng thái-hành động như Q-Learning.
+  - Yêu cầu bộ nhớ thấp hơn Q-Learning do chỉ lưu giá trị trạng thái (V-table) thay vì cặp trạng thái-hành động (Q-table).
+
+- **Nhược điểm**:
+  - Tốn thời gian huấn luyện, đặc biệt khi không gian trạng thái lớn.
+  - Phụ thuộc mạnh vào tham số (`alpha`, `gamma`, `epsilon`).
+  - Cần chính sách chọn hành động tốt để khai thác hiệu quả giá trị trạng thái.
+
+
+- **Độ phức tạp**:
+  - **Thời gian**: Ph Queen thuộc vào số lượng episode và số bước tối đa mỗi episode, tương tự Q-Learning.
+  - **Bộ nhớ**: Tăng theo kích thước V-table, nhỏ hơn Q-table vì chỉ lưu giá trị cho mỗi trạng thái (khoảng 181,440 trạng thái hợp lệ trong 8 Puzzle).
+ 
+<div style="page-break-after: always;"></div>
+
 ### 6. Constraint Satisfaction
 
 Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng cách gán giá trị cho các biến, sử dụng thuật toán **Backtracking**.
@@ -446,7 +483,11 @@ Hình dưới đây thể hiện so sánh 4 thuật toán: **BFS**, **DFS**, **U
 | **BFS**          | ~0.0063  | 6   | 51     | Tìm được đường đi ngắn, nhưng tốn nhiều bộ nhớ |
 | **DFS**          | ~0.0010  | 24   | 22     | Rất nhanh, dùng ít bộ nhớ, nhưng không tối ưu đường đi |
 | **UCS**          | ~0.0063  | 6   | 43     | Tối ưu chi phí như BFS nhưng tiết kiệm bộ nhớ hơn |
+<<<<<<< HEAD
 | **A star** | ~0.0018  | 6   | 7     | Hiệu quả nhất: nhanh, ít bộ nhớ, chi phí thấp nhất |
+=======
+| **A* Manhattan** | ~0.0018  | 6   | 7     | Hiệu quả nhất: nhanh, ít bộ nhớ, chi phí thấp nhất |
+>>>>>>> 0c162bc50b211f281033de4d181bb69392f47744
 
 ### ✅ Kết luận:
 
