@@ -73,6 +73,7 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 * **Cấu trúc dữ liệu**: Stack.
 * **Ưu điểm**: Sử dụng bộ nhớ hiệu quả hơn so với BFS, do không cần lưu trữ tất cả các trạng thái ở cùng một mức độ.
 * **Nhược điểm**: Không đảm bảo tìm được lời giải ngắn nhất nếu tồn tại nhiều đường đi đến mục tiêu.
+* vd: Giả sử DFS đi sâu thăm nhánh bên trái cùng trước và nút đáp án thì nằm ở độ cao 1 của nhánh phải cùng, thì giữa DFS và BFS có sự khác biệt lớn như sau:
 ![Alt text](source%20image/DFS_BFS.png)
 * **Độ phức tạp**:
   - Thời gian: `O(b^m)`
