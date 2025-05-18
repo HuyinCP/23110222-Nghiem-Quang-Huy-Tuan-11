@@ -443,10 +443,10 @@ Hình dưới đây thể hiện so sánh 4 thuật toán: **BFS**, **DFS**, **U
 
 | Thuật toán       | Time (s) | Cost | Space | Nhận xét chung |
 |------------------|----------|------|--------|----------------|
-| **BFS**          | ~0.0063  | 12   | 57     | Tìm được đường đi ngắn, nhưng tốn nhiều bộ nhớ |
-| **DFS**          | ~0.0010  | 24   | 21     | Rất nhanh, dùng ít bộ nhớ, nhưng không tối ưu đường đi |
-| **UCS**          | ~0.0063  | 12   | 45     | Tối ưu chi phí như BFS nhưng tiết kiệm bộ nhớ hơn |
-| **A* Manhattan** | ~0.0018  | 10   | 17     | Hiệu quả nhất: nhanh, ít bộ nhớ, chi phí thấp nhất |
+| **BFS**          | ~0.0063  | 6   | 51     | Tìm được đường đi ngắn, nhưng tốn nhiều bộ nhớ |
+| **DFS**          | ~0.0010  | 24   | 22     | Rất nhanh, dùng ít bộ nhớ, nhưng không tối ưu đường đi |
+| **UCS**          | ~0.0063  | 6   | 43     | Tối ưu chi phí như BFS nhưng tiết kiệm bộ nhớ hơn |
+| **A* Manhattan** | ~0.0018  | 6   | 7     | Hiệu quả nhất: nhanh, ít bộ nhớ, chi phí thấp nhất |
 
 ### ✅ Kết luận:
 
