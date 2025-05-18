@@ -21,7 +21,8 @@
    * [Complex Spaces Search](#4-complex-spaces-search)
    * [Reinforcement Learning](#5-reinforcement-learning)
    * [constraint satisfaction](#6-constraint-satisfaction)
-4. [Hướng dẫn sử dụng](#hướng-dẫn-sử-dụng)
+4. [So sánh hiệu suất](#so-sánh-hiệu-suất)
+5. [Hướng dẫn sử dụng](#hướng-dẫn-sử-dụng)
    
 ---
 
@@ -73,8 +74,6 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 * **Cấu trúc dữ liệu**: Stack.
 * **Ưu điểm**: Sử dụng bộ nhớ hiệu quả hơn so với BFS, do không cần lưu trữ tất cả các trạng thái ở cùng một mức độ.
 * **Nhược điểm**: Không đảm bảo tìm được lời giải ngắn nhất nếu tồn tại nhiều đường đi đến mục tiêu.
-* vd: Giả sử DFS đi sâu thăm nhánh bên trái cùng trước và nút đáp án thì nằm ở độ cao 1 của nhánh phải cùng, thì giữa DFS và BFS có sự khác biệt lớn như sau:
-![Alt text](source%20image/DFS_BFS.png)
 * **Độ phức tạp**:
   - Thời gian: `O(b^m)`
   - Bộ nhớ: `O(bm)`
@@ -375,6 +374,28 @@ Tìm trạng thái hợp lệ thỏa mãn tất cả các ràng buộc bằng c�
 
 <div style="page-break-after: always;"></div>
 
+
+## So sánh hiệu suất
+
+### 🔍 Bảng so sánh các thuật toán tìm kiếm
+
+| Thuật toán                      | Tối ưu?  | Hoàn tất? | Có dùng hàm chi phí? | Dựa vào heuristic? | Dễ implement? | Bộ nhớ     | Ghi chú                                         |
+|--------------------------------|----------|-----------|------------------------|---------------------|-----------------|------------|------------------------------------------------|
+| **Breadth-First Search**       | ✅        | ✅         | ❌                     | ❌                  | ✅              | ❌ Cao     | Tìm lời giải ngắn nhất                         |
+| **Depth-First Search**         | ❌        | ❌         | ❌                     | ❌                  | ✅✅            | ✅ Thấp    | Dễ bị lặp, có thể đi sâu vô tận                |
+| **Uniform Cost Search**        | ✅        | ✅         | ✅                     | ❌                  | ✅              | ❌ Cao     | Ưu tiên đường đi rẻ nhất                       |
+| **Iterative Deepening Search** | ✅        | ✅         | ❌                     | ❌                  | ✅              | ✅ Thấp    | Kết hợp DFS + BFS                              |
+| **Greedy Best-First Search**   | ❌        | ❌         | ❌                     | ✅                  | ✅              | ❌ Cao     | Nhanh, dễ đi sai hướng                         |
+| **A\* Search**                 | ✅        | ✅         | ✅                     | ✅                  | ❌ Trung bình  | ❌ Cao     | Cần hàm heuristic tốt                          |
+| **Iterative Deepening A\***    | ✅        | ✅         | ✅                     | ✅                  | ❌ Khó hơn     | ✅ Tốt     | A* tiết kiệm RAM                               |
+| **Simple Hill Climbing**       | ❌        | ❌         | ❌                     | ✅                  | ✅              | ✅ Thấp    | Dễ kẹt tại cực trị địa phương                 |
+| **Steepest Hill Climbing**     | ❌        | ❌         | ❌                     | ✅                  | ✅              | ✅ Thấp    | Chọn hướng tốt nhất tại mỗi bước               |
+| **Stochastic Hill Climbing**   | ❌        | ❌         | ❌                     | ✅                  | ✅              | ✅ Thấp    | Chọn ngẫu nhiên từ các hướng tốt               |
+| **Simulated Annealing**        | ❌        | ✅         | ❌                     | ✅                  | ❌ Trung bình  | ✅ Thấp    | Tránh cực trị bằng cách giảm nhiệt độ dần     |
+| **Beam Search**                | ❌        | ❌         | ❌                     | ✅                  | ❌ Trung bình  | ❌ Giới hạn  | Chỉ giữ K node tốt nhất                        |
+| **AND-OR Graph Search**        | ✅        | ✅         | ✅                     | ✅                  | ❌ Khó         | ❌ Cao     | Cho bài toán có phân nhánh logic (phi tuyến)   |
+| **Belief Search**              | ❌        | ❌         | ✅                     | ✅                  | ❌ Khó         | ❌ Cao     | Môi trường không chắc chắn                    |
+| **Q-Learning (Reinforcement)** | ✅ dần    | ✅ dần     | ✅                     | ❌                  | ❌ Phức tạp    | ❌ Cao     | Học từ tương tác môi trường                   |
 
 ## Hướng dẫn sử dụng
 
