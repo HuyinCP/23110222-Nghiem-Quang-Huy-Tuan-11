@@ -44,7 +44,7 @@ class PuzzleApp:
         self.canvas.create_rectangle(0, 0, game.WIDTH + 200, game.HEIGHT + 400, fill="#e6ecf0", outline="")
         self.canvas.create_rectangle(0, 0, game.WIDTH + 200, 250, fill="#d3e0ea", outline="")
 
-        self.initial_state = [1, 2, 3, 0, 5, 6, 4, 7, 8]
+        self.initial_state = [1, 2, 3, 5, 6, 8, 4, 7, 0]
         self.result = None
         self.step = 0
         self.last_step_time = time.time()
@@ -669,13 +669,18 @@ class PuzzleApp:
             self.initial_state = nums
             self.comparison_results = []
             algorithms = [
-                (bfs, "BFS"),
-                (dfs, "DFS"),
-                (ids, "IDS"),
+                #Uniform cost search
+                # (bfs, "BFS"),
+                # (dfs, "DFS"),
+                # (ids, "IDS"),
                 (ucs, "UCS"),
-                # (a_star_manhattan, "A* manhattan"),
+
+                # Inform cost search
+                (a_star_manhattan, "A* manhattan"),
                 # (ida_star_manhattan, "IDA* manhattan"),
                 # (greedy_FS, "Greedy FS"),
+
+                #local search
                 # (simple_hill_climbing, "Simple Hill Climb"),
                 # (steepest_hill_climbing, "Steepest Hill Climb"),
                 # (stochastic_hill_climbing, "Stochastic Hill Climb"),
@@ -720,7 +725,7 @@ class PuzzleApp:
             self.status_label.config(text="Algorithm Details Table")
 
     def reset(self):
-        self.initial_state = [1, 2, 3, 0, 5, 6, 4, 7, 8]
+        self.initial_state = [1, 2, 3, 5, 6, 8, 4, 7, 0]
         for i in range(3):
             for j in range(3):
                 self.input_grid[i][j].delete(0, tk.END)
