@@ -7,7 +7,7 @@ from collections import defaultdict
 import matplotlib.pyplot as plt
 import numpy as np
 import pickle
-
+import gzip
 GOAL_STATE = (1, 2, 3, 4, 5, 6, 7, 8, 0)
 
 def is_solvable(state):
@@ -605,8 +605,7 @@ def q_learning(start_state, episodes=10000, alpha=0.1, gamma=0.9, epsilon_start=
         for c in range(3):
             for r in range(3):
                 val = state_array[r,c]
-                rect = plt.Rectangle((c, r), 1, 1, fill=True, 
-                                    color='lightgray' if val == 0 else 'white', ec='black')
+                rect = plt.Rectangle((c, r), 1, 1, fill=True, color='lightgray' if val == 0 else 'white', ec='black')
                 ax_state.add_patch(rect)
                 if val != 0:
                     ax_state.text(c + 0.5, r + 0.5, str(val), ha='center', va='center', fontsize=12)
@@ -624,6 +623,167 @@ def q_learning(start_state, episodes=10000, alpha=0.1, gamma=0.9, epsilon_start=
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.show()
 
+
+    return {
+        "path": path,
+        "steps": len(path) - 1,
+        "cost": len(path) - 1,
+        "time": time.time() - start_time,
+        "space": max_space
+    }
+
+def td_learning(start_state, episodes=10000, alpha=0.1, gamma=0.9,
+                epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.995,
+                v_table_file="v_table.pkl"):
+    start_time = time.time()
+    actions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    GOAL_STATE = (1, 2, 3, 4, 5, 6, 7, 8, 0)
+
+    # Kiểm tra đầu vào
+    if not isinstance(start_state, tuple) or len(start_state) != 9 or set(start_state) != set(range(9)):
+        return None
+
+    try:
+        with gzip.open(v_table_file, "rb") as f:
+            v_table = pickle.load(f)
+            v_table = defaultdict(float, v_table)
+    except FileNotFoundError:
+        v_table = defaultdict(float)
+
+    def get_valid_actions(zero_idx):
+        row, col = zero_idx // 3, zero_idx % 3
+        valid = []
+        for i, (dr, dc) in enumerate(actions):
+            new_row, new_col = row + dr, col + dc
+            if 0 <= new_row < 3 and 0 <= new_col < 3:
+                valid.append(i)
+        return valid
+
+    def apply_action(state, action_idx, zero_idx):
+        row, col = zero_idx // 3, zero_idx % 3
+        dr, dc = actions[action_idx]
+        new_row, new_col = row + dr, col + dc
+        new_idx = new_row * 3 + new_col
+        new_state = list(state)
+        new_state[zero_idx], new_state[new_idx] = new_state[new_idx], new_state[zero_idx]
+        return tuple(new_state), -1
+
+    def choose_action(state, epsilon, zero_idx):
+        if random.random() < epsilon:
+            return random.choice(get_valid_actions(zero_idx))
+        best_value = float('inf')
+        best_actions = []
+        for action in get_valid_actions(zero_idx):
+            next_state, _ = apply_action(state, action, zero_idx)
+            if v_table[next_state] < best_value:
+                best_value = v_table[next_state]
+                best_actions = [action]
+            elif v_table[next_state] == best_value:
+                best_actions.append(action)
+        return random.choice(best_actions) if best_actions else random.choice(get_valid_actions(zero_idx))
+
+    epsilon = epsilon_start
+    max_space = len(v_table)
+
+    # === TRAINING ===
+    for episode in range(episodes):
+        state = start_state if episode % 100 == 0 else tuple(random.sample(range(9), 9))
+        if not is_solvable(state):
+            continue
+        zero_idx = state.index(0)
+        steps = 0
+        alpha_current = alpha / (1 + episode * 0.0001)
+        while state != GOAL_STATE and steps < 1000:
+            action = choose_action(state, epsilon, zero_idx)
+            next_state, reward = apply_action(state, action, zero_idx)
+            if next_state == GOAL_STATE:
+                reward = 100
+            v_table[state] += alpha_current * (reward + gamma * v_table[next_state] - v_table[state])
+            state = next_state
+            zero_idx = next_state.index(0)
+            steps += 1
+            max_space = max(max_space, len(v_table))
+        epsilon = max(epsilon_end, epsilon * epsilon_decay)
+        if episode % 1000 == 0:
+            v_table = defaultdict(float, {k: v for k, v in v_table.items() if abs(v) > 1e-5})
+            avg_value = sum(v_table.values()) / len(v_table) if v_table else 0
+            print(f"Episode {episode}: States = {len(v_table)}, Avg V = {avg_value:.2f}, Epsilon = {epsilon:.3f}")
+
+    with gzip.open(v_table_file, "wb") as f:
+        pickle.dump(dict(v_table), f)
+
+    # === PATH TRACING ===
+    if not is_solvable(start_state):
+        return None
+
+    path = [start_state]
+    visited = {start_state}
+    state = start_state
+    zero_idx = state.index(0)
+    steps = 0
+
+    while state != GOAL_STATE and steps < 100000000:
+        best_value = float('inf')
+        best_action = None
+        for action in get_valid_actions(zero_idx):
+            next_state, _ = apply_action(state, action, zero_idx)
+            if next_state not in visited and v_table[next_state] < best_value:
+                best_value = v_table[next_state]
+                best_action = action
+        if best_action is None:
+            return None
+        next_state, _ = apply_action(state, best_action, zero_idx)
+        if next_state == state or next_state in visited:
+            return None
+        path.append(next_state)
+        visited.add(next_state)
+        state = next_state
+        zero_idx = next_state.index(0)
+        steps += 1
+        max_space = max(max_space, len(v_table))
+
+    if state != GOAL_STATE:
+        return None
+
+    cols = 4
+    rows = math.ceil(len(path) / cols)
+    fig, axes = plt.subplots(rows * 2, cols, figsize=(4 * cols, 2 * rows * 3))
+    fig.suptitle("V-values and Puzzle State for each step on the path", fontsize=16)
+    axes = axes.flatten()
+
+    for i, state in enumerate(path):
+        ax_v = axes[2 * i]
+        ax_state = axes[2 * i + 1]
+        zero_idx = state.index(0)
+        v_vals = []
+        for action in get_valid_actions(zero_idx):
+            next_state, _ = apply_action(state, action, zero_idx)
+            v_vals.append(v_table[next_state])
+        while len(v_vals) < 4:
+            v_vals.append(0)
+        ax_v.plot(['Up', 'Down', 'Left', 'Right'], v_vals, marker='o', linestyle='-', color='b')
+        ax_v.set_ylim(min(v_table.values()) if v_table else 0, max(v_table.values()) if v_table else 100)
+        ax_v.grid(True)
+        ax_v.set_title(f"Step {i}")
+        ax_state.axis('off')
+        state_array = np.array(state).reshape((3, 3))
+        for r in range(3):
+            for c in range(3):
+                val = state_array[r, c]
+                rect = plt.Rectangle((c, r), 1, 1, fill=True, color='lightgray' if val == 0 else 'white', ec='black')
+                ax_state.add_patch(rect)
+                if val != 0:
+                    ax_state.text(c + 0.5, r + 0.5, str(val), ha='center', va='center', fontsize=12)
+        ax_state.set_xlim(0, 3)
+        ax_state.set_ylim(0, 3)
+        ax_state.set_aspect('equal')
+        ax_state.invert_yaxis()
+
+    for j in range(2 * i + 2, len(axes)):
+        fig.delaxes(axes[j])
+
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+    plt.show()
 
     return {
         "path": path,
