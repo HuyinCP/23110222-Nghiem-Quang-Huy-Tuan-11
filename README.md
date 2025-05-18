@@ -73,6 +73,7 @@ Các thuật toán tìm kiếm không dùng thông tin heuristic, hoạt động
 * **Cấu trúc dữ liệu**: Stack.
 * **Ưu điểm**: Sử dụng bộ nhớ hiệu quả hơn so với BFS, do không cần lưu trữ tất cả các trạng thái ở cùng một mức độ.
 * **Nhược điểm**: Không đảm bảo tìm được lời giải ngắn nhất nếu tồn tại nhiều đường đi đến mục tiêu.
+![Alt text](source%20image/DFS_BFS.png)
 * **Độ phức tạp**:
   - Thời gian: `O(b^m)`
   - Bộ nhớ: `O(bm)`
@@ -259,6 +260,8 @@ Các kỹ thuật dành cho không gian tìm kiếm lớn hoặc có cấu trúc
 * AND-OR Graph Search
 * Belief Search
 
+<div style="page-break-after: always;"></div>
+
 #### ▸ AND-OR Graph Search
 ![Alt text](source%20image/And%20Or.gif)
 * **Chiến lược**: Kết hợp node "AND" (cần tất cả con) và "OR" (chỉ cần một con), sử dụng Manhattan Distance để ưu tiên.
@@ -270,6 +273,8 @@ Các kỹ thuật dành cho không gian tìm kiếm lớn hoặc có cấu trúc
   - Trong đó:
     * `b` (branching factor): số lượng trạng thái con trung bình (~4 trong 8 Puzzle).
     * `d` (depth): độ sâu của trạng thái mục tiêu trong cây.
+
+<div style="page-break-after: always;"></div>
 
 #### ▸ Belief Search
 ![Alt text](source%20image/Belife.gif)
