@@ -143,6 +143,7 @@ class PuzzleApp:
             
             #reforment learning
             ("Q-Learning", self.run_q_learning),  
+            ("TD-Learning", self.run_td_learning),  
 
             #some features
             ("Compare", self.compare_algorithms),
@@ -497,6 +498,18 @@ class PuzzleApp:
                 result["space"]
             ))
 
+    def run_td_learning(self):
+        result = self.run_algorithm(lambda state: td_learning(state, episodes=1000), "TD-Learning")
+        if result:
+            self.tree.delete(*self.tree.get_children())
+            self.tree.insert("", "end", values=(
+                result["algorithm"],
+                result["steps"],
+                result["cost"],
+                f"{result['time']:.4f}",
+                result["space"]
+            ))
+
     def showbacktracking(self):
         # Tạo cửa sổ mới
         backtrack_window = tk.Toplevel(self.root)
@@ -670,8 +683,8 @@ class PuzzleApp:
             self.comparison_results = []
             algorithms = [
                 #Uniform cost search
-                # (bfs, "BFS"),
-                # (dfs, "DFS"),
+                (bfs, "BFS"),
+                (dfs, "DFS"),
                 # (ids, "IDS"),
                 (ucs, "UCS"),
 
