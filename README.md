@@ -429,7 +429,32 @@ algorithms = [
     # (lambda state: q_learning(state, episodes=1000), "Q-Learning"),
 ]
 ```
-ví dụ sau khi so sánh có biểu đồ như sau:
+## 📊 So sánh trực quan các thuật toán bằng biểu đồ radar
+
+Hình dưới đây thể hiện so sánh 4 thuật toán: **BFS**, **DFS**, **UCS**, và **A* Manhattan** theo 3 tiêu chí:
+
+- ⏱️ **Time**: Thời gian thực thi
+- 💾 **Space**: Bộ nhớ sử dụng (số node đã mở)
+- 🧭 **Cost**: Độ dài đường đi (cost của lời giải)
+
+![Biểu đồ so sánh các thuật toán](compareAlo.png)
+
+### 🔎 Phân tích biểu đồ:
+
+| Thuật toán       | Time (s) | Cost | Space | Nhận xét chung |
+|------------------|----------|------|--------|----------------|
+| **BFS**          | ~0.0063  | 12   | 57     | Tìm được đường đi ngắn, nhưng tốn nhiều bộ nhớ |
+| **DFS**          | ~0.0010  | 24   | 21     | Rất nhanh, dùng ít bộ nhớ, nhưng không tối ưu đường đi |
+| **UCS**          | ~0.0063  | 12   | 45     | Tối ưu chi phí như BFS nhưng tiết kiệm bộ nhớ hơn |
+| **A* Manhattan** | ~0.0018  | 10   | 17     | Hiệu quả nhất: nhanh, ít bộ nhớ, chi phí thấp nhất |
+
+### ✅ Kết luận:
+
+- **DFS** rất nhanh nhưng **không đảm bảo lời giải tối ưu** (Cost cao nhất).
+- **A* Manhattan** có hiệu suất tốt nhất về cả ba tiêu chí, nhờ heuristic thông minh.
+- **BFS** và **UCS** tìm lời giải tối ưu nhưng tốn thời gian và bộ nhớ hơn A*.
+
+---
 
 ## Hướng dẫn sử dụng
 
