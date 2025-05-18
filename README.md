@@ -26,9 +26,12 @@
    
 ---
 
-## Giới thiệu bài toán 8 Puzzle
+## Giới thiệu bài toán 8 Puzzle và giao diện
+
+![Alt text](source%20image/screenshot.png)
 
 Bài toán **8 Puzzle** là một trò chơi xếp hình kinh điển, bao gồm một bảng 3x3 với 8 ô được đánh số từ 1 đến 8 và một ô trống (ký hiệu là 0). Người chơi di chuyển ô trống (lên, xuống, trái, phải) để sắp xếp các ô số về trạng thái mục tiêu: `[1, 2, 3, 4, 5, 6, 7, 8, 0]
+Giao diện ứng dụng:
 
 Dự án này phát triển một ứng dụng sử dụng các thuật toán trí tuệ nhân tạo để tự động giải bài toán 8 Puzzle, đồng thời so sánh hiệu quả của các thuật toán dựa trên số bước, thời gian, và bộ nhớ sử dụng.
 
