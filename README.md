@@ -24,15 +24,18 @@
 4. [So sánh hiệu suất](#so-sánh-hiệu-suất)
 5. [Hướng dẫn sử dụng](#hướng-dẫn-sử-dụng)
    
----
+<div style="page-break-after: always;"></div>
 
-## Giới thiệu bài toán 8 Puzzle
+## Giới thiệu bài toán 8 Puzzle và giao diện
+
+![Alt text](source%20image/screenshot.png)
 
 Bài toán **8 Puzzle** là một trò chơi xếp hình kinh điển, bao gồm một bảng 3x3 với 8 ô được đánh số từ 1 đến 8 và một ô trống (ký hiệu là 0). Người chơi di chuyển ô trống (lên, xuống, trái, phải) để sắp xếp các ô số về trạng thái mục tiêu: `[1, 2, 3, 4, 5, 6, 7, 8, 0]
+Giao diện ứng dụng:
 
 Dự án này phát triển một ứng dụng sử dụng các thuật toán trí tuệ nhân tạo để tự động giải bài toán 8 Puzzle, đồng thời so sánh hiệu quả của các thuật toán dựa trên số bước, thời gian, và bộ nhớ sử dụng.
 
----
+<div style="page-break-after: always;"></div>
 
 ## Mục tiêu
 
@@ -483,11 +486,7 @@ Hình dưới đây thể hiện so sánh 4 thuật toán: **BFS**, **DFS**, **U
 | **BFS**          | ~0.0063  | 6   | 51     | Tìm được đường đi ngắn, nhưng tốn nhiều bộ nhớ |
 | **DFS**          | ~0.0010  | 24   | 22     | Rất nhanh, dùng ít bộ nhớ, nhưng không tối ưu đường đi |
 | **UCS**          | ~0.0063  | 6   | 43     | Tối ưu chi phí như BFS nhưng tiết kiệm bộ nhớ hơn |
-<<<<<<< HEAD
-| **A star** | ~0.0018  | 6   | 7     | Hiệu quả nhất: nhanh, ít bộ nhớ, chi phí thấp nhất |
-=======
 | **A* Manhattan** | ~0.0018  | 6   | 7     | Hiệu quả nhất: nhanh, ít bộ nhớ, chi phí thấp nhất |
->>>>>>> 0c162bc50b211f281033de4d181bb69392f47744
 
 ### ✅ Kết luận:
 
